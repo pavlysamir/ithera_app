@@ -6,5 +6,5 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
 
-  runApp(const ItheraApp());
+  runApp(ItheraApp());
 }

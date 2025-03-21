@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ithera_app/iThera_app.dart';
+import 'package:ithera_app/core/routing/routes.dart';
+import 'package:ithera_app/features/on_boarding/home/home.dart';
+import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 
 class AppRouter {
   static String initialRoute =
@@ -13,12 +15,14 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const ItheraApp(),
+          builder: (_) => OnBoardingScreen(),
           settings: settings,
         );
-
-      // Add more routes as needed
-
+      case Routes.onBoardingScreen:
+        return MaterialPageRoute(
+          builder: (_) => Home(),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
