@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 
 class CustomTextRich extends StatelessWidget {
@@ -25,6 +26,7 @@ class CustomTextRich extends StatelessWidget {
             text: secondText,
             style: AppTextStyles.font14Regular.copyWith(
               decoration: TextDecoration.underline,
+              color: AppColors.textGreen,
             ),
             recognizer: TapGestureRecognizer()..onTap = onSecondTextTap,
           ),

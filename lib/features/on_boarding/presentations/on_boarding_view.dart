@@ -49,13 +49,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     ];
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.white,
-        shape:
-            ShapeBorder.lerp(const CircleBorder(), const StadiumBorder(), 0.5),
-        onPressed: submit,
-        child: const Icon(Icons.arrow_forward,
-            color: AppColors.textGreen, size: 34),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Directionality(
+        textDirection: TextDirection.ltr,
+        child: FloatingActionButton(
+          backgroundColor: AppColors.white,
+          shape: ShapeBorder.lerp(
+              const CircleBorder(), const StadiumBorder(), 0.5),
+          onPressed: submit,
+          child: const Icon(Icons.arrow_forward,
+              color: AppColors.textGreen, size: 34),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 40),
@@ -64,6 +68,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           children: [
             Row(
               children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: SmoothPageIndicator(
+                      controller: widget.boardController,
+                      count: modelBoarding.length,
+                      effect: WormEffect(
+                          activeDotColor: AppColors.textGreen,
+                          dotColor: Colors.grey,
+                          dotHeight: 10.h,
+                          dotWidth: 8.w,
+                          spacing: 8),
+                    ),
+                  ),
+                ),
                 TextButton(
                     onPressed: () {
                       if (widget.isLast == true) {
@@ -81,21 +100,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         decorationColor: Colors.grey, // لون الخط
                       ),
                     )),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: SmoothPageIndicator(
-                      controller: widget.boardController,
-                      count: modelBoarding.length,
-                      effect: WormEffect(
-                          activeDotColor: AppColors.textGreen,
-                          dotColor: Colors.grey,
-                          dotHeight: 10.h,
-                          dotWidth: 8.w,
-                          spacing: 8),
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(

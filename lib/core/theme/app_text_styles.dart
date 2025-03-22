@@ -8,6 +8,13 @@ class AppTextStyles {
   const AppTextStyles._();
   // heading
 
+  static TextStyle font28Medium = TextStyle(
+    fontSize: 28.sp,
+    fontFamily: AppFonts.alexandria,
+    fontWeight: FontWeightHelper.medium,
+    color: AppColors.primaryColor,
+  );
+
   static TextStyle font25Bold = TextStyle(
     fontSize: 25.sp,
     fontFamily: AppFonts.alexandria,
@@ -20,6 +27,13 @@ class AppTextStyles {
     fontFamily: AppFonts.alexandria,
     fontWeight: FontWeightHelper.medium,
     color: AppColors.white,
+  );
+
+  static TextStyle font16Regular = TextStyle(
+    fontSize: 16.sp,
+    fontFamily: AppFonts.alexandria,
+    fontWeight: FontWeightHelper.regular,
+    color: AppColors.black,
   );
 
   static TextStyle font14Regular = TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 
 class CustomFormField extends StatelessWidget {
@@ -33,7 +34,7 @@ class CustomFormField extends StatelessWidget {
       onChanged: onChanged,
       readOnly: readOnly!,
       initialValue: initialValue,
-      style: Theme.of(context).textTheme.titleMedium,
+      style: AppTextStyles.font14Regular,
       obscureText: isEyeTrue,
       keyboardType: textInputType,
       controller: controller,
@@ -66,7 +67,10 @@ class CustomFormField extends StatelessWidget {
 }
 
 InputBorder? outlineInputBorder(BuildContext context) {
-  return Theme.of(context).inputDecorationTheme.enabledBorder;
+  return OutlineInputBorder(
+    borderSide: BorderSide(color: AppColors.grey400),
+    borderRadius: BorderRadius.circular(5.0),
+  );
 }
 
 OutlineInputBorder outlineInputBorderError() {

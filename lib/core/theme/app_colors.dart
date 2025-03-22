@@ -12,7 +12,7 @@ class AppColors {
 
   static const white = Color(0xffffffff);
 
-  static const black = Color(0x00000000);
+  static const black = Color(0xff000000);
 
   // background
   static const backgroundWelcome = [Color(0xff007AFF), Color(0xff8AC2FF)];

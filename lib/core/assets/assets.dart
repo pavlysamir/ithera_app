@@ -4,4 +4,8 @@ class AssetsData {
   static const onBording_2 = 'assets/images/onBoarding_2.png';
   static const onBording_3 = 'assets/images/onBoarding_3.png';
   static const logoWhite = 'assets/images/logo_white.svg';
+  static const logoBlue = 'assets/images/logo_blue.svg';
+
+  //icons
+  static const iconDownMenu = 'assets/icons/Vector.png';
 }
