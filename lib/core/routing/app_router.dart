@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ithera_app/core/routing/routes.dart';
-import 'package:ithera_app/features/on_boarding/home/home.dart';
+import 'package:ithera_app/features/auth/patient_auth/presentation/screens/welcome_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 
 class AppRouter {
@@ -18,9 +18,9 @@ class AppRouter {
           builder: (_) => OnBoardingScreen(),
           settings: settings,
         );
-      case Routes.onBoardingScreen:
+      case Routes.welcomeScreen:
         return MaterialPageRoute(
-          builder: (_) => Home(),
+          builder: (_) => WelcomeScreen(),
           settings: settings,
         );
       default:

@@ -138,7 +138,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             key: CacheConstants.onBoardingViewed,
             value: CacheConstants.onBoardingViewed)
         .then((value) {
-      NavigationService().navigateAndRemoveUntil(Routes.onBoardingScreen);
+      NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
     });
   }
 }

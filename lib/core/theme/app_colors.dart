@@ -14,6 +14,11 @@ class AppColors {
 
   static const black = Color(0x00000000);
 
+  // background
+  static const backgroundWelcome = [Color(0xff007AFF), Color(0xff8AC2FF)];
+
+  static const blueLight = Color(0xff6BB2FF);
+
   // grey scale
   static const grey900 = Color(0xff0d0d12);
   static const grey800 = Color(0xff1a1b25);
@@ -51,13 +56,6 @@ class AppColors {
   static const success50 = Color(0xff9ee1d4);
   static const success25 = Color(0xffddf3ef);
   static const success0 = Color(0xffeffefa);
-
-  //sky
-  static const sky300 = Color(0xff0c4e6e);
-  static const sky200 = Color(0xff116b97);
-  static const sky100 = Color(0xff33cfff);
-  static const sky25 = Color(0xffd1f0fa);
-  static const sky0 = Color(0xfff0fbff);
 
   // shadow
   static const shadow1Color = Color(0xff1A13A1);
