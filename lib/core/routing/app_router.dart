@@ -3,6 +3,7 @@ import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/signup_screen.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/welcome_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
+import 'package:ithera_app/features/splash/presentation/screens/splash_screen.dart';
 
 class AppRouter {
   static String initialRoute =
@@ -15,6 +16,11 @@ class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
+        return MaterialPageRoute(
+          builder: (_) => SplashViewBody(),
+          settings: settings,
+        );
+      case Routes.onBoardingScreen:
         return MaterialPageRoute(
           builder: (_) => OnBoardingScreen(),
           settings: settings,
