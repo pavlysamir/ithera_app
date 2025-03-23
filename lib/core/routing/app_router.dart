@@ -17,7 +17,7 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => SplashViewBody(),
+          builder: (_) => SignUpScreen(),
           settings: settings,
         );
       case Routes.onBoardingScreen:

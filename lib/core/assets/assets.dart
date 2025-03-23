@@ -7,5 +7,6 @@ class AssetsData {
   static const logoBlue = 'assets/images/logo_blue.svg';
 
   //icons
-  static const iconDownMenu = 'assets/icons/Vector.png';
+  static const male = 'assets/icons/male.svg';
+  static const female = 'assets/icons/female.svg';
 }

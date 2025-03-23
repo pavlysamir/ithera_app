@@ -31,6 +31,8 @@ class ItheraApp extends StatelessWidget {
         ],
         title: 'iThera',
         theme: ThemeData(
+          useMaterial3: true,
+          scaffoldBackgroundColor: Colors.white,
           primarySwatch: Colors.blue,
         ),
       ),

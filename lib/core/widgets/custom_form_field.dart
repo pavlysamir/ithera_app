@@ -34,7 +34,9 @@ class CustomFormField extends StatelessWidget {
       onChanged: onChanged,
       readOnly: readOnly!,
       initialValue: initialValue,
-      style: AppTextStyles.font14Regular,
+      style: AppTextStyles.font14Regular.copyWith(
+        color: AppColors.grey800,
+      ),
       obscureText: isEyeTrue,
       keyboardType: textInputType,
       controller: controller,
