@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
+import 'package:ithera_app/features/auth/patient_auth/presentation/screens/add_password_screen.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/signup_screen.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/welcome_screen.dart';
@@ -47,6 +48,14 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (context) => getIt<PatientAuthCubit>(),
             child: VerifyPhoneOtpRegisterScreen(),
+          ),
+          settings: settings,
+        );
+      case Routes.addPassasswordScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<PatientAuthCubit>(),
+            child: AddPasswordScreen(),
           ),
           settings: settings,
         );

@@ -15,7 +15,6 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_smooth_indicaror.dart';
@@ -103,7 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   CustomFormField(
                       controller: nameController,
-                      validationMassage: conditionOfValidationName,
+                      validate: conditionOfValidationName,
                       hintText: 'الأسم ثنائي',
                       textInputType: TextInputType.text),
                   SizedBox(
@@ -118,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   CustomFormField(
                       controller: phoneController,
-                      validationMassage: conditionOfValidationPhone,
+                      validate: conditionOfValidationPhone,
                       hintText: '01000000000',
                       textInputType: TextInputType.phone),
                   SizedBox(
@@ -133,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   CustomFormField(
                       controller: emailController,
-                      validationMassage: conditionOfValidationPhone,
+                      validate: conditionOfValidationPhone,
                       hintText: 'name@gmail.com',
                       textInputType: TextInputType.emailAddress),
                   SizedBox(
