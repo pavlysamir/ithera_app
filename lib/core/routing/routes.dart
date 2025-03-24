@@ -3,4 +3,5 @@ class Routes {
   static const String onBoardingScreen = '/onBoardingScreen';
   static const String welcomeScreen = '/welcomeScreen';
   static const String signUpScreen = '/signUpScreen';
+  static const String verifyOtpScreen = '/verifyOtpScreen';
 }
