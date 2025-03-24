@@ -3,5 +3,5 @@ import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_aut
 
 final getIt = GetIt.instance;
 void setUpServiceLocator() {
-  getIt.registerSingleton<PatientAuthCubit>(PatientAuthCubit());
+  getIt.registerFactory<PatientAuthCubit>((() => PatientAuthCubit()));
 }

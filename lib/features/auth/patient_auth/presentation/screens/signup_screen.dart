@@ -366,7 +366,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: CustomTextRich(
                         firstText: 'بالفعل لديك حساب ؟ ',
                         secondText: 'تسجيل الدخول',
-                        onSecondTextTap: () {}),
+                        onSecondTextTap: () {
+                          NavigationService().navigateTo(Routes.signInScreen);
+                        }),
                   ),
                   SizedBox(
                     height: 20.h,

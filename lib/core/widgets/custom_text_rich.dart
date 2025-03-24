@@ -9,11 +9,13 @@ class CustomTextRich extends StatelessWidget {
     required this.firstText,
     required this.secondText,
     required this.onSecondTextTap,
+    this.onSecondText = AppColors.textGreen,
   });
 
   final String firstText;
   final String secondText;
   final VoidCallback onSecondTextTap;
+  final Color onSecondText;
   @override
   Widget build(BuildContext context) {
     return Text.rich(
@@ -26,7 +28,7 @@ class CustomTextRich extends StatelessWidget {
             text: secondText,
             style: AppTextStyles.font14Regular.copyWith(
               decoration: TextDecoration.underline,
-              color: AppColors.textGreen,
+              color: onSecondText,
             ),
             recognizer: TapGestureRecognizer()..onTap = onSecondTextTap,
           ),

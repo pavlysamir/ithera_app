@@ -172,24 +172,19 @@ class _VerifyPhoneOtpRegisterScreenState
                     //       )
                     //     :
 
-                    verifyOtPhoneController.text.isEmpty
-                        ? CustomButtonLargeDimmed(
-                            text: 'التالي',
-                          )
-                        : CustomButtonLarge(
-                            text: 'تأكيد',
-                            textColor: Colors.white,
-                            function: () async {
-                              if (formVerifyOtpPhoneKey.currentState!
-                                  .validate()) {
-                                //RegisterCubit.get(context)!.verifyOtpMobileNum();
+                    CustomButtonLarge(
+                      text: 'تأكيد',
+                      textColor: Colors.white,
+                      function: () async {
+                        if (formVerifyOtpPhoneKey.currentState!.validate()) {
+                          //RegisterCubit.get(context)!.verifyOtpMobileNum();
 
-                                NavigationService()
-                                    .navigateTo(Routes.addPassasswordScreen);
-                              }
-                            },
-                            color: AppColors.primaryColor,
-                          ),
+                          NavigationService()
+                              .navigateTo(Routes.addPassasswordScreen);
+                        }
+                      },
+                      color: AppColors.primaryColor,
+                    ),
                   ],
                 ),
               ),
