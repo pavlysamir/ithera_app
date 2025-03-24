@@ -353,8 +353,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           text: 'التالي',
                           textColor: Colors.white,
                           function: () {
-                            NavigationService()
-                                .navigateTo(Routes.verifyOtpScreen);
+                            NavigationService().navigateToReplacement(
+                                Routes.verifyOtpScreen,
+                                arguments: false);
                           },
                           color: AppColors.primaryColor,
                         ),

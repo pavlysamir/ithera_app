@@ -10,31 +10,25 @@ import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
-import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
 
-class SigninScreen extends StatefulWidget {
-  const SigninScreen({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
-  State<SigninScreen> createState() => _SigninScreenState();
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   TextEditingController phoneController = TextEditingController();
 
-  TextEditingController passwordController = TextEditingController();
-
-  var formSignInScreenKey = GlobalKey<FormState>();
+  var formForgetPasswordScreenKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    // TODO: implement dispose
     phoneController.dispose();
-    passwordController.dispose();
-
     super.dispose();
   }
 
@@ -45,7 +39,7 @@ class _SigninScreenState extends State<SigninScreen> {
         builder: (context, state) {
           return SingleChildScrollView(
               child: Form(
-            key: formSignInScreenKey,
+            key: formForgetPasswordScreenKey,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
@@ -68,7 +62,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'تسجيل الدخول',
+                      'إعادة تعيين كلمة المرور',
                       style: AppTextStyles.font28Medium,
                     ),
                   ),
@@ -88,67 +82,24 @@ class _SigninScreenState extends State<SigninScreen> {
                       hintText: '01000000000',
                       textInputType: TextInputType.number),
                   SizedBox(
-                    height: 32.h,
+                    height: MediaQuery.of(context).size.height * 0.45,
                   ),
-                  CustomNormalRichText(
-                    ischoosen: false,
-                    firstText: 'كلمة المرور',
-                  ),
-                  SizedBox(
-                    height: 18.h,
-                  ),
-                  CustomFormField(
-                      showEyeIcon: true,
-                      controller: passwordController,
-                      validate: conditionOfValidationPassWord,
-                      hintText: '************',
-                      textInputType: TextInputType.text),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                  ),
-                  passwordController.text.isEmpty ||
-                          phoneController.text.isEmpty
+                  phoneController.text.isEmpty
                       ? CustomButtonLargeDimmed(
-                          text: 'تسجيل الدخول',
+                          text: 'ارسال',
                         )
                       : CustomButtonLarge(
-                          text: 'تسجيل الدخول',
+                          text: 'ارسال',
                           textColor: Colors.white,
                           function: () {
-                            // NavigationService()
-                            //     .navigateTo(Routes.verifyOtpScreen);
+                            NavigationService().navigateTo(
+                                Routes.verifyOtpScreen,
+                                arguments: true);
                           },
                           color: AppColors.primaryColor,
                         ),
                   SizedBox(
                     height: 50.h,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomTextRich(
-                        onSecondText: AppColors.primaryColor,
-                        firstText: '',
-                        secondText: 'هل نسيت كلمة المرور؟',
-                        onSecondTextTap: () {
-                          NavigationService()
-                              .navigateTo(Routes.forgtPasswordScreen);
-                        }),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomTextRich(
-                        firstText: 'ليس لديك حساب  ؟ ',
-                        secondText: 'انشاء حساب',
-                        onSecondTextTap: () {
-                          NavigationService()
-                              .navigateToReplacement(Routes.signUpScreen);
-                        }),
-                  ),
-                  SizedBox(
-                    height: 20.h,
                   ),
                 ],
               ),

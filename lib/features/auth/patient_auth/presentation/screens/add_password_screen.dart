@@ -14,8 +14,8 @@ import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
 
 class AddPasswordScreen extends StatefulWidget {
-  const AddPasswordScreen({super.key});
-
+  const AddPasswordScreen({super.key, this.isFromForgetPassword = false});
+  final bool isFromForgetPassword;
   @override
   State<AddPasswordScreen> createState() => _AddPasswordScreenState();
 }
@@ -63,7 +63,9 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'تأكيد رقم الموبيل',
+                          widget.isFromForgetPassword
+                              ? 'إعادة تعيين كلمة المرور'
+                              : 'انشاء حساب',
                           style: AppTextStyles.font28Medium,
                         ),
                       ),
@@ -127,16 +129,18 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       SizedBox(
                         height: 50.h,
                       ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: CustomTextRich(
-                            firstText: 'بالفعل لديك حساب ؟ ',
-                            secondText: 'تسجيل الدخول',
-                            onSecondTextTap: () {
-                              NavigationService()
-                                  .navigateTo(Routes.signInScreen);
-                            }),
-                      ),
+                      widget.isFromForgetPassword
+                          ? SizedBox()
+                          : Align(
+                              alignment: Alignment.center,
+                              child: CustomTextRich(
+                                  firstText: 'بالفعل لديك حساب ؟ ',
+                                  secondText: 'تسجيل الدخول',
+                                  onSecondTextTap: () {
+                                    NavigationService()
+                                        .navigateTo(Routes.signInScreen);
+                                  }),
+                            ),
                       SizedBox(
                         height: 20.h,
                       ),

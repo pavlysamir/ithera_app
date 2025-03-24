@@ -8,15 +8,15 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
-import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/count_down_timer.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_smooth_indicaror.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneOtpRegisterScreen extends StatefulWidget {
-  const VerifyPhoneOtpRegisterScreen({super.key});
-
+  const VerifyPhoneOtpRegisterScreen(
+      {super.key, this.isFromForgetPassword = false});
+  final bool isFromForgetPassword;
   @override
   State<VerifyPhoneOtpRegisterScreen> createState() =>
       _VerifyPhoneOtpRegisterScreenState();
@@ -29,7 +29,6 @@ class _VerifyPhoneOtpRegisterScreenState
 
   @override
   void dispose() {
-    // TODO: implement dispose
     verifyOtPhoneController.dispose();
     super.dispose();
   }
@@ -179,8 +178,9 @@ class _VerifyPhoneOtpRegisterScreenState
                         if (formVerifyOtpPhoneKey.currentState!.validate()) {
                           //RegisterCubit.get(context)!.verifyOtpMobileNum();
 
-                          NavigationService()
-                              .navigateTo(Routes.addPassasswordScreen);
+                          NavigationService().navigateTo(
+                              Routes.addPassasswordScreen,
+                              arguments: widget.isFromForgetPassword);
                         }
                       },
                       color: AppColors.primaryColor,

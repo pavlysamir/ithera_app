@@ -6,4 +6,7 @@ class Routes {
   static const String verifyOtpScreen = '/verifyOtpScreen';
   static const String addPassasswordScreen = '/addPassasswordScreen';
   static const String signInScreen = '/signInScreen';
+  static const String forgtPasswordScreen = '/forgtPasswordScreen';
+  static const String verifyForgetOtpScreen = '/verifyForgetOtpScreen';
+  static const String addNewPassasswordScreen = '/addNewPassasswordScreen';
 }
