@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ithera_app/core/Layouts/patient_home_layout.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
@@ -79,6 +80,11 @@ class AppRouter {
             create: (context) => getIt<PatientAuthCubit>(),
             child: ForgetPasswordScreen(),
           ),
+          settings: settings,
+        );
+      case Routes.patientHomeLayout:
+        return MaterialPageRoute(
+          builder: (_) => PatientHomeLayout(),
           settings: settings,
         );
       default:

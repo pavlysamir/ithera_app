@@ -115,8 +115,8 @@ class _SigninScreenState extends State<SigninScreen> {
                           text: 'تسجيل الدخول',
                           textColor: Colors.white,
                           function: () {
-                            // NavigationService()
-                            //     .navigateTo(Routes.verifyOtpScreen);
+                            NavigationService()
+                                .navigateTo(Routes.patientHomeLayout);
                           },
                           color: AppColors.primaryColor,
                         ),

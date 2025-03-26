@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/routing/app_router.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ithera_app/core/theme/theme_data/theme_data_light.dart';
 
 class ItheraApp extends StatelessWidget {
   final NavigationService _navigationService = NavigationService();
@@ -30,11 +31,7 @@ class ItheraApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         title: 'iThera',
-        theme: ThemeData(
-          useMaterial3: true,
-          scaffoldBackgroundColor: Colors.white,
-          primarySwatch: Colors.blue,
-        ),
+        theme: getLightTheme(),
       ),
     );
   }
