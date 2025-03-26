@@ -16,6 +16,7 @@ class AppColors {
 
   // background
   static const backgroundWelcome = [Color(0xff007AFF), Color(0xff8AC2FF)];
+  static const backgroundHomeAppBar = [Color(0xff007AFF), Color(0xffB1D7FF)];
 
   static const blueLight = Color(0xff6BB2FF);
 

@@ -32,6 +32,7 @@ class _SigninScreenState extends State<SigninScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
+
     phoneController.dispose();
     passwordController.dispose();
 
@@ -106,20 +107,29 @@ class _SigninScreenState extends State<SigninScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                   ),
-                  passwordController.text.isEmpty ||
-                          phoneController.text.isEmpty
-                      ? CustomButtonLargeDimmed(
-                          text: 'تسجيل الدخول',
-                        )
-                      : CustomButtonLarge(
-                          text: 'تسجيل الدخول',
-                          textColor: Colors.white,
-                          function: () {
-                            NavigationService()
-                                .navigateTo(Routes.patientHomeLayout);
-                          },
-                          color: AppColors.primaryColor,
-                        ),
+                  ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: phoneController,
+                    builder: (context, phoneValue, _) {
+                      return ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: passwordController,
+                        builder: (context, passwordValue, _) {
+                          bool isEnabled = phoneValue.text.isNotEmpty &&
+                              passwordValue.text.isNotEmpty;
+                          return isEnabled
+                              ? CustomButtonLarge(
+                                  text: 'تسجيل الدخول',
+                                  textColor: Colors.white,
+                                  function: () {
+                                    NavigationService()
+                                        .navigateTo(Routes.patientHomeLayout);
+                                  },
+                                  color: AppColors.primaryColor,
+                                )
+                              : CustomButtonLargeDimmed(text: 'تسجيل الدخول');
+                        },
+                      );
+                    },
+                  ),
                   SizedBox(
                     height: 50.h,
                   ),
