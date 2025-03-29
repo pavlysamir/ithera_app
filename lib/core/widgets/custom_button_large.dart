@@ -4,18 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 
 class CustomButtonLarge extends StatelessWidget {
-  CustomButtonLarge(
-      {super.key,
-      required this.text,
-      required this.color,
-      this.textColor,
-      required this.function,
-      this.icon});
+  const CustomButtonLarge({
+    super.key,
+    required this.text,
+    required this.color,
+    this.textColor = Colors.white,
+    required this.function,
+    this.icon,
+  });
   final String text;
   final Color color;
-  Color? textColor;
+  final Color textColor;
   final Function() function;
   final Icon? icon;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -35,7 +37,7 @@ class CustomButtonLarge extends StatelessWidget {
             children: [
               TextSpan(
                   text: text,
-                  style: AppTextStyles.font20Regular.copyWith(color: textColor)
+                  style: AppTextStyles.font14Regular.copyWith(color: textColor)
                   // const TextStyle(
                   //   fontFamily: ,
                   //   overflow: TextOverflow.ellipsis)
