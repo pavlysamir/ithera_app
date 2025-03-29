@@ -15,4 +15,6 @@ class Routes {
   //patients home screens
   static const String patientHomeLayout = '/patientHomeLayout';
   static const String filterScreen = '/filterScreen';
+
+  //patients settings screens
 }

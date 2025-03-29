@@ -93,6 +93,7 @@ class AppRouter {
           builder: (_) => FilterScreen(),
           settings: settings,
         );
+
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

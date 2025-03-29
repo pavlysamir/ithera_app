@@ -5,6 +5,7 @@ import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:animate_do/animate_do.dart';
 
 class HomeAppbar extends StatelessWidget {
   const HomeAppbar({
@@ -24,12 +25,17 @@ class HomeAppbar extends StatelessWidget {
       floating: false,
       pinned: true,
       actions: [
-        IconButton(
-          icon: CustomSvgimage(
-            hight: 30.h,
-            path: 'assets/icons/notification_icon.svg',
+        SlideInDown(
+          animate: true,
+          duration: const Duration(milliseconds: 300),
+          from: 8,
+          child: IconButton(
+            icon: CustomSvgimage(
+              hight: 30.h,
+              path: 'assets/icons/notification_icon.svg',
+            ),
+            onPressed: () {},
           ),
-          onPressed: () {},
         ),
         SizedBox(
           width: 10.w,
@@ -68,68 +74,73 @@ class HomeAppbar extends StatelessWidget {
                       ),
                     ),
                   ) // Empty when collapsed
-                : FlexibleSpaceBar(
-                    centerTitle: true,
-                    expandedTitleScale: 1,
-                    title: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: SizedBox(
-                        height: 60.h,
-                        child: TextFormField(
-                          onTapOutside: (event) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          },
-                          controller: controller,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 10.h,
-                            ),
-                            hintText: 'ابحث عن دكتورك',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            prefixIcon: Row(
-                              children: [
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                CustomSvgimage(
-                                  path: 'assets/icons/search_icon.svg',
-                                  hight: 25,
-                                ),
-                              ],
-                            ),
-                            prefixIconConstraints: BoxConstraints(
-                              maxHeight: 25.h,
-                              maxWidth: 50.w,
-                            ),
-                            suffixIcon: Row(
-                              children: [
-                                IconButton(
-                                  icon: CustomSvgimage(
-                                    hight: 40.h,
-                                    path: 'assets/icons/filter_icon.svg',
+                : SlideInDown(
+                    animate: true,
+                    duration: const Duration(milliseconds: 300),
+                    from: 8,
+                    child: FlexibleSpaceBar(
+                      centerTitle: true,
+                      expandedTitleScale: 1,
+                      title: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                          height: 60.h,
+                          child: TextFormField(
+                            onTapOutside: (event) {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                            },
+                            controller: controller,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10.w,
+                                vertical: 10.h,
+                              ),
+                              hintText: 'ابحث عن دكتورك',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              prefixIcon: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 10.w,
                                   ),
-                                  onPressed: () {
-                                    //controller.clear();
-                                    NavigationService()
-                                        .navigateTo(Routes.filterScreen);
-                                  },
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                              ],
+                                  CustomSvgimage(
+                                    path: 'assets/icons/search_icon.svg',
+                                    hight: 25,
+                                  ),
+                                ],
+                              ),
+                              prefixIconConstraints: BoxConstraints(
+                                maxHeight: 25.h,
+                                maxWidth: 50.w,
+                              ),
+                              suffixIcon: Row(
+                                children: [
+                                  IconButton(
+                                    icon: CustomSvgimage(
+                                      hight: 40.h,
+                                      path: 'assets/icons/filter_icon.svg',
+                                    ),
+                                    onPressed: () {
+                                      //controller.clear();
+                                      NavigationService()
+                                          .navigateTo(Routes.filterScreen);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                ],
+                              ),
+                              suffixIconConstraints: BoxConstraints(
+                                maxHeight: 50.h,
+                                maxWidth: 60.w,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide.none,
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
                             ),
-                            suffixIconConstraints: BoxConstraints(
-                              maxHeight: 50.h,
-                              maxWidth: 60.w,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
                           ),
                         ),
                       ),
@@ -138,19 +149,25 @@ class HomeAppbar extends StatelessWidget {
           },
         ),
       ),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'أهلا بك',
-            style: AppTextStyles.font14Regular.copyWith(color: AppColors.white),
-          ),
-          Text(
-            userName,
-            style: AppTextStyles.font20Regular
-                .copyWith(color: AppColors.primaryColor),
-          ),
-        ],
+      title: SlideInDown(
+        animate: true,
+        duration: const Duration(milliseconds: 300),
+        from: 8,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'أهلا بك',
+              style:
+                  AppTextStyles.font14Regular.copyWith(color: AppColors.white),
+            ),
+            Text(
+              userName,
+              style: AppTextStyles.font20Regular
+                  .copyWith(color: AppColors.primaryColor),
+            ),
+          ],
+        ),
       ),
       collapsedHeight: 70,
     );
