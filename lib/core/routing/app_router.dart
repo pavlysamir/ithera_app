@@ -10,6 +10,7 @@ import 'package:ithera_app/features/auth/patient_auth/presentation/screens/signi
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/signup_screen.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/welcome_screen.dart';
+import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 import 'package:ithera_app/features/splash/presentation/screens/splash_screen.dart';
 
@@ -85,6 +86,11 @@ class AppRouter {
       case Routes.patientHomeLayout:
         return MaterialPageRoute(
           builder: (_) => PatientHomeLayout(),
+          settings: settings,
+        );
+      case Routes.filterScreen:
+        return MaterialPageRoute(
+          builder: (_) => FilterScreen(),
           settings: settings,
         );
       default:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
@@ -18,9 +19,10 @@ class CustomDropDownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // height: 50.h,
+      height: 55.h,
       width: double.infinity,
       child: DropdownButtonFormField(
+          padding: EdgeInsets.zero,
           icon: RotatedBox(
               quarterTurns: 1,
               child: Icon(
@@ -37,14 +39,17 @@ class CustomDropDownMenu extends StatelessWidget {
             errorBorder: outlineInputBorderError(),
           ),
           hint: Text(
-            initialValue ?? 'Select',
+            initialValue ?? 'اختار من القائمة',
             style:
-                AppTextStyles.font16Regular.copyWith(color: AppColors.grey400),
+                AppTextStyles.font10Regular.copyWith(color: AppColors.grey400),
           ),
           items: items
               .map((e) => DropdownMenuItem(value: e, child: Text(e)))
               .toList(),
           value: initialValue,
+          style: AppTextStyles.font10Regular.copyWith(
+            color: AppColors.black,
+          ),
           onChanged: (value) {
             if (value != null) {
               onChange(value);

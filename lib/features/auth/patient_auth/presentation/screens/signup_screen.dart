@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/helpers/validation_handling.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
+import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_drop_down_menu.dart';
+import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_smooth_indicaror.dart';
 
@@ -202,141 +201,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomNormalRichText(
-                              ischoosen: false,
-                              firstText: 'النوع',
-                            ),
-                            SizedBox(
-                              height: 18.h,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  if (isMale == null) {
-                                    isMale = true;
-                                  } else {
-                                    isMale = null;
-                                  }
-                                  print(isMale);
-                                });
-                              },
-                              child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: isMale == null
-                                          ? AppColors.white
-                                          : isMale == true
-                                              ? AppColors.primaryColor
-                                              : AppColors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                      boxShadow: [
-                                        AppShadows.shadow1,
-                                      ]),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'ذكر',
-                                          style: AppTextStyles.font20Regular
-                                              .copyWith(
-                                                  color: isMale == null
-                                                      ? AppColors.primaryColor
-                                                      : isMale == true
-                                                          ? AppColors.white
-                                                          : AppColors
-                                                              .primaryColor),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        SvgPicture.asset(
-                                          AssetsData.male,
-                                          height: 36,
-                                          color: isMale == null
-                                              ? AppColors.primaryColor
-                                              : isMale == true
-                                                  ? AppColors.white
-                                                  : AppColors.primaryColor,
-                                        ),
-                                      ])),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(''),
-                            SizedBox(
-                              height: 18.h,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  if (isMale == null) {
-                                    isMale = false;
-                                  } else {
-                                    isMale = null;
-                                  }
-                                  print(isMale);
-                                });
-                              },
-                              child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: isMale == null
-                                          ? AppColors.white
-                                          : isMale == false
-                                              ? AppColors.primaryColor
-                                              : AppColors.white,
-                                      borderRadius: BorderRadius.circular(5),
-                                      boxShadow: [
-                                        AppShadows.shadow1,
-                                      ]),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'أنثى',
-                                          style: AppTextStyles.font20Regular
-                                              .copyWith(
-                                                  color: isMale == null
-                                                      ? AppColors.primaryColor
-                                                      : isMale == false
-                                                          ? AppColors.white
-                                                          : AppColors
-                                                              .primaryColor),
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        ),
-                                        SvgPicture.asset(
-                                          AssetsData.female,
-                                          height: 36,
-                                          color: isMale == null
-                                              ? AppColors.primaryColor
-                                              : isMale == false
-                                                  ? AppColors.white
-                                                  : AppColors.primaryColor,
-                                        ),
-                                      ])),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  CustomToggleisMale(
+                    isMale: isMale,
+                    onMaleTap: () {
+                      setState(() {
+                        if (isMale == null) {
+                          isMale = true;
+                        } else {
+                          isMale = null;
+                        }
+
+                        print(isMale);
+                      });
+                    },
+                    onFemaleTap: () {
+                      setState(() {
+                        if (isMale == null) {
+                          isMale = false;
+                        } else {
+                          isMale = null;
+                        }
+                        print(isMale);
+                      });
+                    },
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,

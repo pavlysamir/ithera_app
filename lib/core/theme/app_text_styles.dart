@@ -43,6 +43,18 @@ class AppTextStyles {
     color: AppColors.textGrey,
   );
 
+  static TextStyle font12Regular = TextStyle(
+    fontSize: 12.sp,
+    fontFamily: AppFonts.alexandria,
+    fontWeight: FontWeightHelper.regular,
+    color: AppColors.textGrey,
+  );
+  static TextStyle font10Regular = TextStyle(
+    fontSize: 10.sp,
+    fontFamily: AppFonts.alexandria,
+    fontWeight: FontWeightHelper.regular,
+    color: AppColors.textGrey,
+  );
   static TextStyle font20Regular = TextStyle(
     fontSize: 20.sp,
     fontFamily: AppFonts.alexandria,

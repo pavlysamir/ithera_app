@@ -13,7 +13,7 @@ ThemeData getLightTheme() {
       ),
     ),
     useMaterial3: true,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: AppColors.appBackgroundColor,
     primarySwatch: Colors.blue,
     brightness: Brightness.light,
     fontFamily: AppFonts.alexandria,
