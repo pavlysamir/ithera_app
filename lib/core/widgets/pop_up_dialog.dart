@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
+import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_small.dart';
+import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 
 class PopUpDialog extends StatelessWidget {
   const PopUpDialog(
@@ -38,13 +40,15 @@ class PopUpDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Image.asset(img),
+          CustomSvgimage(
+            path: img,
+          ),
           SizedBox(
             height: 20.h,
           ),
           Text(
             title,
-            style: Theme.of(context).textTheme.displaySmall,
+            style: AppTextStyles.font16Regular,
             textAlign: TextAlign.center,
           ),
           SizedBox(
@@ -55,21 +59,21 @@ class PopUpDialog extends StatelessWidget {
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(bottom: 0),
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomButtonSmall(
                 borderColor: Colors.grey,
-                width: 100,
-                text: 'ssssss',
+                width: double.infinity,
+                text: 'لا',
                 color: colorButton1,
                 function: function,
                 textColortcolor: textColortcolor1,
               ),
               CustomButtonSmall(
-                borderColor: Colors.grey,
-                width: 100,
-                text: 'ssssssss',
+                borderColor: AppColors.primaryColor,
+                width: double.infinity,
+                text: 'نعم',
                 textColortcolor: textColortcolor2,
                 color: colorButton2,
                 function: function2,

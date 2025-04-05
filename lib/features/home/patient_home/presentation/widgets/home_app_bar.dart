@@ -112,27 +112,29 @@ class HomeAppbar extends StatelessWidget {
                                 maxHeight: 25.h,
                                 maxWidth: 50.w,
                               ),
-                              suffixIcon: Row(
-                                children: [
-                                  IconButton(
-                                    icon: CustomSvgimage(
-                                      hight: 40.h,
-                                      path: 'assets/icons/filter_icon.svg',
+                              suffixIcon: SizedBox(
+                                height: 50.h,
+                                width: 80.w, // Adjust the width as needed
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .end, // Align items to the end
+                                  children: [
+                                    IconButton(
+                                      icon: CustomSvgimage(
+                                        hight: 40.h,
+                                        path: 'assets/icons/filter_icon.svg',
+                                      ),
+                                      onPressed: () {
+                                        //controller.clear();
+                                        NavigationService()
+                                            .navigateTo(Routes.filterScreen);
+                                      },
                                     ),
-                                    onPressed: () {
-                                      //controller.clear();
-                                      NavigationService()
-                                          .navigateTo(Routes.filterScreen);
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                ],
-                              ),
-                              suffixIconConstraints: BoxConstraints(
-                                maxHeight: 50.h,
-                                maxWidth: 60.w,
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                  ],
+                                ),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),

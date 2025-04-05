@@ -23,6 +23,7 @@ class AppColors {
   static const backgroundHomeAppBar = [Color(0xff007AFF), Color(0xffB1D7FF)];
 
   static const blueLight = Color(0xff6BB2FF);
+  static const blueMoreLight = Color(0xffE6F2FF);
 
   // grey scale
   static const grey900 = Color(0xff0d0d12);

@@ -28,7 +28,7 @@ class CustomButtonSmall extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: borderColor),
             color: color,
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Center(
             child: Text(

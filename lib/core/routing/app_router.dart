@@ -12,6 +12,9 @@ import 'package:ithera_app/features/auth/patient_auth/presentation/screens/verif
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/welcome_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
+import 'package:ithera_app/features/settings/patients_settings/presentation/screens/contant_us_screen.dart';
+import 'package:ithera_app/features/settings/patients_settings/presentation/screens/patient_edit_profile.dart';
+import 'package:ithera_app/features/settings/patients_settings/presentation/screens/prices_screen.dart';
 import 'package:ithera_app/features/splash/presentation/screens/splash_screen.dart';
 
 class AppRouter {
@@ -91,6 +94,21 @@ class AppRouter {
       case Routes.filterScreen:
         return MaterialPageRoute(
           builder: (_) => FilterScreen(),
+          settings: settings,
+        );
+      case Routes.patientEditProfileScreen:
+        return MaterialPageRoute(
+          builder: (_) => PatientEditProfile(),
+          settings: settings,
+        );
+      case Routes.patientContentUsScreen:
+        return MaterialPageRoute(
+          builder: (_) => ContantUsScreen(),
+          settings: settings,
+        );
+      case Routes.patientPricesScreen:
+        return MaterialPageRoute(
+          builder: (_) => PricesScreen(),
           settings: settings,
         );
 
