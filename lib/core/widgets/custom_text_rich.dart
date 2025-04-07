@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
@@ -16,24 +15,27 @@ class CustomTextRich extends StatelessWidget {
   final String secondText;
   final VoidCallback onSecondTextTap;
   final Color onSecondText;
+
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-              text: firstText,
-              style: AppTextStyles.font14Regular.copyWith(color: Colors.black)),
-          TextSpan(
-            text: secondText,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          firstText,
+          style: AppTextStyles.font14Regular.copyWith(color: Colors.black),
+        ),
+        TextButton(
+          onPressed: onSecondTextTap,
+          child: Text(
+            secondText,
             style: AppTextStyles.font14Regular.copyWith(
               decoration: TextDecoration.underline,
               color: onSecondText,
             ),
-            recognizer: TapGestureRecognizer()..onTap = onSecondTextTap,
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }

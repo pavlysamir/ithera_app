@@ -58,12 +58,17 @@ class WelcomeScreen extends StatelessWidget {
               textColor: AppColors.white,
             ),
             Spacer(),
-            Text(
-              'الـأنضمام كدكتور',
-              style: AppTextStyles.font20Regular.copyWith(
-                color: AppColors.primaryColor,
-                decoration: TextDecoration.underline,
-                decorationColor: AppColors.primaryColor,
+            TextButton(
+              onPressed: () {
+                NavigationService().navigateTo(Routes.doctorSignUpScreen);
+              },
+              child: Text(
+                'الـأنضمام كدكتور',
+                style: AppTextStyles.font20Regular.copyWith(
+                  color: AppColors.primaryColor,
+                  decoration: TextDecoration.underline,
+                  decorationColor: AppColors.primaryColor,
+                ),
               ),
             )
           ],

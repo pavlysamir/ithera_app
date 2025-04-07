@@ -229,3 +229,53 @@ class PopUpDialogDropDown extends StatelessWidget {
     );
   }
 }
+
+class PopUpDialogScrolled extends StatelessWidget {
+  const PopUpDialogScrolled({
+    super.key,
+    required this.context,
+    required this.function,
+    required this.widget,
+    required this.function2,
+  });
+  final BuildContext context;
+  final Function() function;
+  final Widget widget;
+  final Function() function2;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Theme.of(context).cardColor,
+      alignment: Alignment.center,
+      actionsAlignment: MainAxisAlignment.center,
+      content: SizedBox(
+        width: double.maxFinite,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: function,
+                icon: const Icon(Icons.close),
+              ),
+            ),
+            SizedBox(height: 24.h),
+            Scrollbar(
+              thumbVisibility: true, // Makes the scrollbar always visible
+              trackVisibility: true, // Makes the scrollbar track visible
+              controller: ScrollController(),
+              scrollbarOrientation:
+                  ScrollbarOrientation.left, // Scrollbar on the left
+              child: SingleChildScrollView(
+                child: widget, // Pass the scrollable content here
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

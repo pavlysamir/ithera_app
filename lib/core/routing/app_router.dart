@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/Layouts/patient_home_layout.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/routing/routes.dart';
+import 'package:ithera_app/features/auth/doctor_auth/managers/cubit/doctor_auth_cubit.dart';
+import 'package:ithera_app/features/auth/doctor_auth/presentation/screens/doctor_signup_screen.dart';
 import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/add_password_screen.dart';
 import 'package:ithera_app/features/auth/patient_auth/presentation/screens/forget_password_screen.dart';
@@ -109,6 +111,14 @@ class AppRouter {
       case Routes.patientPricesScreen:
         return MaterialPageRoute(
           builder: (_) => PricesScreen(),
+          settings: settings,
+        );
+      case Routes.doctorSignUpScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<DoctorAuthCubit>(),
+            child: DoctorSignupScreen(),
+          ),
           settings: settings,
         );
 

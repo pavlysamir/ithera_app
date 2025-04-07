@@ -34,8 +34,8 @@ String? conditionOfValidationName(value) {
   List<String> nameParts = nonNullValue.split(' ');
 
   // التحقق من عدد المقاطع
-  if (nameParts.length < 3) {
-    return 'الاسم يجب أن يكون ثلاثي';
+  if (nameParts.length < 2) {
+    return 'الاسم يجب أن يكون مكونًا من مقطعين على الأقل';
   }
 
   return null;
