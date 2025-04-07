@@ -57,4 +57,40 @@ class DoctorAuthCubit extends Cubit<DoctorAuthState> {
     base64BackImage = null;
     emit(DoctorAuthInitial());
   }
+
+//   Future<void> pickAndSavePDF() async {
+//   // 1. Pick the PDF file
+//   final result = await FilePicker.platform.pickFiles(
+//     type: FileType.custom,
+//     allowedExtensions: ['pdf'],
+//   );
+
+//   if (result != null && result.files.single.path != null) {
+//     final pickedFile = File(result.files.single.path!);
+
+//     // 2. Check file size
+//     final fileSizeInBytes = await pickedFile.length();
+//     final fileSizeInMB = fileSizeInBytes / (1024 * 1024); // Convert to MB
+
+//     if (fileSizeInMB > 2) {
+//       print('❌ الملف أكبر من 2 ميجا (${fileSizeInMB.toStringAsFixed(2)} MB)');
+//       // هنا تقدر تعرض SnackBar أو Emit Error لو بتستخدم Bloc
+//       return;
+//     }
+
+//     // 3. Get app directory to save the file
+//     final appDir = await getApplicationDocumentsDirectory();
+
+//     // 4. Create new file path
+//     final fileName = path.basename(pickedFile.path);
+//     final newFilePath = path.join(appDir.path, fileName);
+
+//     // 5. Copy file to new location
+//     final savedFile = await pickedFile.copy(newFilePath);
+
+//     print('📄 PDF saved at: ${savedFile.path}');
+//   } else {
+//     print('❌ No file selected');
+//   }
+// }
 }

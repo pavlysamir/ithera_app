@@ -238,6 +238,7 @@ class PopUpDialogScrolled extends StatelessWidget {
     required this.widget,
     required this.function2,
   });
+
   final BuildContext context;
   final Function() function;
   final Widget widget;
@@ -245,6 +246,8 @@ class PopUpDialogScrolled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController(); // ✅ استخدم نفس الـ controller
+
     return AlertDialog(
       backgroundColor: Theme.of(context).cardColor,
       alignment: Alignment.center,
@@ -264,13 +267,15 @@ class PopUpDialogScrolled extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Scrollbar(
-              thumbVisibility: true, // Makes the scrollbar always visible
-              trackVisibility: true, // Makes the scrollbar track visible
-              controller: ScrollController(),
-              scrollbarOrientation:
-                  ScrollbarOrientation.left, // Scrollbar on the left
+              controller: scrollController, // ✅ نفس الكنترولر هنا
+              thumbVisibility: true,
+              trackVisibility: true,
+              radius: const Radius.circular(5),
+              thickness: 10,
+              scrollbarOrientation: ScrollbarOrientation.left,
               child: SingleChildScrollView(
-                child: widget, // Pass the scrollable content here
+                controller: scrollController, // ✅ ونفسه هنا كمان
+                child: widget,
               ),
             ),
           ],
@@ -278,4 +283,52 @@ class PopUpDialogScrolled extends StatelessWidget {
       ),
     );
   }
+}
+
+void showMultiSelectDialog(BuildContext context) {
+  final scrollController = ScrollController();
+  List<String> items = ['عظام', 'أطفال', 'كسور', 'عظام', 'جلدية', 'أمراض قلب'];
+  List<bool> checked = List.filled(items.length, false);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        contentPadding: const EdgeInsets.all(12),
+        content: SizedBox(
+          width: 300,
+          height: 200,
+          child: Scrollbar(
+            thumbVisibility: true,
+            controller: scrollController,
+            child: ListView.builder(
+              controller: scrollController,
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  value: checked[index],
+                  onChanged: (val) {
+                    checked[index] = val!;
+                    // force rebuild dialog
+                    Navigator.pop(context);
+                    showMultiSelectDialog(context);
+                  },
+                  title: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      items[index],
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  controlAffinity:
+                      ListTileControlAffinity.leading, // Checkbox on left
+                  contentPadding: EdgeInsets.zero,
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    },
+  );
 }

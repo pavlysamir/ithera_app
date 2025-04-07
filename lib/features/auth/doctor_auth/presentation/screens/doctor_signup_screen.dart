@@ -13,6 +13,7 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
 import 'package:ithera_app/features/auth/doctor_auth/managers/cubit/doctor_auth_cubit.dart';
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/doctor_auth/presentation/widgets/circular_profile_img.dart';
@@ -219,6 +220,10 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                         selectSpicification = newValue;
                       });
                     },
+                  ),
+                  ElevatedButton(
+                    onPressed: () => showMultiSelectDialog(context),
+                    child: Text('اختر التخصصات'),
                   ),
                   SizedBox(
                     height: 32.h,
