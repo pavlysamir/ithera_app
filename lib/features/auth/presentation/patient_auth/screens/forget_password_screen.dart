@@ -11,8 +11,8 @@ import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
-import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
+import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});

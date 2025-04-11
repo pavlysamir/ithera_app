@@ -12,7 +12,7 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
 class PatientEditProfile extends StatefulWidget {
   const PatientEditProfile({super.key});

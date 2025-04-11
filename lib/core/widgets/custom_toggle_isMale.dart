@@ -5,7 +5,7 @@ import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
 class CustomToggleisMale extends StatefulWidget {
   CustomToggleisMale({

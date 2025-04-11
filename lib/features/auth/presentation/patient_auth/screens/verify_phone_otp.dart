@@ -8,9 +8,9 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
-import 'package:ithera_app/features/auth/patient_auth/managers/cubit/patient_auth_cubit.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/count_down_timer.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_smooth_indicaror.dart';
+import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/count_down_timer.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneOtpRegisterScreen extends StatefulWidget {

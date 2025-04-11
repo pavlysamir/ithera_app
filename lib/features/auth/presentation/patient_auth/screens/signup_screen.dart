@@ -13,31 +13,28 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
-import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
-import 'package:ithera_app/features/auth/doctor_auth/managers/cubit/doctor_auth_cubit.dart';
+import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
-import 'package:ithera_app/features/auth/doctor_auth/presentation/widgets/circular_profile_img.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_normal_rich_text.dart';
-import 'package:ithera_app/features/auth/patient_auth/presentation/widgets/custom_smooth_indicaror.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
 
-class DoctorSignupScreen extends StatefulWidget {
-  const DoctorSignupScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<DoctorSignupScreen> createState() => _DoctorSignUpScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController nameController = TextEditingController();
 
   TextEditingController phoneController = TextEditingController();
-  TextEditingController anotherPhoneController = TextEditingController();
 
   TextEditingController emailController = TextEditingController();
 
   var formSignUpScreenKey = GlobalKey<FormState>();
 
-  String? selectSpicification;
+  String? selectedValueCity;
   String? selectedValueRegion;
   bool? isMale;
 
@@ -52,7 +49,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: SafeArea(
-      child: BlocBuilder<DoctorAuthCubit, DoctorAuthState>(
+      child: BlocBuilder<PatientAuthCubit, PatientAuthState>(
         builder: (context, state) {
           return SingleChildScrollView(
               child: Form(
@@ -74,7 +71,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 24.h,
+                    height: 16.h,
                   ),
                   Align(
                     alignment: Alignment.center,
@@ -84,35 +81,13 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 16.h,
+                    height: 24.h,
                   ),
                   const Center(
                     child: CustomSmoothIndicator(
                       activeIndex: 2,
                       count: 3,
                     ),
-                  ),
-                  SizedBox(
-                    height: 24.h,
-                  ),
-                  CircularProfileImage(
-                    closeFunction: () {
-                      BlocProvider.of<DoctorAuthCubit>(context).deleteImage();
-                    },
-                    file: BlocProvider.of<DoctorAuthCubit>(context).file,
-                    function: () {
-                      BlocProvider.of<DoctorAuthCubit>(context)
-                          .pickCameraImage();
-                    },
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                        'برجاء رفع صورة بالبالطو الابيض وخلفية سادة خلف الدكتور',
-                        style: AppTextStyles.font10Regular),
                   ),
                   SizedBox(
                     height: 24.h,
@@ -137,25 +112,10 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                     firstText: 'رقم الموبيل',
                   ),
                   SizedBox(
-                    height: 32.h,
-                  ),
-                  CustomFormField(
-                      controller: phoneController,
-                      validate: conditionOfValidationPhone,
-                      hintText: '01000000000',
-                      textInputType: TextInputType.phone),
-                  SizedBox(
-                    height: 32.h,
-                  ),
-                  CustomNormalRichText(
-                    ischoosen: true,
-                    firstText: 'رقم موبايل آخر',
-                  ),
-                  SizedBox(
                     height: 18.h,
                   ),
                   CustomFormField(
-                      controller: anotherPhoneController,
+                      controller: phoneController,
                       validate: conditionOfValidationPhone,
                       hintText: '01000000000',
                       textInputType: TextInputType.phone),
@@ -177,53 +137,66 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
-                    ischoosen: false,
-                    firstText: 'المحافظة',
-                  ),
-                  SizedBox(
-                    height: 18.h,
-                  ),
-                  CustomDropDownMenu(
-                    items: [
-                      'الزيتون',
-                      'النزهة الجديدة',
-                      'مدينة نصر',
-                      'مصر الجديدة'
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomNormalRichText(
+                              ischoosen: false,
+                              firstText: 'المدينة',
+                            ),
+                            SizedBox(
+                              height: 18.h,
+                            ),
+                            CustomDropDownMenu(
+                              items: [
+                                'الزيتون',
+                                'النزهة الجديدة',
+                                'مدينة نصر',
+                                'مصر الجديدة'
+                              ],
+                              onChange: (newValue) {
+                                setState(() {
+                                  selectedValueCity = newValue;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomNormalRichText(
+                              ischoosen: false,
+                              firstText: 'المنطقة',
+                            ),
+                            SizedBox(
+                              height: 18.h,
+                            ),
+                            CustomDropDownMenu(
+                              items: [
+                                'أسيوط',
+                                'سوهاج',
+                                'الاسكندرية',
+                                'القاهرة'
+                              ],
+                              onChange: (newValue) {
+                                setState(() {
+                                  selectedValueRegion = newValue;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
-                    onChange: (newValue) {
-                      setState(() {
-                        selectedValueRegion = newValue;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 32.h,
-                  ),
-                  CustomNormalRichText(
-                    ischoosen: false,
-                    firstText: 'التخصص (اثنين بحد اقصى)',
-                  ),
-                  SizedBox(
-                    height: 18.h,
-                  ),
-                  CustomDropDownMenu(
-                    items: [
-                      'علاج طبيعي',
-                      'علاج وظيفي',
-                      'علاج نفسي',
-                      'علاج حركي',
-                      'علاج بالأشعة فوق الصوتية'
-                    ],
-                    onChange: (newValue) {
-                      setState(() {
-                        selectSpicification = newValue;
-                      });
-                    },
-                  ),
-                  ElevatedButton(
-                    onPressed: () => showMultiSelectDialog(context),
-                    child: Text('اختر التخصصات'),
                   ),
                   SizedBox(
                     height: 32.h,
@@ -257,7 +230,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   ),
                   nameController.text.isEmpty ||
                           phoneController.text.isEmpty ||
-                          selectSpicification == null ||
+                          selectedValueCity == null ||
                           selectedValueRegion == null ||
                           isMale == null
                       ? CustomButtonLargeDimmed(
