@@ -47,8 +47,17 @@ class AppRouter {
         );
       case Routes.signUpScreen:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => getIt<PatientAuthCubit>(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BadeLookUpCubit>(
+                create: (context) => getIt<BadeLookUpCubit>()
+                  ..getAllCities()
+                  ..getAllRegions(1),
+              ),
+              BlocProvider<PatientAuthCubit>(
+                create: (context) => getIt<PatientAuthCubit>(),
+              ),
+            ],
             child: SignUpScreen(),
           ),
           settings: settings,

@@ -17,6 +17,9 @@ import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_au
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allCities_model.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allRegions_model.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -51,6 +54,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(body: SafeArea(
       child: BlocBuilder<PatientAuthCubit, PatientAuthState>(
         builder: (context, state) {
+          List<CityModel> cities = [];
+          List<RegionModel> regions = [];
           return SingleChildScrollView(
               child: Form(
             key: formSignUpScreenKey,
@@ -150,17 +155,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SizedBox(
                               height: 18.h,
                             ),
-                            CustomDropDownMenu(
-                              items: [
-                                'الزيتون',
-                                'النزهة الجديدة',
-                                'مدينة نصر',
-                                'مصر الجديدة'
-                              ],
-                              onChange: (newValue) {
-                                setState(() {
-                                  selectedValueCity = newValue;
-                                });
+                            BlocConsumer<BadeLookUpCubit, BadeLookUpState>(
+                              listener: (context, state) {
+                                if (state is GettAllCitiesSuccess) {
+                                  cities = state.cities;
+                                }
+                              },
+                              builder: (context, state) {
+                                return CustomDropDownMenu(
+                                  isLoading: state is GettAllCitiesLoading,
+                                  items: cities.map((e) => e.nameAr).toList(),
+                                  onChange: (newValue) {
+                                    setState(() {
+                                      selectedValueCity = newValue;
+                                    });
+                                  },
+                                );
                               },
                             ),
                           ],
@@ -180,17 +190,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SizedBox(
                               height: 18.h,
                             ),
-                            CustomDropDownMenu(
-                              items: [
-                                'أسيوط',
-                                'سوهاج',
-                                'الاسكندرية',
-                                'القاهرة'
-                              ],
-                              onChange: (newValue) {
-                                setState(() {
-                                  selectedValueRegion = newValue;
-                                });
+                            BlocConsumer<BadeLookUpCubit, BadeLookUpState>(
+                              listener: (context, state) {
+                                if (state is GettAllRegionsSuccess) {
+                                  regions = state.regions;
+                                }
+                              },
+                              builder: (context, state) {
+                                return selectedValueCity == null
+                                    ? Text('برجاء اختيار المدينة أولا')
+                                    : CustomDropDownMenu(
+                                        isLoading:
+                                            state is GettAllRegionsLoading,
+                                        items: regions
+                                            .map((e) => e.nameAr)
+                                            .toList(),
+                                        onChange: (newValue) {
+                                          setState(() {
+                                            selectedValueRegion = newValue;
+                                          });
+                                        },
+                                      );
                               },
                             ),
                           ],

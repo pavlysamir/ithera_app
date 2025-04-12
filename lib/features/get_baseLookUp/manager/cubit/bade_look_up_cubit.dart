@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:ithera_app/features/get_baseLookUp/data/models/allCities_model.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allRegions_model.dart';
 import 'package:ithera_app/features/get_baseLookUp/data/repo/base_look.dart';
 import 'package:meta/meta.dart';
 
@@ -14,6 +15,17 @@ class BadeLookUpCubit extends Cubit<BadeLookUpState> {
     result.fold(
       (l) => emit(GettAllCitiesError(l)),
       (r) => emit(GettAllCitiesSuccess(r)),
+    );
+  }
+
+  void getAllRegions(
+    int cityId,
+  ) async {
+    emit(GettAllRegionsLoading());
+    final result = await baseLookRepo.getAllRegions(cityId: cityId);
+    result.fold(
+      (l) => emit(GettAllRegionsError(l)),
+      (r) => emit(GettAllRegionsSuccess(r)),
     );
   }
 }

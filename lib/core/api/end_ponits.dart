@@ -10,6 +10,8 @@ class EndPoint {
 
   static String getAllCities = "BaseLookup/GetAllCities";
 
+  static String getAllRegions = "BaseLookup/GetAllRegions";
+
   static String getUserDataEndPoint(id) {
     return "/User/$id";
   }

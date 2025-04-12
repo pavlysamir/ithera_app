@@ -16,3 +16,15 @@ final class GettAllCitiesError extends BadeLookUpState {
   final String error;
   GettAllCitiesError(this.error);
 }
+
+final class GettAllRegionsLoading extends BadeLookUpState {}
+
+final class GettAllRegionsSuccess extends BadeLookUpState {
+  final List<RegionModel> regions;
+  GettAllRegionsSuccess(this.regions);
+}
+
+final class GettAllRegionsError extends BadeLookUpState {
+  final String error;
+  GettAllRegionsError(this.error);
+}

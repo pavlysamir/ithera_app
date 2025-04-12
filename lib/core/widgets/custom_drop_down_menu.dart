@@ -27,6 +27,7 @@ class CustomDropDownMenu extends StatelessWidget {
           ? Center(
               child: CircularProgressIndicator(
                 color: AppColors.primaryColor,
+                strokeWidth: 1.5,
               ),
             )
           : DropdownButtonFormField(
