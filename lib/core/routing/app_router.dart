@@ -12,6 +12,7 @@ import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signi
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signup_screen.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/welcome_screen.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/contant_us_screen.dart';
@@ -115,8 +116,15 @@ class AppRouter {
         );
       case Routes.doctorSignUpScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<DoctorAuthCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BadeLookUpCubit>(
+                create: (context) => getIt<BadeLookUpCubit>()..getAllCities(),
+              ),
+              BlocProvider<DoctorAuthCubit>(
+                create: (context) => getIt<DoctorAuthCubit>(),
+              ),
+            ],
             child: DoctorSignupScreen(),
           ),
           settings: settings,

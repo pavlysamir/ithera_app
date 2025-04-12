@@ -19,6 +19,7 @@ import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/circular_profile_img.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 
 class DoctorSignupScreen extends StatefulWidget {
   const DoctorSignupScreen({super.key});
@@ -184,17 +185,19 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 18.h,
                   ),
-                  CustomDropDownMenu(
-                    items: [
-                      'الزيتون',
-                      'النزهة الجديدة',
-                      'مدينة نصر',
-                      'مصر الجديدة'
-                    ],
-                    onChange: (newValue) {
-                      setState(() {
-                        selectedValueRegion = newValue;
-                      });
+                  BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
+                    builder: (context, state) {
+                      return CustomDropDownMenu(
+                        isLoading: state is GettAllCitiesLoading,
+                        items: state is GettAllCitiesSuccess
+                            ? state.cities.map((e) => e.nameAr).toList()
+                            : [],
+                        onChange: (newValue) {
+                          setState(() {
+                            selectedValueRegion = newValue;
+                          });
+                        },
+                      );
                     },
                   ),
                   SizedBox(

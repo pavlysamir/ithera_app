@@ -1,12 +1,14 @@
 class EndPoint {
-  static String baseUrl = "http://ithera-001-site1.ptempurl.com/api/";
+  static String baseUrl = "http://ithera-001-site1.ptempurl.com/";
 
 //auth endpoints
-  static String login = "Auth/Login";
+  static String login = "api/Auth/Login";
 
-  static String patientRegister = "Auth/PatientRegister";
+  static String patientRegister = "api/Auth/PatientRegister";
 
-  static String doctorRegister = "Auth/DoctorRegister";
+  static String doctorRegister = "api/Auth/DoctorRegister";
+
+  static String getAllCities = "BaseLookup/GetAllCities";
 
   static String getUserDataEndPoint(id) {
     return "/User/$id";

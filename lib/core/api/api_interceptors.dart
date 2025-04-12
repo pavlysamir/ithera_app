@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'dart:convert'; // For base64 encoding
 
 class ApiInterceptor extends Interceptor {
   ApiInterceptor();
@@ -13,7 +14,13 @@ class ApiInterceptor extends Interceptor {
     //   options.headers[ApiKey.authorizationHeader] = 'Bearer $token';
     // }
     //options.headers[ApiKey.contantType] = 'application/json-patch+json';
+    const String username = '11236180'; // Replace with your username
+    const String password = '60-dayfreetrial'; // Replace with your password
+    final String basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
+    options.headers['Authorization'] = basicAuth;
+    options.headers['Content-Type'] = 'application/json';
     super.onRequest(options, handler);
   }
 
