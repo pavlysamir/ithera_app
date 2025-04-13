@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +19,7 @@ import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/managers/doctor_auth_cubit/doctor_auth_cubit.dart';
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/circular_profile_img.dart';
+import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/custom_import_image_field.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
@@ -41,6 +44,10 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
 
   String? selectSpicification;
   String? selectedValueRegion;
+  File? profileImagePath;
+  File? karnehImagePath;
+  String? karnehImageName;
+
   List<String> selectedItemsList = [];
   bool? isMale;
 
@@ -100,12 +107,19 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   ),
                   CircularProfileImage(
                     closeFunction: () {
-                      BlocProvider.of<DoctorAuthCubit>(context).deleteImage();
+                      //   BlocProvider.of<DoctorAuthCubit>(context).deleteImage();
+                      setState(() {
+                        profileImagePath = null;
+                      });
                     },
-                    file: BlocProvider.of<DoctorAuthCubit>(context).file,
+                    file: profileImagePath,
                     function: () {
                       BlocProvider.of<DoctorAuthCubit>(context)
-                          .pickCameraImage();
+                          .pickCameraImage()
+                          .then((value) {
+                        profileImagePath =
+                            BlocProvider.of<DoctorAuthCubit>(context).file;
+                      });
                     },
                   ),
                   SizedBox(
@@ -229,6 +243,39 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                       );
                     },
                   ),
+                  SizedBox(
+                    height: 32.h,
+                  ),
+                  CustomNormalRichText(
+                    ischoosen: false,
+                    firstText: 'صورة كارنيه النقابة ( سارى)',
+                  ),
+                  SizedBox(
+                    height: 18.h,
+                  ),
+                  CustomImportImageField(onTap: () {
+                    BlocProvider.of<DoctorAuthCubit>(context)
+                        .pickCameraImage()
+                        .then((value) {
+                      karnehImagePath =
+                          BlocProvider.of<DoctorAuthCubit>(context).file;
+                      karnehImageName =
+                          BlocProvider.of<DoctorAuthCubit>(context).fileName;
+                    });
+                  }),
+                  karnehImageName != null
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                          child: Center(
+                            child: Text(
+                              karnehImageName!,
+                              style: AppTextStyles.font12Regular.copyWith(
+                                  color: AppColors.primaryColor,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   SizedBox(
                     height: 32.h,
                   ),

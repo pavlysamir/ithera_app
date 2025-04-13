@@ -4,3 +4,7 @@ part of 'patient_auth_cubit.dart';
 sealed class PatientAuthState {}
 
 final class PatientAuthInitial extends PatientAuthState {}
+
+final class CashedPatientRegisterUserDataLoading extends PatientAuthState {}
+
+final class CashedPatientRegisterUserDataSuccess extends PatientAuthState {}

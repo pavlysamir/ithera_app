@@ -259,9 +259,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           text: 'التالي',
                           textColor: Colors.white,
                           function: () {
-                            NavigationService().navigateToReplacement(
-                                Routes.verifyOtpScreen,
-                                arguments: false);
+                            BlocProvider.of<PatientAuthCubit>(context)
+                                .cashedUserDataFirstScreen(
+                              userName: nameController.text,
+                              userEmail: emailController.text,
+                              userPhone: phoneController.text,
+                              cityId: selectedValueCity!,
+                              regionId: selectedValueRegion!,
+                              genderId: isMale! ? '1' : '2',
+                            )
+                                .then((value) {
+                              NavigationService().navigateToReplacement(
+                                  Routes.verifyOtpScreen,
+                                  arguments: false);
+                            });
                           },
                           color: AppColors.primaryColor,
                         ),
