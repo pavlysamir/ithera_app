@@ -8,54 +8,39 @@ class ServerException implements Exception {
 }
 
 void handleDioExceptions(DioException? e) {
-  switch (e?.type ?? 'unknown') {
+  final responseData = e?.response?.data;
+  final errorModel = ErrorModel.fromJson(
+      responseData is Map<String, dynamic> ? responseData : null);
+
+  switch (e?.type) {
     case DioExceptionType.connectionTimeout:
-      throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
     case DioExceptionType.sendTimeout:
-      throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
     case DioExceptionType.receiveTimeout:
-      throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
     case DioExceptionType.badCertificate:
-      throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
     case DioExceptionType.cancel:
-      throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
     case DioExceptionType.connectionError:
-      if (e?.response != null) {
-        throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
+    case DioExceptionType.unknown:
+      throw ServerException(errModel: errorModel);
+
+    case DioExceptionType.badResponse:
+      final statusCode = e?.response?.statusCode;
+
+      if (statusCode != null &&
+          [400, 401, 403, 404, 409, 422, 504].contains(statusCode)) {
+        throw ServerException(errModel: errorModel);
       } else {
-        // Handle the case where response is null
         throw ServerException(
             errModel: ErrorModel(
-          errorMessage: 'Connection error',
-          errors: ['Connection error'],
+          errorMessage: 'Unexpected server response',
+          errors: ['Unexpected server response with status code: $statusCode'],
         ));
       }
 
-    case DioExceptionType.unknown:
-      throw ServerException(errModel: ErrorModel.fromJson(e?.response?.data));
-    case DioExceptionType.badResponse:
-      switch (e?.response?.statusCode) {
-        case 400: // Bad request
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data));
-        case 401: //unauthorized
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data ?? {}));
-        case 403: //forbidden
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data));
-        case 404: //not found
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data));
-        case 409: //cofficient
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data));
-        case 422: //  Unprocessable Entity
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data));
-        case 504: // Server exception
-          throw ServerException(
-              errModel: ErrorModel.fromJson(e?.response?.data));
-      }
+    default:
+      throw ServerException(
+          errModel: ErrorModel(
+        errorMessage: 'Unknown Dio error occurred',
+        errors: ['Unknown Dio error'],
+      ));
   }
 }

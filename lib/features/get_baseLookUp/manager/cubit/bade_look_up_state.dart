@@ -1,30 +1,45 @@
-part of 'bade_look_up_cubit.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allCities_model.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allRegions_model.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allSpicialization_model.dart';
 
-@immutable
-sealed class BadeLookUpState {}
+enum LookupStatus { initial, loading, success, error }
 
-final class BadeLookUpInitial extends BadeLookUpState {}
+class BadeLookUpState {
+  final LookupStatus citiesStatus;
+  final LookupStatus regionsStatus;
+  final LookupStatus specialtiesStatus;
+  final List<CityModel>? cities;
+  final List<RegionModel>? regions;
+  final List<SpecializationModel>? specialties;
+  final String? errorMessage;
 
-final class GettAllCitiesLoading extends BadeLookUpState {}
+  const BadeLookUpState({
+    this.citiesStatus = LookupStatus.initial,
+    this.regionsStatus = LookupStatus.initial,
+    this.specialtiesStatus = LookupStatus.initial,
+    this.specialties,
+    this.cities,
+    this.regions,
+    this.errorMessage,
+  });
 
-final class GettAllCitiesSuccess extends BadeLookUpState {
-  final List<CityModel> cities;
-  GettAllCitiesSuccess(this.cities);
-}
-
-final class GettAllCitiesError extends BadeLookUpState {
-  final String error;
-  GettAllCitiesError(this.error);
-}
-
-final class GettAllRegionsLoading extends BadeLookUpState {}
-
-final class GettAllRegionsSuccess extends BadeLookUpState {
-  final List<RegionModel> regions;
-  GettAllRegionsSuccess(this.regions);
-}
-
-final class GettAllRegionsError extends BadeLookUpState {
-  final String error;
-  GettAllRegionsError(this.error);
+  BadeLookUpState copyWith({
+    LookupStatus? citiesStatus,
+    LookupStatus? regionsStatus,
+    LookupStatus? specialtiesStatus,
+    List<SpecializationModel>? specialties,
+    List<CityModel>? cities,
+    List<RegionModel>? regions,
+    String? errorMessage,
+  }) {
+    return BadeLookUpState(
+      citiesStatus: citiesStatus ?? this.citiesStatus,
+      regionsStatus: regionsStatus ?? this.regionsStatus,
+      specialtiesStatus: specialtiesStatus ?? this.specialtiesStatus,
+      specialties: specialties ?? this.specialties,
+      cities: cities ?? this.cities,
+      regions: regions ?? this.regions,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

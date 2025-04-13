@@ -12,6 +12,8 @@ class EndPoint {
 
   static String getAllRegions = "BaseLookup/GetAllRegions";
 
+  static String getAllSpecialties = "BaseLookup/GetAllSpecializationFields";
+
   static String getUserDataEndPoint(id) {
     return "/User/$id";
   }
@@ -24,33 +26,15 @@ class ApiKey {
   static String email = "email";
   static String password = "password";
   static String mobNumber = "mobileNumber";
-  static String referCode = "referCode";
-
-  static String specialization = "specialization";
-
-  static String otp = "OTP";
-  static String newForgetPassword = "newPass";
-  static String token = "token";
-
-  static String id = "id";
-  static String firstName = "firstName";
   static String userName = "userName";
+  static String phoneNumber = "phoneNumber";
+  static String cityId = "cityId";
+  static String regionId = "regionId";
+  static String anotherMobileNumber = "anotherMobileNumber";
+  static String gender = "gender";
+  static String dateOfBirth = "dateOfBirth";
 
-  static String address = "address";
-
-  static String kedId = "kedId";
-  static String keNumber = "kedNumber";
-
-  static String phone = "phone";
-  static String confirmPassword = "confirmPassword";
-  static String location = "location";
-  static String profilePic = "profileImage";
-  static String authorizationHeader = "Authorization";
-  static String verfyAccount = "verfyAccount";
-  static String oldPassword = "oldPassword";
-  static String newPassword = "newPassword";
-  static String resetPasswordNumber = "resetPasswordNumber";
-  static String resetPasswordNumberOtp = "resetPasswordNumberOtp";
+  static String role = "role";
 
   static String contantType = "Content-Type";
 }

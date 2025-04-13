@@ -50,9 +50,7 @@ class AppRouter {
           builder: (context) => MultiBlocProvider(
             providers: [
               BlocProvider<BadeLookUpCubit>(
-                create: (context) => getIt<BadeLookUpCubit>()
-                  ..getAllCities()
-                  ..getAllRegions(1),
+                create: (context) => getIt<BadeLookUpCubit>()..getAllCities(),
               ),
               BlocProvider<PatientAuthCubit>(
                 create: (context) => getIt<PatientAuthCubit>(),
@@ -128,7 +126,9 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider<BadeLookUpCubit>(
-                create: (context) => getIt<BadeLookUpCubit>()..getAllCities(),
+                create: (context) => getIt<BadeLookUpCubit>()
+                  ..getAllCities()
+                  ..getAllSpecialties(),
               ),
               BlocProvider<DoctorAuthCubit>(
                 create: (context) => getIt<DoctorAuthCubit>(),

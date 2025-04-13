@@ -9,17 +9,18 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
+import 'package:ithera_app/core/widgets/custom_multi_select_dropdown.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
-import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
 import 'package:ithera_app/features/auth/managers/doctor_auth_cubit/doctor_auth_cubit.dart';
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/circular_profile_img.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
 
 class DoctorSignupScreen extends StatefulWidget {
   const DoctorSignupScreen({super.key});
@@ -40,6 +41,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
 
   String? selectSpicification;
   String? selectedValueRegion;
+  List<String> selectedItemsList = [];
   bool? isMale;
 
   @override
@@ -188,9 +190,9 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
                     builder: (context, state) {
                       return CustomDropDownMenu(
-                        isLoading: state is GettAllCitiesLoading,
-                        items: state is GettAllCitiesSuccess
-                            ? state.cities.map((e) => e.nameAr).toList()
+                        isLoading: state.citiesStatus == LookupStatus.loading,
+                        items: state.cities != null
+                            ? state.cities!.map((e) => e.nameAr).toList()
                             : [],
                         onChange: (newValue) {
                           setState(() {
@@ -210,23 +212,22 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 18.h,
                   ),
-                  CustomDropDownMenu(
-                    items: [
-                      'علاج طبيعي',
-                      'علاج وظيفي',
-                      'علاج نفسي',
-                      'علاج حركي',
-                      'علاج بالأشعة فوق الصوتية'
-                    ],
-                    onChange: (newValue) {
-                      setState(() {
-                        selectSpicification = newValue;
-                      });
+                  BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
+                    builder: (context, state) {
+                      return CustomMultiSelectDropDown(
+                        items: state.specialties != null
+                            ? state.specialties!.map((e) => e.nameAr).toList()
+                            : [],
+                        isLoading:
+                            state.specialtiesStatus == LookupStatus.loading,
+                        selectedItems: selectedItemsList,
+                        onSelectionChanged: (newSelected) {
+                          setState(() {
+                            selectedItemsList = newSelected;
+                          });
+                        },
+                      );
                     },
-                  ),
-                  ElevatedButton(
-                    onPressed: () => showMultiSelectDialog(context),
-                    child: Text('اختر التخصصات'),
                   ),
                   SizedBox(
                     height: 32.h,

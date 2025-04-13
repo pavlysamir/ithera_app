@@ -17,9 +17,8 @@ import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_au
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
-import 'package:ithera_app/features/get_baseLookUp/data/models/allCities_model.dart';
-import 'package:ithera_app/features/get_baseLookUp/data/models/allRegions_model.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -54,8 +53,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(body: SafeArea(
       child: BlocBuilder<PatientAuthCubit, PatientAuthState>(
         builder: (context, state) {
-          List<CityModel> cities = [];
-          List<RegionModel> regions = [];
           return SingleChildScrollView(
               child: Form(
             key: formSignUpScreenKey,
@@ -155,20 +152,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SizedBox(
                               height: 18.h,
                             ),
-                            BlocConsumer<BadeLookUpCubit, BadeLookUpState>(
-                              listener: (context, state) {
-                                if (state is GettAllCitiesSuccess) {
-                                  cities = state.cities;
-                                }
-                              },
+                            BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
                               builder: (context, state) {
                                 return CustomDropDownMenu(
-                                  isLoading: state is GettAllCitiesLoading,
-                                  items: cities.map((e) => e.nameAr).toList(),
+                                  isLoading: state.citiesStatus ==
+                                      LookupStatus.loading,
+                                  items: state.cities == null
+                                      ? []
+                                      : state.cities!
+                                          .map((e) => e.nameAr)
+                                          .toList(),
                                   onChange: (newValue) {
                                     setState(() {
                                       selectedValueCity = newValue;
                                     });
+                                    BlocProvider.of<BadeLookUpCubit>(context)
+                                        .getAllRegions(state.cities!
+                                            .firstWhere((element) =>
+                                                element.nameAr == newValue)
+                                            .id);
                                   },
                                 );
                               },
@@ -190,21 +192,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SizedBox(
                               height: 18.h,
                             ),
-                            BlocConsumer<BadeLookUpCubit, BadeLookUpState>(
-                              listener: (context, state) {
-                                if (state is GettAllRegionsSuccess) {
-                                  regions = state.regions;
-                                }
-                              },
+                            BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
                               builder: (context, state) {
                                 return selectedValueCity == null
                                     ? Text('برجاء اختيار المدينة أولا')
                                     : CustomDropDownMenu(
-                                        isLoading:
-                                            state is GettAllRegionsLoading,
-                                        items: regions
-                                            .map((e) => e.nameAr)
-                                            .toList(),
+                                        isLoading: state.regionsStatus ==
+                                            LookupStatus.loading,
+                                        items: state.regions == null
+                                            ? []
+                                            : state.regions!
+                                                .map((e) => e.nameAr)
+                                                .toList(),
                                         onChange: (newValue) {
                                           setState(() {
                                             selectedValueRegion = newValue;

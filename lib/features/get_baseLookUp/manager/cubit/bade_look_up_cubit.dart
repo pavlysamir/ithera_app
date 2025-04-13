@@ -1,31 +1,58 @@
-import 'package:bloc/bloc.dart';
-import 'package:ithera_app/features/get_baseLookUp/data/models/allCities_model.dart';
-import 'package:ithera_app/features/get_baseLookUp/data/models/allRegions_model.dart';
-import 'package:ithera_app/features/get_baseLookUp/data/repo/base_look.dart';
-import 'package:meta/meta.dart';
-
-part 'bade_look_up_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/repo/base_look_repo.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
 
 class BadeLookUpCubit extends Cubit<BadeLookUpState> {
-  BadeLookUpCubit({required this.baseLookRepo}) : super(BadeLookUpInitial());
-  BaseLookRepo baseLookRepo;
+  BadeLookUpCubit({required this.baseLookRepo})
+      : super(const BadeLookUpState());
+
+  final BaseLookRepo baseLookRepo;
+
   void getAllCities() async {
-    emit(GettAllCitiesLoading());
+    emit(state.copyWith(citiesStatus: LookupStatus.loading));
+
     final result = await baseLookRepo.getAllCities();
     result.fold(
-      (l) => emit(GettAllCitiesError(l)),
-      (r) => emit(GettAllCitiesSuccess(r)),
+      (l) => emit(state.copyWith(
+        citiesStatus: LookupStatus.error,
+        errorMessage: l,
+      )),
+      (r) => emit(state.copyWith(
+        citiesStatus: LookupStatus.success,
+        cities: r,
+      )),
     );
   }
 
-  void getAllRegions(
-    int cityId,
-  ) async {
-    emit(GettAllRegionsLoading());
+  void getAllRegions(int cityId) async {
+    emit(state.copyWith(regionsStatus: LookupStatus.loading));
+
     final result = await baseLookRepo.getAllRegions(cityId: cityId);
     result.fold(
-      (l) => emit(GettAllRegionsError(l)),
-      (r) => emit(GettAllRegionsSuccess(r)),
+      (l) => emit(state.copyWith(
+        regionsStatus: LookupStatus.error,
+        errorMessage: l,
+      )),
+      (r) => emit(state.copyWith(
+        regionsStatus: LookupStatus.success,
+        regions: r,
+      )),
+    );
+  }
+
+  void getAllSpecialties() async {
+    emit(state.copyWith(specialtiesStatus: LookupStatus.loading));
+
+    final result = await baseLookRepo.getallSpecialties();
+    result.fold(
+      (l) => emit(state.copyWith(
+        specialtiesStatus: LookupStatus.error,
+        errorMessage: l,
+      )),
+      (r) => emit(state.copyWith(
+        specialtiesStatus: LookupStatus.success,
+        specialties: r,
+      )),
     );
   }
 }

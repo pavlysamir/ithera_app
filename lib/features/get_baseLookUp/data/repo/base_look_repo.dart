@@ -4,6 +4,7 @@ import 'package:ithera_app/core/api/end_ponits.dart';
 import 'package:ithera_app/core/errors/exceptions.dart';
 import 'package:ithera_app/features/get_baseLookUp/data/models/allCities_model.dart';
 import 'package:ithera_app/features/get_baseLookUp/data/models/allRegions_model.dart';
+import 'package:ithera_app/features/get_baseLookUp/data/models/allSpicialization_model.dart';
 
 class BaseLookRepo {
   final ApiConsumer api;
@@ -21,7 +22,7 @@ class BaseLookRepo {
 
       return Right(cities);
     } on ServerException catch (e) {
-      return Left(e.errModel?.errorMessage ?? '');
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }
   }
 
@@ -41,7 +42,23 @@ class BaseLookRepo {
 
       return Right(regions);
     } on ServerException catch (e) {
-      return Left(e.errModel?.errorMessage ?? '');
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
+
+  Future<Either<String, List<SpecializationModel>>> getallSpecialties() async {
+    try {
+      final response = await api.get(
+        EndPoint.getAllSpecialties,
+      );
+      List<SpecializationModel> specializations = [];
+      for (var special in response) {
+        specializations.add(SpecializationModel.fromJson(special));
+      }
+
+      return Right(specializations);
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }
   }
 }
