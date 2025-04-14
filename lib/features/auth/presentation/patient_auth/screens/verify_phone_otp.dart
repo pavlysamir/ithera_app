@@ -178,7 +178,7 @@ class _VerifyPhoneOtpRegisterScreenState
                         if (formVerifyOtpPhoneKey.currentState!.validate()) {
                           //RegisterCubit.get(context)!.verifyOtpMobileNum();
 
-                          NavigationService().navigateTo(
+                          NavigationService().navigateAndRemoveUntil(
                               Routes.addPassasswordScreen,
                               arguments: widget.isFromForgetPassword);
                         }

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/helpers/validation_handling.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
@@ -11,6 +16,7 @@ import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
 class AddPasswordScreen extends StatefulWidget {
@@ -115,16 +121,49 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                           ? CustomButtonLargeDimmed(
                               text: 'تسجيل الدخول',
                             )
-                          : CustomButtonLarge(
-                              text: 'تسجيل الدخول',
-                              textColor: Colors.white,
-                              function: () async {
-                                if (formAddPasswordPhoneKey.currentState!
-                                    .validate()) {
-                                  //RegisterCubit.get(context)!.verifyOtpMobileNum();
+                          : BlocConsumer<PatientAuthCubit, PatientAuthState>(
+                              listener: (context, state) {
+                                if (state is PatientAuthSuccess) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text('تم تسجيل الدخول بنجاح'),
+                                    ),
+                                  );
+                                  NavigationService().navigateAndRemoveUntil(
+                                      Routes.patientHomeLayout);
+                                } else if (state is PatientAuthError) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text(state.errorMessage),
+                                    ),
+                                  );
                                 }
                               },
-                              color: AppColors.primaryColor,
+                              builder: (context, state) {
+                                return CustomButtonLarge(
+                                  text: 'تسجيل الدخول',
+                                  textColor: Colors.white,
+                                  function: () async {
+                                    if (formAddPasswordPhoneKey.currentState!
+                                        .validate()) {
+                                      // Delay the state-changing operations until after the current frame
+                                      SchedulerBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        CacheHelper.set(
+                                          key: CacheConstants.password,
+                                          value: passwordController.text,
+                                        ).then((value) {
+                                          PatientAuthCubit.get(context)
+                                              .patientSignUp();
+                                        });
+                                      });
+                                    }
+                                  },
+                                  color: AppColors.primaryColor,
+                                );
+                              },
                             ),
                       SizedBox(
                         height: 50.h,

@@ -36,21 +36,21 @@ class AuthRepo {
     }
   }
 
-  Future<Either<String, PatientRegisterModel>> patientRegister(
-    String email,
-    String phoneNumber,
-    String userName,
-    String password,
-    int cityId,
-    int regionId,
-    int genderId,
-  ) async {
+  Future<Either<String, PatientRegisterModel>> patientRegister({
+    required String email,
+    required String phoneNumber,
+    required String userName,
+    required String password,
+    required int cityId,
+    required int regionId,
+    required int genderId,
+  }) async {
     try {
-      final response = await api.get(EndPoint.patientRegister, data: {
+      final response = await api.post(EndPoint.patientRegister, data: {
         ApiKey.email: email,
-        ApiKey.mobNumber: phoneNumber,
         ApiKey.userName: userName,
         ApiKey.password: password,
+        ApiKey.phoneNumber: phoneNumber,
         ApiKey.cityId: cityId,
         ApiKey.regionId: regionId,
         ApiKey.gender: genderId,

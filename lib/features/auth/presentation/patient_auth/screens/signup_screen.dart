@@ -38,6 +38,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   String? selectedValueCity;
   String? selectedValueRegion;
+  int? cityId;
+  int? regionId;
   bool? isMale;
 
   @override
@@ -133,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   CustomFormField(
                       controller: emailController,
-                      validate: conditionOfValidationPhone,
+                      //validate: conditionOfValidationPhone,
                       hintText: 'name@gmail.com',
                       textInputType: TextInputType.emailAddress),
                   SizedBox(
@@ -165,6 +167,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   onChange: (newValue) {
                                     setState(() {
                                       selectedValueCity = newValue;
+                                      cityId = state.cities!
+                                          .firstWhere((element) =>
+                                              element.nameAr == newValue)
+                                          .id;
                                     });
                                     BlocProvider.of<BadeLookUpCubit>(context)
                                         .getAllRegions(state.cities!
@@ -207,6 +213,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         onChange: (newValue) {
                                           setState(() {
                                             selectedValueRegion = newValue;
+                                            regionId = state.regions!
+                                                .firstWhere((element) =>
+                                                    element.nameAr == newValue)
+                                                .id;
                                           });
                                         },
                                       );
@@ -258,21 +268,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       : CustomButtonLarge(
                           text: 'التالي',
                           textColor: Colors.white,
-                          function: () {
-                            BlocProvider.of<PatientAuthCubit>(context)
-                                .cashedUserDataFirstScreen(
-                              userName: nameController.text,
-                              userEmail: emailController.text,
-                              userPhone: phoneController.text,
-                              cityId: selectedValueCity!,
-                              regionId: selectedValueRegion!,
-                              genderId: isMale! ? '1' : '2',
-                            )
-                                .then((value) {
-                              NavigationService().navigateToReplacement(
-                                  Routes.verifyOtpScreen,
-                                  arguments: false);
-                            });
+                          function: () async {
+                            if (formSignUpScreenKey.currentState!.validate()) {
+                              BlocProvider.of<PatientAuthCubit>(context)
+                                  .cashedUserDataFirstScreen(
+                                userName: nameController.text,
+                                userEmail: emailController.text,
+                                userPhone: phoneController.text,
+                                cityId: cityId!,
+                                regionId: regionId!,
+                                genderId: isMale! ? 1 : 2,
+                              )
+                                  .then((value) {
+                                NavigationService().navigateAndRemoveUntil(
+                                    Routes.verifyOtpScreen,
+                                    arguments: false);
+                              });
+                            }
                           },
                           color: AppColors.primaryColor,
                         ),
