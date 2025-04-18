@@ -22,3 +22,17 @@ final class PatientAuthError extends PatientAuthState {
 
   PatientAuthError(this.errorMessage);
 }
+
+final class PatientLoginLoading extends PatientAuthState {}
+
+final class PatientLoginSuccess extends PatientAuthState {
+  final String successMessage;
+
+  PatientLoginSuccess(this.successMessage);
+}
+
+final class PatientLoginError extends PatientAuthState {
+  final String errorMessage;
+
+  PatientLoginError(this.errorMessage);
+}

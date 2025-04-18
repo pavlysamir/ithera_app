@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
@@ -20,7 +19,7 @@ import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_au
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
 class AddPasswordScreen extends StatefulWidget {
-  const AddPasswordScreen({super.key, this.isFromForgetPassword = false});
+  const AddPasswordScreen({super.key, required this.isFromForgetPassword});
   final bool isFromForgetPassword;
   @override
   State<AddPasswordScreen> createState() => _AddPasswordScreenState();
@@ -131,7 +130,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                                     ),
                                   );
                                   NavigationService().navigateAndRemoveUntil(
-                                      Routes.patientHomeLayout);
+                                      arguments: true, Routes.signInScreen);
                                 } else if (state is PatientAuthError) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -142,44 +141,51 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                                 }
                               },
                               builder: (context, state) {
-                                return CustomButtonLarge(
-                                  text: 'تسجيل الدخول',
-                                  textColor: Colors.white,
-                                  function: () async {
-                                    if (formAddPasswordPhoneKey.currentState!
-                                        .validate()) {
-                                      // Delay the state-changing operations until after the current frame
-                                      SchedulerBinding.instance
-                                          .addPostFrameCallback((_) {
-                                        CacheHelper.set(
-                                          key: CacheConstants.password,
-                                          value: passwordController.text,
-                                        ).then((value) {
-                                          PatientAuthCubit.get(context)
-                                              .patientSignUp();
-                                        });
-                                      });
-                                    }
-                                  },
-                                  color: AppColors.primaryColor,
-                                );
+                                return state is PatientAuthLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
+                                          color: AppColors.primaryColor,
+                                        ),
+                                      )
+                                    : CustomButtonLarge(
+                                        text: 'تسجيل الدخول',
+                                        textColor: Colors.white,
+                                        function: () async {
+                                          if (formAddPasswordPhoneKey
+                                              .currentState!
+                                              .validate()) {
+                                            // Delay the state-changing operations until after the current frame
+                                            SchedulerBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              CacheHelper.set(
+                                                key: CacheConstants.password,
+                                                value: passwordController.text,
+                                              ).then((value) {
+                                                PatientAuthCubit.get(context)
+                                                    .patientSignUp();
+                                              });
+                                            });
+                                          }
+                                        },
+                                        color: AppColors.primaryColor,
+                                      );
                               },
                             ),
                       SizedBox(
                         height: 50.h,
                       ),
-                      widget.isFromForgetPassword
-                          ? SizedBox()
-                          : Align(
-                              alignment: Alignment.center,
-                              child: CustomTextRich(
-                                  firstText: 'بالفعل لديك حساب ؟ ',
-                                  secondText: 'تسجيل الدخول',
-                                  onSecondTextTap: () {
-                                    NavigationService()
-                                        .navigateTo(Routes.signInScreen);
-                                  }),
-                            ),
+                      // widget.isFromForgetPassword
+                      //     ? SizedBox()
+                      //     : Align(
+                      //         alignment: Alignment.center,
+                      //         child: CustomTextRich(
+                      //             firstText: 'بالفعل لديك حساب ؟ ',
+                      //             secondText: 'تسجيل الدخول',
+                      //             onSecondTextTap: () {
+                      //               NavigationService()
+                      //                   .navigateTo(Routes.signInScreen);
+                      //             }),
+                      //       ),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -187,4 +193,10 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
       )),
     );
   }
+}
+
+enum FromWhat {
+  fromForgetPassword,
+  fromDoctorSignUp,
+  fromPatientSignUp,
 }

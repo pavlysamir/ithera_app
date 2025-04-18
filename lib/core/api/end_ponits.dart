@@ -34,6 +34,8 @@ class ApiKey {
   static String gender = "gender";
   static String dateOfBirth = "dateOfBirth";
 
+  static String specializationFieldIds = "specializationFieldIds";
+
   static String role = "role";
 
   static String contantType = "Content-Type";

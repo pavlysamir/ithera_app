@@ -25,53 +25,65 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 40),
-        child: Column(
-          children: [
-            CustomSvgimage(
-              hight: 150,
-              path: AssetsData.logoWhite,
+        padding: const EdgeInsets.only(right: 44, left: 44, top: 44),
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
             ),
-            SizedBox(
-              height: 30.h,
-            ),
-            Text('اهلا بك في\nتطبيق i-Thera\nللعلاج الطبيعي',
-                textAlign: TextAlign.center, style: AppTextStyles.font25Medium),
-            SizedBox(
-              height: 90.h,
-            ),
-            CustomButtonLarge(
-              text: 'حجز جلسات منزلية',
-              color: AppColors.white,
-              function: () {
-                NavigationService().navigateTo(Routes.signUpScreen);
-              },
-              textColor: AppColors.primaryColor,
-            ),
-            SizedBox(
-              height: 30.h,
-            ),
-            CustomButtonLarge(
-              text: 'البحث عن عيادة (قريبا..)',
-              color: AppColors.blueLight,
-              function: () {},
-              textColor: AppColors.white,
-            ),
-            Spacer(),
-            TextButton(
-              onPressed: () {
-                NavigationService().navigateTo(Routes.doctorSignUpScreen);
-              },
-              child: Text(
-                'الـأنضمام كدكتور',
-                style: AppTextStyles.font20Regular.copyWith(
-                  color: AppColors.primaryColor,
-                  decoration: TextDecoration.underline,
-                  decorationColor: AppColors.primaryColor,
-                ),
+            child: IntrinsicHeight(
+              child: Column(
+                children: [
+                  CustomSvgimage(
+                    hight: 150,
+                    path: AssetsData.logoWhite,
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  Text('اهلا بك في\nتطبيق i-Thera\nللعلاج الطبيعي',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.font25Medium.copyWith(
+                        fontSize: 25 / MediaQuery.of(context).textScaleFactor,
+                      )),
+                  SizedBox(
+                    height: 90.h,
+                  ),
+                  CustomButtonLarge(
+                    text: 'حجز جلسات منزلية',
+                    color: AppColors.white,
+                    function: () {
+                      NavigationService().navigateTo(Routes.signUpScreen);
+                    },
+                    textColor: AppColors.primaryColor,
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  CustomButtonLarge(
+                    text: 'البحث عن عيادة (قريبا..)',
+                    color: AppColors.blueLight,
+                    function: () {},
+                    textColor: AppColors.white,
+                  ),
+                  //  Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      NavigationService().navigateTo(Routes.doctorSignUpScreen);
+                    },
+                    child: Text(
+                      'الـأنضمام كدكتور',
+                      style: AppTextStyles.font20Regular.copyWith(
+                        color: AppColors.primaryColor,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.primaryColor,
+                      ),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
+            ),
+          ),
         ),
       ),
     ));

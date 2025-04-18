@@ -12,6 +12,7 @@ class BadeLookUpCubit extends Cubit<BadeLookUpState> {
     emit(state.copyWith(citiesStatus: LookupStatus.loading));
 
     final result = await baseLookRepo.getAllCities();
+    if (isClosed) return;
     result.fold(
       (l) => emit(state.copyWith(
         citiesStatus: LookupStatus.error,

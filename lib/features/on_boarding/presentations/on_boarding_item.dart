@@ -12,11 +12,18 @@ class BuildBoardingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double scaleFactor = MediaQuery.of(context).textScaleFactor;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('${model.title}',
-            textAlign: TextAlign.center, style: AppTextStyles.font25Bold),
+        Text(
+          '${model.title}',
+          textAlign: TextAlign.center,
+          style: AppTextStyles.font25Bold.copyWith(
+            fontSize: 25 / MediaQuery.of(context).textScaleFactor,
+          ),
+        ),
         const SizedBox(
           height: 10,
         ),
@@ -31,13 +38,19 @@ class BuildBoardingItem extends StatelessWidget {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              Text(
-                '${model.messege}',
-                style: AppTextStyles.font20Regular,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 5,
-              ),
+              scaleFactor > 1.2
+                  ? const Text('')
+                  : Text(
+                      '${model.messege}',
+                      maxLines:
+                          MediaQuery.of(context).textScaleFactor > 1.3 ? 3 : 5,
+                      style: AppTextStyles.font20Regular.copyWith(
+                        fontSize: MediaQuery.of(context).textScaleFactor > 1.3
+                            ? 16
+                            : 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
               const SizedBox(
                 height: 20,
               ),

@@ -3,7 +3,11 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
+import 'package:ithera_app/features/auth/data/repo/auth_repo.dart';
 import 'package:meta/meta.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
@@ -11,7 +15,12 @@ import 'package:path/path.dart' as path;
 part 'doctor_auth_state.dart';
 
 class DoctorAuthCubit extends Cubit<DoctorAuthState> {
-  DoctorAuthCubit() : super(DoctorAuthInitial());
+  DoctorAuthCubit(
+    this.authRepo,
+  ) : super(DoctorAuthInitial());
+
+  AuthRepo authRepo;
+  static DoctorAuthCubit get(context) => BlocProvider.of(context);
 
   String? base64BackImage;
 
@@ -93,4 +102,54 @@ class DoctorAuthCubit extends Cubit<DoctorAuthState> {
 //     print('❌ No file selected');
 //   }
 // }
+
+  Future<void> cashedDoctorDataFirstScreen({
+    required String userName,
+    required String userEmail,
+    required String userPhone,
+    required String anotherPhonreNumber,
+    required String doctorImage,
+    required String karnehImage,
+    required List<int> specializationIds,
+    required int regionId,
+    required int genderId,
+  }) async {
+    emit(CashedDoctorRegisterUserDataLoading());
+    CacheHelper.set(key: CacheConstants.userName, value: userName);
+    CacheHelper.set(key: CacheConstants.userEmail, value: userEmail);
+    CacheHelper.set(key: CacheConstants.userPhone, value: userPhone);
+    CacheHelper.set(
+        key: CacheConstants.anotherPhonreNumber, value: anotherPhonreNumber);
+    CacheHelper.set(key: CacheConstants.doctorImage, value: doctorImage);
+    CacheHelper.set(key: CacheConstants.karnehImage, value: karnehImage);
+    CacheHelper.saveIntList(
+        key: CacheConstants.spicializationNames, numbers: specializationIds);
+    CacheHelper.set(key: CacheConstants.regionId, value: regionId);
+    CacheHelper.set(key: CacheConstants.gender, value: genderId);
+
+    emit(CashedDoctorRegisterUserDataSuccess());
+  }
+
+  doctorSignUp() async {
+    emit(DoctorAuthLoading());
+
+    final result = await authRepo.doctorRegister(
+      email: CacheHelper.getString(key: CacheConstants.userEmail) ?? '',
+      phoneNumber: CacheHelper.getString(key: CacheConstants.userPhone) ?? '',
+      anotherMobileNumber:
+          CacheHelper.getString(key: CacheConstants.anotherPhonreNumber) ?? '',
+      userName: CacheHelper.getString(key: CacheConstants.userName) ?? '',
+      password: CacheHelper.getString(key: CacheConstants.password) ?? '',
+      cityId: CacheHelper.getInt(key: CacheConstants.cityId) ?? 0,
+      genderId: CacheHelper.getInt(key: CacheConstants.gender) ?? 0,
+      specializationIds:
+          CacheHelper.getIntList(key: CacheConstants.spicializationNames)
+              as List<int>,
+    );
+
+    result.fold(
+      (failure) => emit(DoctorAuthError(failure)),
+      (success) => emit(DoctorAuthSuccess('success')),
+    );
+  }
 }

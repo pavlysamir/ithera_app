@@ -53,4 +53,23 @@ class PatientAuthCubit extends Cubit<PatientAuthState> {
       (success) => emit(PatientAuthSuccess('success')),
     );
   }
+
+  login({
+    required String phoneNumber,
+    required String password,
+    required bool isFromPatient,
+  }) async {
+    emit(PatientLoginLoading());
+
+    final result = await authRepo.login(
+      phoneNumber,
+      password,
+      isFromPatient ? 2 : 1,
+    );
+
+    result.fold(
+      (failure) => emit(PatientLoginError(failure)),
+      (success) => emit(PatientLoginSuccess('success')),
+    );
+  }
 }

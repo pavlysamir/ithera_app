@@ -10,4 +10,8 @@ class CacheConstants {
   static const String regionId = 'regionId';
   static const String gender = 'gender';
   static const String password = 'password';
+  static const String anotherPhonreNumber = 'anotherPhonreNumber';
+  static const String spicializationNames = 'spicializationNames';
+  static const String doctorImage = 'doctorImage';
+  static const String karnehImage = 'karnehImage';
 }

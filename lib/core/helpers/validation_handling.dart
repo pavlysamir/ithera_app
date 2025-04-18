@@ -1,8 +1,8 @@
 String? conditionOfValidationEmail(value) {
   var nonNullValue = value ?? '';
-  if (nonNullValue.isEmpty) {
-    return ("Email is required");
-  }
+  // if (nonNullValue.isEmpty) {
+  //   return ("Email is required");
+  // }
   if (!nonNullValue.contains("@")) {
     return ("Email should contains @");
   }
@@ -43,8 +43,11 @@ String? conditionOfValidationName(value) {
 
 String? conditionOfValidationPhone(value) {
   var nonNullValue = value ?? '';
+
   if (nonNullValue.isEmpty) {
     return ('الهاتف مطلوب');
+  } else if (nonNullValue.length < 11) {
+    return ("رقم الهاتف يجب أن يكون 11 رقم");
   }
   return null;
 }

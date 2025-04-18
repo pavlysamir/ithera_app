@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
@@ -14,9 +16,12 @@ import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custo
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyPhoneOtpRegisterScreen extends StatefulWidget {
-  const VerifyPhoneOtpRegisterScreen(
-      {super.key, this.isFromForgetPassword = false});
+  const VerifyPhoneOtpRegisterScreen({
+    super.key,
+    required this.isFromForgetPassword,
+  });
   final bool isFromForgetPassword;
+
   @override
   State<VerifyPhoneOtpRegisterScreen> createState() =>
       _VerifyPhoneOtpRegisterScreenState();
@@ -24,12 +29,18 @@ class VerifyPhoneOtpRegisterScreen extends StatefulWidget {
 
 class _VerifyPhoneOtpRegisterScreenState
     extends State<VerifyPhoneOtpRegisterScreen> {
-  TextEditingController verifyOtPhoneController = TextEditingController();
-  var formVerifyOtpPhoneKey = GlobalKey<FormState>();
+  late TextEditingController verifyOtPhoneController;
+  final formVerifyOtpPhoneKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    verifyOtPhoneController = TextEditingController();
+  }
 
   @override
   void dispose() {
-    verifyOtPhoneController.dispose();
+    // verifyOtPhoneController.dispose();
     super.dispose();
   }
 
@@ -82,7 +93,8 @@ class _VerifyPhoneOtpRegisterScreenState
                     ),
                     Center(
                       child: Text(
-                        '01271507452',
+                        CacheHelper.getString(key: CacheConstants.userPhone) ??
+                            '',
                         style: AppTextStyles.font20Regular.copyWith(
                           color: AppColors.textGreen,
                         ),

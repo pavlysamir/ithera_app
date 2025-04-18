@@ -23,4 +23,7 @@ class Routes {
 
   //doctor auth screens
   static const String doctorSignUpScreen = '/doctorSignUpScreen';
+  static const String doctorAddPasswordScreen = '/doctorAddPasswordScreen';
+  static const String doctorVerifyForgetOtpScreen =
+      '/doctorVerifyForgetOtpScreen';
 }

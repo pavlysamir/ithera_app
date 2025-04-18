@@ -16,7 +16,9 @@ import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_au
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
 class SigninScreen extends StatefulWidget {
-  const SigninScreen({super.key});
+  const SigninScreen({super.key, required this.isFromPatient});
+
+  final bool isFromPatient;
 
   @override
   State<SigninScreen> createState() => _SigninScreenState();
@@ -74,6 +76,17 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                   SizedBox(
+                    height: 16.h,
+                  ),
+                  widget.isFromPatient
+                      ? SizedBox()
+                      : Align(
+                          alignment: Alignment.center,
+                          child: Text('تسجيل الدخول كدكتور',
+                              style: AppTextStyles.font12Regular
+                                  .copyWith(color: AppColors.grey400)),
+                        ),
+                  SizedBox(
                     height: 24.h,
                   ),
                   CustomNormalRichText(
@@ -116,14 +129,63 @@ class _SigninScreenState extends State<SigninScreen> {
                           bool isEnabled = phoneValue.text.isNotEmpty &&
                               passwordValue.text.isNotEmpty;
                           return isEnabled
-                              ? CustomButtonLarge(
-                                  text: 'تسجيل الدخول',
-                                  textColor: Colors.white,
-                                  function: () {
-                                    NavigationService()
-                                        .navigateTo(Routes.patientHomeLayout);
+                              ? BlocConsumer<PatientAuthCubit,
+                                  PatientAuthState>(
+                                  listener: (context, state) {
+                                    if (state is PatientLoginSuccess) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          backgroundColor: Colors.green,
+                                          content:
+                                              Text('تم تسجيل الدخول بنجاح'),
+                                        ),
+                                      );
+                                      widget.isFromPatient
+                                          ? NavigationService()
+                                              .navigateAndRemoveUntil(
+                                              Routes.patientHomeLayout,
+                                            )
+                                          : null;
+                                    }
+                                    if (state is PatientLoginError) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: Colors.red,
+                                          content: Text(state.errorMessage),
+                                        ),
+                                      );
+                                    }
                                   },
-                                  color: AppColors.primaryColor,
+                                  builder: (context, state) {
+                                    return state is PatientLoginLoading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.primaryColor,
+                                            ),
+                                          )
+                                        : CustomButtonLarge(
+                                            text: 'تسجيل الدخول',
+                                            textColor: Colors.white,
+                                            function: () {
+                                              if (formSignInScreenKey
+                                                  .currentState!
+                                                  .validate()) {
+                                                PatientAuthCubit.get(context)
+                                                    .login(
+                                                  phoneNumber:
+                                                      phoneController.text,
+                                                  password:
+                                                      passwordController.text,
+                                                  isFromPatient:
+                                                      widget.isFromPatient,
+                                                );
+                                              }
+                                            },
+                                            color: AppColors.primaryColor,
+                                          );
+                                  },
                                 )
                               : CustomButtonLargeDimmed(text: 'تسجيل الدخول');
                         },

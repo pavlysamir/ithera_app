@@ -23,7 +23,7 @@ void setUpServiceLocator() {
   getIt.registerFactory<PatientAuthCubit>((() => PatientAuthCubit(
         getIt(),
       )));
-  getIt.registerFactory<DoctorAuthCubit>((() => DoctorAuthCubit()));
+  getIt.registerFactory<DoctorAuthCubit>((() => DoctorAuthCubit(getIt())));
   getIt.registerFactory<BadeLookUpCubit>((() => BadeLookUpCubit(
         baseLookRepo: getIt(),
       )));

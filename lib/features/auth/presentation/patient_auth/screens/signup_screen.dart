@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   CustomFormField(
                       controller: emailController,
-                      //validate: conditionOfValidationPhone,
+                      // validate: conditionOfValidationEmail,
                       hintText: 'name@gmail.com',
                       textInputType: TextInputType.emailAddress),
                   SizedBox(
@@ -297,7 +297,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         firstText: 'بالفعل لديك حساب ؟ ',
                         secondText: 'تسجيل الدخول',
                         onSecondTextTap: () {
-                          NavigationService().navigateTo(Routes.signInScreen);
+                          NavigationService()
+                              .navigateTo(arguments: true, Routes.signInScreen);
                         }),
                   ),
                   SizedBox(

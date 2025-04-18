@@ -56,7 +56,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           backgroundColor: AppColors.white,
           shape: ShapeBorder.lerp(
               const CircleBorder(), const StadiumBorder(), 0.5),
-          onPressed: submit,
+          onPressed: () {
+            if (widget.isLast) {
+              submit();
+            } else {
+              widget.boardController.nextPage(
+                  duration: const Duration(milliseconds: 750),
+                  curve: Curves.fastLinearToSlowEaseIn);
+            }
+          },
           child: const Icon(Icons.arrow_forward,
               color: AppColors.textGreen, size: 34),
         ),
@@ -85,13 +93,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 TextButton(
                     onPressed: () {
-                      if (widget.isLast == true) {
-                        submit();
-                      } else {
-                        widget.boardController.nextPage(
-                            duration: const Duration(milliseconds: 750),
-                            curve: Curves.fastLinearToSlowEaseIn);
-                      }
+                      submit();
                     },
                     child: Text(
                       'تخطي',

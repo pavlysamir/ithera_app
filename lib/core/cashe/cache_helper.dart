@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,6 +48,25 @@ class CacheHelper {
 
   static List<String>? getStringList({required String key}) {
     return _prefs.getStringList(key);
+  }
+
+  static saveIntList({
+    required String key,
+    required List<int> numbers,
+  }) {
+    final jsonString = jsonEncode(numbers);
+    _prefs.setString(key, jsonString);
+  }
+
+  static List<int> getIntList({required String key}) {
+    final jsonString = _prefs.getString(key);
+
+    if (jsonString != null) {
+      final List<dynamic> decoded = jsonDecode(jsonString);
+      return decoded.map((e) => e as int).toList();
+    }
+
+    return []; // أو null حسب اللي يناسبك
   }
 
   static Future<bool> delete({required String key}) async {

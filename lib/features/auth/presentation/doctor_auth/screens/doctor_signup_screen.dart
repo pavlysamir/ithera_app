@@ -40,15 +40,18 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
 
   TextEditingController emailController = TextEditingController();
 
-  var formSignUpScreenKey = GlobalKey<FormState>();
+  var formDoctorSignUpScreenKey = GlobalKey<FormState>();
 
   String? selectSpicification;
   String? selectedValueRegion;
   File? profileImagePath;
   File? karnehImagePath;
   String? karnehImageName;
+  int? cityId;
 
   List<String> selectedItemsList = [];
+  List<int> selectedItemsListIds = [];
+
   bool? isMale;
 
   @override
@@ -60,13 +63,26 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    // Add listeners to text controllers
+    nameController.addListener(() {
+      setState(() {});
+    });
+    phoneController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(body: SafeArea(
       child: BlocBuilder<DoctorAuthCubit, DoctorAuthState>(
         builder: (context, state) {
           return SingleChildScrollView(
               child: Form(
-            key: formSignUpScreenKey,
+            key: formDoctorSignUpScreenKey,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
@@ -173,7 +189,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   ),
                   CustomFormField(
                       controller: anotherPhoneController,
-                      validate: conditionOfValidationPhone,
+                      // validate: conditionOfValidationPhone,
                       hintText: '01000000000',
                       textInputType: TextInputType.phone),
                   SizedBox(
@@ -188,7 +204,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   ),
                   CustomFormField(
                       controller: emailController,
-                      validate: conditionOfValidationPhone,
+                      //  validate: conditionOfValidationEmail,
                       hintText: 'name@gmail.com',
                       textInputType: TextInputType.emailAddress),
                   SizedBox(
@@ -211,6 +227,10 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                         onChange: (newValue) {
                           setState(() {
                             selectedValueRegion = newValue;
+                            cityId = state.cities!
+                                .firstWhere(
+                                    (element) => element.nameAr == newValue)
+                                .id;
                           });
                         },
                       );
@@ -238,6 +258,11 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                         onSelectionChanged: (newSelected) {
                           setState(() {
                             selectedItemsList = newSelected;
+                            selectedItemsList.map((e) {
+                              selectedItemsListIds.add(state.specialties!
+                                  .firstWhere((element) => element.nameAr == e)
+                                  .id);
+                            }).toList();
                           });
                         },
                       );
@@ -308,19 +333,39 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   ),
                   nameController.text.isEmpty ||
                           phoneController.text.isEmpty ||
-                          selectSpicification == null ||
+                          selectedItemsList.isEmpty ||
                           selectedValueRegion == null ||
-                          isMale == null
+                          isMale == null ||
+                          profileImagePath == null ||
+                          karnehImagePath == null
                       ? CustomButtonLargeDimmed(
                           text: 'التالي',
                         )
                       : CustomButtonLarge(
                           text: 'التالي',
                           textColor: Colors.white,
-                          function: () {
-                            NavigationService().navigateToReplacement(
-                                Routes.verifyOtpScreen,
-                                arguments: false);
+                          function: () async {
+                            if (formDoctorSignUpScreenKey.currentState!
+                                .validate()) {
+                              BlocProvider.of<DoctorAuthCubit>(context)
+                                  .cashedDoctorDataFirstScreen(
+                                userName: nameController.text,
+                                userEmail: emailController.text,
+                                userPhone: phoneController.text,
+                                anotherPhonreNumber:
+                                    anotherPhoneController.text,
+                                doctorImage: profileImagePath!.path,
+                                karnehImage: karnehImagePath!.path,
+                                regionId: cityId!,
+                                specializationIds: selectedItemsListIds,
+                                genderId: isMale! ? 1 : 2,
+                              )
+                                  .then((value) {
+                                NavigationService().navigateAndRemoveUntil(
+                                    Routes.doctorVerifyForgetOtpScreen,
+                                    arguments: false);
+                              });
+                            }
                           },
                           color: AppColors.primaryColor,
                         ),
@@ -333,7 +378,8 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                         firstText: 'بالفعل لديك حساب ؟ ',
                         secondText: 'تسجيل الدخول',
                         onSecondTextTap: () {
-                          NavigationService().navigateTo(Routes.signInScreen);
+                          NavigationService().navigateTo(Routes.signInScreen,
+                              arguments: false);
                         }),
                   ),
                   SizedBox(
