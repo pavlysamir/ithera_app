@@ -5,9 +5,9 @@ class AppShadows {
   const AppShadows._();
 
   static BoxShadow shadow1 = BoxShadow(
-    color: AppColors.grey200,
+    color: AppColors.grey100,
     spreadRadius: 1,
-    blurRadius: 2,
+    blurRadius: 1,
     offset: const Offset(0, 1),
   );
 }

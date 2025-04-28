@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
@@ -81,10 +83,18 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   void navigateToHome() {
     Future.delayed(const Duration(seconds: 2), () {
-      // Get.to(()=>const HomeView() ,
-      //     transition: Transition.fade ,
-      //duration: kDuration);
-      NavigationService().navigateAndRemoveUntil(Routes.onBoardingScreen);
+      if (CacheHelper.getSecureData(key: CacheConstants.token) != '' &&
+          CacheHelper.getBool(key: CacheConstants.isFromPatient) == true) {
+        NavigationService().navigateAndRemoveUntil(Routes.patientHomeLayout);
+      } else if (CacheHelper.getSecureData(key: CacheConstants.token) != '' &&
+          CacheHelper.getBool(key: CacheConstants.isFromPatient) == false) {
+        // NavigationService().navigateAndRemoveUntil(Routes.doctorHomeLayout);
+      } else if (CacheHelper.getBool(key: CacheConstants.onBoardingViewed) ==
+          true) {
+        NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
+      } else {
+        NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
+      }
     });
   }
 }

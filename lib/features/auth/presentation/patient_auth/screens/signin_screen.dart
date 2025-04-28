@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/helpers/validation_handling.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
@@ -141,12 +144,16 @@ class _SigninScreenState extends State<SigninScreen> {
                                               Text('تم تسجيل الدخول بنجاح'),
                                         ),
                                       );
-                                      widget.isFromPatient
-                                          ? NavigationService()
-                                              .navigateAndRemoveUntil(
-                                              Routes.patientHomeLayout,
-                                            )
-                                          : null;
+                                      if (widget.isFromPatient) {
+                                        CacheHelper.set(
+                                          key: CacheConstants.isFromPatient,
+                                          value: true,
+                                        );
+                                        NavigationService()
+                                            .navigateAndRemoveUntil(
+                                          Routes.patientHomeLayout,
+                                        );
+                                      } else {}
                                     }
                                     if (state is PatientLoginError) {
                                       ScaffoldMessenger.of(context)

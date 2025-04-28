@@ -1,7 +1,10 @@
 class CacheConstants {
   static const String onBoardingViewed = 'onBoarding';
+  static const String isFromPatient = 'isFromPatient';
 
-  //data auth
+  //data
+  static const String token = 'token';
+
   static const String userName = 'userName';
   static const String userEmail = 'userEmail';
   static const String userPhone = 'userPhone';
