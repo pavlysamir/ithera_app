@@ -29,7 +29,7 @@ class PatientHomeScreen extends StatelessWidget {
             ),
             SizedBox(height: 2.h),
             Divider(
-              color: AppColors.grey50,
+              color: AppColors.grey100,
               thickness: 1,
             ),
           ],

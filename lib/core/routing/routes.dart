@@ -15,12 +15,13 @@ class Routes {
   //patients home screens
   static const String patientHomeLayout = '/patientHomeLayout';
   static const String filterScreen = '/filterScreen';
+  static const String bookNowScreen = '/bookNowScreen';
+  static const String doctorScreen = '/doctorScreen';
 
   //patients settings screens
   static const String patientEditProfileScreen = '/patientEditProfileScreen';
   static const String patientContentUsScreen = '/patientContentUsScreen';
   static const String patientPricesScreen = '/patientPricesScreen';
-  static const String doctorScreen = '/doctorScreen';
 
   //doctor auth screens
   static const String doctorSignUpScreen = '/doctorSignUpScreen';

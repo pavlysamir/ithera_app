@@ -13,4 +13,5 @@ class AssetsData {
   //icons
   static const male = 'assets/icons/male.svg';
   static const female = 'assets/icons/female.svg';
+  static const time_range = 'assets/icons/time_range.svg';
 }
