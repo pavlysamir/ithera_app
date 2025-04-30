@@ -1,18 +1,61 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ithera_app/core/assets/assets.dart';
-import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/theme/app_shadows.dart';
-import 'package:ithera_app/core/theme/app_text_styles.dart';
-import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'dart:io';
 
-class BookNowScreen extends StatelessWidget {
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/helpers/validation_handling.dart';
+import 'package:ithera_app/core/theme/app_colors.dart';
+import 'package:ithera_app/core/theme/app_text_styles.dart';
+import 'package:ithera_app/core/widgets/custom_button_large.dart';
+import 'package:ithera_app/core/widgets/custom_form_field.dart';
+import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
+import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/custom_import_image_field.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
+import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
+import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_appountment_container.dart';
+import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_check_box.dart';
+import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_description_field.dart';
+
+class BookNowScreen extends StatefulWidget {
   const BookNowScreen({super.key});
+
+  @override
+  State<BookNowScreen> createState() => _BookNowScreenState();
+}
+
+class _BookNowScreenState extends State<BookNowScreen> {
+  bool isChecked = false;
+  File? patientReport;
+  File? xRayImage;
+  String? xRayImageName;
+  String? patientReportName;
+  bool? isMale;
+
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController addressDescriptionController = TextEditingController();
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  var bookFormKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    addressDescriptionController.dispose();
+    nameController.dispose();
+    phoneController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
           onPressed: () {
@@ -20,73 +63,236 @@ class BookNowScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Container(
-              clipBehavior: Clip.none,
-              width: 200.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [AppShadows.shadow1],
-              ),
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'السبت - الأحد - الأتنين',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.font16Regular,
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      CustomSvgimage(
-                        path: 'assets/icons/location.svg',
-                        hight: 16.sp,
-                        color: AppColors.primaryColor,
-                      ),
-                      SizedBox(width: 5.w),
-                      Expanded(
-                        child: Text(
-                          'مدينة نصر',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.font14Regular
-                              .copyWith(color: AppColors.blackLight),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      CustomSvgimage(
-                        path: AssetsData.time_range,
-                        hight: 16.sp,
-                      ),
-                      SizedBox(width: 5.w),
-                      Expanded(
-                        child: Text(
-                          'من 4 إلي 6 مساءً',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.font14Regular
-                              .copyWith(color: AppColors.blackLight),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+      body: BlocConsumer<BookingCubit, BookingState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = BlocProvider.of<BookingCubit>(context);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Form(
+              key: bookFormKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomAppountmentContainer(),
+                    SizedBox(height: 25),
+                    CustomCheckboxRow(
+                      isChecked: isChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          isChecked = value ?? false;
+                        });
+                      },
+                    ),
+                    isChecked ? isCheckWithTrue() : const SizedBox(),
+                    SizedBox(height: 25),
+                    CustomNormalRichText(
+                      ischoosen: true,
+                      firstText: 'تقارير الحالة أو تحويل الدكتور',
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    CustomImportImageField(onTap: () {
+                      BlocProvider.of<BookingCubit>(context)
+                          .pickCameraImage()
+                          .then((value) {
+                        patientReport = cubit.file;
+                        patientReportName = cubit.fileName;
+                      });
+                    }),
+                    patientReportName != null
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                            child: Center(
+                              child: Text(
+                                patientReportName!,
+                                style: AppTextStyles.font12Regular.copyWith(
+                                    color: AppColors.primaryColor,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                    SizedBox(height: 25),
+                    CustomNormalRichText(
+                      ischoosen: true,
+                      firstText: 'أرفع صورة  الاشعة',
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    CustomImportImageField(onTap: () {
+                      BlocProvider.of<BookingCubit>(context)
+                          .pickCameraImage()
+                          .then((value) {
+                        xRayImage = cubit.file;
+                        xRayImageName = cubit.fileName;
+                      });
+                    }),
+                    xRayImageName != null
+                        ? Padding(
+                            padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                            child: Center(
+                              child: Text(
+                                xRayImageName!,
+                                style: AppTextStyles.font12Regular.copyWith(
+                                    color: AppColors.primaryColor,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                    SizedBox(height: 25),
+                    CustomNormalRichText(
+                      ischoosen: false,
+                      firstText: 'وصف التاريخ المرضى والاعراض',
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    CustomDescriptionFormField(
+                      controller: descriptionController,
+                      hintText: 'اكتب وصف الحالة',
+                      textInputType: TextInputType.multiline,
+                      validationMassage: (value) {
+                        if (value.isEmpty) {
+                          return 'يرجى إدخال وصف الحالة';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 25),
+                    CustomNormalRichText(
+                      ischoosen: false,
+                      firstText: 'عنوانك بالتفصيل',
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    CustomDescriptionFormField(
+                      controller: addressDescriptionController,
+                      hintText: 'اكتب عنوانك بالتفصيل',
+                      textInputType: TextInputType.multiline,
+                      validationMassage: (value) {
+                        if (value.isEmpty) {
+                          return 'يرجى إدخال عنوان الحالة';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 40),
+                    ValueListenableBuilder<TextEditingValue>(
+                      valueListenable: addressDescriptionController,
+                      builder: (context, addressVaue, _) {
+                        return ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: descriptionController,
+                          builder: (context, descriptionValue, _) {
+                            bool isEnabled = addressVaue.text.isNotEmpty &&
+                                descriptionValue.text.isNotEmpty;
+                            return isEnabled
+                                ? BlocConsumer<BookingCubit, BookingState>(
+                                    listener: (context, state) {},
+                                    builder: (context, state) {
+                                      return
+
+                                          // state is PatientLoginLoading
+                                          //     ? const Center(
+                                          //         child: CircularProgressIndicator(
+                                          //           color: AppColors.primaryColor,
+                                          //         ),
+                                          //       )
+                                          //     :
+                                          CustomButtonLarge(
+                                        text: 'تأكيد الحجز',
+                                        textColor: Colors.white,
+                                        function: () {
+                                          if (bookFormKey.currentState!
+                                              .validate()) {}
+                                        },
+                                        color: AppColors.primaryColor,
+                                      );
+                                    },
+                                  )
+                                : CustomButtonLargeDimmed(text: 'تأكيد الحجز');
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(height: 25),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          );
+        },
       ),
+    );
+  }
+
+  Column isCheckWithTrue() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 25),
+        CustomNormalRichText(
+          ischoosen: false,
+          firstText: 'الأسم',
+        ),
+        SizedBox(
+          height: 18.h,
+        ),
+        CustomFormField(
+            controller: nameController,
+            validate: conditionOfValidationName,
+            hintText: 'الأسم ثنائي',
+            textInputType: TextInputType.text),
+        SizedBox(
+          height: 32.h,
+        ),
+        CustomNormalRichText(
+          ischoosen: false,
+          firstText: 'رقم الموبيل',
+        ),
+        SizedBox(
+          height: 18.h,
+        ),
+        CustomFormField(
+            controller: phoneController,
+            validate: conditionOfValidationPhone,
+            hintText: '01000000000',
+            textInputType: TextInputType.phone),
+        SizedBox(height: 25),
+        CustomToggleisMale(
+          isMale: isMale,
+          onMaleTap: () {
+            setState(() {
+              if (isMale == null) {
+                isMale = true;
+              } else {
+                isMale = null;
+              }
+
+              if (kDebugMode) {
+                print(isMale);
+              }
+            });
+          },
+          onFemaleTap: () {
+            setState(() {
+              if (isMale == null) {
+                isMale = false;
+              } else {
+                isMale = null;
+              }
+              if (kDebugMode) {
+                print(isMale);
+              }
+            });
+          },
+        ),
+      ],
     );
   }
 }

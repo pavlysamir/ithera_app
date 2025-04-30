@@ -7,7 +7,7 @@ import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
-class CustomToggleisMale extends StatefulWidget {
+class CustomToggleisMale extends StatelessWidget {
   CustomToggleisMale({
     super.key,
     required this.isMale,
@@ -22,11 +22,6 @@ class CustomToggleisMale extends StatefulWidget {
   Function()? onFemaleTap;
 
   @override
-  State<CustomToggleisMale> createState() => _CustomToggleisMaleState();
-}
-
-class _CustomToggleisMaleState extends State<CustomToggleisMale> {
-  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
@@ -34,7 +29,7 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widget.fromAuth
+              fromAuth
                   ? CustomNormalRichText(
                       ischoosen: false,
                       firstText: 'النوع',
@@ -48,13 +43,13 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
                 height: 18.h,
               ),
               InkWell(
-                onTap: widget.onMaleTap,
+                onTap: onMaleTap,
                 child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                        color: widget.isMale == null
+                        color: isMale == null
                             ? AppColors.white
-                            : widget.isMale == true
+                            : isMale == true
                                 ? AppColors.primaryColor
                                 : AppColors.white,
                         borderRadius: BorderRadius.circular(5),
@@ -67,9 +62,9 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
                           Text(
                             'ذكر',
                             style: AppTextStyles.font20Regular.copyWith(
-                                color: widget.isMale == null
+                                color: isMale == null
                                     ? AppColors.primaryColor
-                                    : widget.isMale == true
+                                    : isMale == true
                                         ? AppColors.white
                                         : AppColors.primaryColor),
                           ),
@@ -79,9 +74,9 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
                           SvgPicture.asset(
                             AssetsData.male,
                             height: 36,
-                            color: widget.isMale == null
+                            color: isMale == null
                                 ? AppColors.primaryColor
-                                : widget.isMale == true
+                                : isMale == true
                                     ? AppColors.white
                                     : AppColors.primaryColor,
                           ),
@@ -102,13 +97,13 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
                 height: 18.h,
               ),
               InkWell(
-                onTap: widget.onFemaleTap,
+                onTap: onFemaleTap,
                 child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                        color: widget.isMale == null
+                        color: isMale == null
                             ? AppColors.white
-                            : widget.isMale == false
+                            : isMale == false
                                 ? AppColors.primaryColor
                                 : AppColors.white,
                         borderRadius: BorderRadius.circular(5),
@@ -121,9 +116,9 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
                           Text(
                             'أنثى',
                             style: AppTextStyles.font20Regular.copyWith(
-                                color: widget.isMale == null
+                                color: isMale == null
                                     ? AppColors.primaryColor
-                                    : widget.isMale == false
+                                    : isMale == false
                                         ? AppColors.white
                                         : AppColors.primaryColor),
                           ),
@@ -133,9 +128,9 @@ class _CustomToggleisMaleState extends State<CustomToggleisMale> {
                           SvgPicture.asset(
                             AssetsData.female,
                             height: 36,
-                            color: widget.isMale == null
+                            color: isMale == null
                                 ? AppColors.primaryColor
-                                : widget.isMale == false
+                                : isMale == false
                                     ? AppColors.white
                                     : AppColors.primaryColor,
                           ),
