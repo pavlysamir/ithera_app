@@ -15,6 +15,7 @@ import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signu
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/welcome_screen.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
+import 'package:ithera_app/features/home/doctor_home/presentation/screens/doctor_home_screen.dart';
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/book_now_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
@@ -176,6 +177,11 @@ class AppRouter {
             create: (context) => getIt<BookingCubit>(),
             child: BookNowScreen(),
           ),
+          settings: settings,
+        );
+      case Routes.doctorHomeScreen:
+        return MaterialPageRoute(
+          builder: (_) => DoctorHomeScreen(),
           settings: settings,
         );
       default:

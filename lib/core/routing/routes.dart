@@ -28,4 +28,7 @@ class Routes {
   static const String doctorAddPasswordScreen = '/doctorAddPasswordScreen';
   static const String doctorVerifyForgetOtpScreen =
       '/doctorVerifyForgetOtpScreen';
+
+  //doctor home screens
+  static const String doctorHomeScreen = '/doctorHomeScreen';
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
@@ -33,6 +32,16 @@ class _SigninScreenState extends State<SigninScreen> {
   TextEditingController passwordController = TextEditingController();
 
   var formSignInScreenKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    CacheHelper.set(
+      key: CacheConstants.isFromPatient,
+      value: widget.isFromPatient,
+    );
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -144,16 +153,22 @@ class _SigninScreenState extends State<SigninScreen> {
                                               Text('تم تسجيل الدخول بنجاح'),
                                         ),
                                       );
-                                      if (widget.isFromPatient) {
-                                        CacheHelper.set(
-                                          key: CacheConstants.isFromPatient,
-                                          value: true,
-                                        );
-                                        NavigationService()
-                                            .navigateAndRemoveUntil(
-                                          Routes.patientHomeLayout,
-                                        );
-                                      } else {}
+                                      NavigationService()
+                                          .navigateAndRemoveUntil(
+                                        Routes.patientHomeLayout,
+                                      );
+                                      // if (widget.isFromPatient) {
+                                      //   CacheHelper.set(
+                                      //     key: CacheConstants.isFromPatient,
+                                      //     value: true,
+                                      //   );
+
+                                      // } else {
+                                      //   CacheHelper.set(
+                                      //     key: CacheConstants.isFromPatient,
+                                      //     value: true,
+                                      //   );
+                                      // }
                                     }
                                     if (state is PatientLoginError) {
                                       ScaffoldMessenger.of(context)
@@ -222,8 +237,11 @@ class _SigninScreenState extends State<SigninScreen> {
                         firstText: 'ليس لديك حساب  ؟ ',
                         secondText: 'انشاء حساب',
                         onSecondTextTap: () {
-                          NavigationService()
-                              .navigateToReplacement(Routes.signUpScreen);
+                          widget.isFromPatient
+                              ? NavigationService()
+                                  .navigateToReplacement(Routes.signUpScreen)
+                              : NavigationService().navigateToReplacement(
+                                  Routes.doctorSignUpScreen);
                         }),
                   ),
                   SizedBox(

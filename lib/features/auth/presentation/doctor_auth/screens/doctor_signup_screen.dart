@@ -231,6 +231,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                                 .firstWhere(
                                     (element) => element.nameAr == newValue)
                                 .id;
+                            print(cityId);
                           });
                         },
                       );

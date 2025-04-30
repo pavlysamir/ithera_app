@@ -140,7 +140,7 @@ class DoctorAuthCubit extends Cubit<DoctorAuthState> {
           CacheHelper.getString(key: CacheConstants.anotherPhonreNumber) ?? '',
       userName: CacheHelper.getString(key: CacheConstants.userName) ?? '',
       password: CacheHelper.getString(key: CacheConstants.password) ?? '',
-      cityId: CacheHelper.getInt(key: CacheConstants.cityId) ?? 0,
+      cityId: CacheHelper.getInt(key: CacheConstants.regionId) ?? 0,
       genderId: CacheHelper.getInt(key: CacheConstants.gender) ?? 0,
       specializationIds:
           CacheHelper.getIntList(key: CacheConstants.spicializationNames)

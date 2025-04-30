@@ -9,6 +9,9 @@ class AssetsData {
   static const mail = 'assets/images/mail.svg';
   static const deleteAccount = 'assets/images/delete_account.svg';
   static const logout = 'assets/images/logout.svg';
+  static const underReview = 'assets/images/under_review.svg';
+  static const acceptedAccount = 'assets/images/accepted_account.svg';
+  static const rejectedAccount = 'assets/images/rejected_account.svg';
 
   //icons
   static const male = 'assets/icons/male.svg';
