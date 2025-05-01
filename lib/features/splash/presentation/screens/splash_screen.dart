@@ -81,20 +81,24 @@ class _SplashViewBodyState extends State<SplashViewBody>
     animationController.forward();
   }
 
-  void navigateToHome() {
-    Future.delayed(const Duration(seconds: 2), () {
-      if (CacheHelper.getSecureData(key: CacheConstants.token) != '' &&
-          CacheHelper.getBool(key: CacheConstants.isFromPatient) == true) {
-        NavigationService().navigateAndRemoveUntil(Routes.patientHomeLayout);
-      } else if (CacheHelper.getSecureData(key: CacheConstants.token) != '' &&
-          CacheHelper.getBool(key: CacheConstants.isFromPatient) == false) {
-        // NavigationService().navigateAndRemoveUntil(Routes.doctorHomeLayout);
-      } else if (CacheHelper.getBool(key: CacheConstants.onBoardingViewed) ==
-          true) {
-        NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
-      } else {
-        NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
-      }
-    });
+  void navigateToHome() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    final token =
+        await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
+    final isFromPatient =
+        await CacheHelper.getBool(key: CacheConstants.isFromPatient);
+    final hasViewedOnBoarding =
+        await CacheHelper.getBool(key: CacheConstants.onBoardingViewed);
+
+    if (token != null && token != '' && isFromPatient == true) {
+      NavigationService().navigateToReplacement(Routes.patientHomeLayout);
+    } else if (token != null && token != '' && isFromPatient == false) {
+      // NavigationService().navigateAndRemoveUntil(Routes.doctorHomeLayout);
+    } else if (hasViewedOnBoarding == true) {
+      NavigationService().navigateToReplacement(Routes.welcomeScreen);
+    } else {
+      NavigationService().navigateToReplacement(Routes.welcomeScreen);
+    }
   }
 }

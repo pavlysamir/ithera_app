@@ -14,6 +14,8 @@ class EndPoint {
 
   static String getAllSpecialties = "BaseLookup/GetAllSpecializationFields";
 
+  static String addFile = "File/AddFile";
+
   static String getUserDataEndPoint(id) {
     return "/User/$id";
   }
@@ -34,9 +36,15 @@ class ApiKey {
   static String gender = "gender";
   static String dateOfBirth = "dateOfBirth";
 
+  static String userId = "UserId";
+
   static String specializationFieldIds = "specializationFieldIds";
 
   static String role = "role";
+
+  static String fileRole = "Role";
+
+  static String file = "File";
 
   static String contantType = "Content-Type";
 }

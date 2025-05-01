@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:ithera_app/core/api/api_consumer.dart';
 import 'package:ithera_app/core/api/end_ponits.dart';
 import 'package:ithera_app/core/api/general_response_model.dart';
@@ -105,6 +108,48 @@ class AuthRepo {
       }
     } on ServerException catch (e) {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
+
+  Future<Either<String, void>> addFile(
+      {required String userId,
+      required String fileRoleId,
+      required List<String> dataType,
+      required List<File> file}) async {
+    try {
+      // Create FormData
+      FormData formData = FormData();
+
+      // Add userId field
+      formData.fields.add(MapEntry("file.userid", userId));
+      // Add fileRoleId field
+      formData.fields.add(MapEntry("file.fileRoleId", fileRoleId));
+
+      // Add files and their types
+      for (int i = 0; i < file.length; i++) {
+        formData.fields.add(MapEntry("file.file[$i].fileTypeId", dataType[i]));
+        formData.files.add(
+          MapEntry(
+            "file.file[$i].file",
+            await MultipartFile.fromFile(file[i].path,
+                filename: file[i].path.split('/').last),
+          ),
+        );
+      }
+
+      // Sending the request
+      final response = await api.post(EndPoint.addFile, data: formData);
+
+      // Check the response and return accordingly
+      if (response.statusCode == 200) {
+        return Right(response.data);
+      } else {
+        return const Left('Failed to upload files');
+      }
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? '');
+    } catch (e) {
+      return const Left('An unexpected error occurred');
     }
   }
 }
