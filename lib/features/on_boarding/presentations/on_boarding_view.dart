@@ -142,6 +142,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void submit() {
     CacheHelper.set(key: CacheConstants.onBoardingViewed, value: true)
         .then((value) {
+      print(
+        'onBoardingViewed: ${CacheHelper.getBool(key: CacheConstants.onBoardingViewed)}',
+      );
       NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
     });
   }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
+import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/screens/add_appountment_screen.dart';
-import 'package:ithera_app/features/home/doctor_home/presentation/widgets/accepted_account.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/widgets/custom_title_appBar.dart';
 
 class DoctorHomeScreen extends StatelessWidget {
@@ -36,7 +40,12 @@ class DoctorHomeScreen extends StatelessWidget {
               onPressed: () {},
             ),
           ]),
-      body: AddAppountmentScreen(),
+      body: BlocProvider(
+        create: (context) => getIt<BadeLookUpCubit>()..getAllRegions(
+            // CacheHelper.getInt(key: CacheConstants.regionId)!,
+            1),
+        child: AddAppountmentScreen(),
+      ),
 
       //AcceptedAccount(),
     );

@@ -76,13 +76,13 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   void initSliderAnimation() {
     animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 2));
     animation = Tween<double>(begin: 0, end: 1).animate(animationController);
     animationController.forward();
   }
 
   void navigateToHome() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
 
     final token =
         await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
@@ -91,14 +91,24 @@ class _SplashViewBodyState extends State<SplashViewBody>
     final hasViewedOnBoarding =
         await CacheHelper.getBool(key: CacheConstants.onBoardingViewed);
 
-    if (token != null && token != '' && isFromPatient == true) {
+    print('token: $token');
+    print('isFromPatient: $isFromPatient');
+    print('hasViewedOnBoarding: $hasViewedOnBoarding');
+
+    if (token != null &&
+        token != '' &&
+        isFromPatient == true &&
+        hasViewedOnBoarding == true) {
       NavigationService().navigateToReplacement(Routes.patientHomeLayout);
-    } else if (token != null && token != '' && isFromPatient == false) {
-      // NavigationService().navigateAndRemoveUntil(Routes.doctorHomeLayout);
+    } else if (token != null &&
+        token != '' &&
+        isFromPatient == false &&
+        hasViewedOnBoarding == true) {
+      NavigationService().navigateToReplacement(Routes.patientHomeLayout);
     } else if (hasViewedOnBoarding == true) {
       NavigationService().navigateToReplacement(Routes.welcomeScreen);
     } else {
-      NavigationService().navigateToReplacement(Routes.welcomeScreen);
+      NavigationService().navigateToReplacement(Routes.onBoardingScreen);
     }
   }
 }

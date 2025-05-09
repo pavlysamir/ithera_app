@@ -13,6 +13,7 @@ ThemeData getLightTheme() {
       ),
     ),
     useMaterial3: true,
+    unselectedWidgetColor: AppColors.primaryColor,
     scaffoldBackgroundColor: AppColors.appBackgroundColor,
     primarySwatch: Colors.blue,
     brightness: Brightness.light,
