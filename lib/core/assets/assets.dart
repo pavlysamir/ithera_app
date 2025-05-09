@@ -12,6 +12,7 @@ class AssetsData {
   static const underReview = 'assets/images/under_review.svg';
   static const acceptedAccount = 'assets/images/accepted_account.svg';
   static const rejectedAccount = 'assets/images/rejected_account.svg';
+  static const wallet = 'assets/images/wallet.svg';
 
   //icons
   static const male = 'assets/icons/male.svg';

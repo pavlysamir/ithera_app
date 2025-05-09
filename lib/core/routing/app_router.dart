@@ -21,6 +21,8 @@ import 'package:ithera_app/features/home/patient_home/presentation/screens/book_
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/doctor_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
+import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/doctor_edit_profile.dart';
+import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/wallet_screen.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/contant_us_screen.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/patient_edit_profile.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/prices_screen.dart';
@@ -182,6 +184,22 @@ class AppRouter {
       case Routes.doctorHomeScreen:
         return MaterialPageRoute(
           builder: (_) => DoctorHomeScreen(),
+          settings: settings,
+        );
+      case Routes.doctorEditProfileScreen:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(providers: [
+            BlocProvider<BadeLookUpCubit>(
+              create: (context) => getIt<BadeLookUpCubit>()
+                ..getAllCities()
+                ..getAllSpecialties(),
+            ),
+          ], child: DoctorEditProfile()),
+          settings: settings,
+        );
+      case Routes.walletScreen:
+        return MaterialPageRoute(
+          builder: (_) => WalletScreen(),
           settings: settings,
         );
       default:

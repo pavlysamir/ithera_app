@@ -16,13 +16,19 @@ class DoctorSettingsScreen extends StatelessWidget {
           title: 'تعديل الحساب',
           icon: Icons.person_2_outlined,
           onTap: () {
-            Navigator.pushNamed(context, Routes.patientEditProfileScreen);
+            Navigator.pushNamed(context, Routes.doctorEditProfileScreen);
           }),
       SettingItemModel(
           title: 'اسعار الجلسات',
           icon: Icons.payments_outlined,
           onTap: () {
             Navigator.pushNamed(context, Routes.patientPricesScreen);
+          }),
+      SettingItemModel(
+          title: 'المحفظة',
+          icon: Icons.payment,
+          onTap: () {
+            Navigator.pushNamed(context, Routes.walletScreen);
           }),
       SettingItemModel(
           title: 'تواصل معنا',
