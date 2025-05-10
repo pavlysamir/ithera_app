@@ -82,7 +82,7 @@ class DoctorSettingsScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (_, index) {
             return SlideInRight(
               animate: true,

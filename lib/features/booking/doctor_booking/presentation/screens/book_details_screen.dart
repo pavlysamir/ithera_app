@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
+import 'package:ithera_app/core/widgets/custom_button_large.dart';
+import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/book_item_details.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/seesions_listview.dart';
 
@@ -41,7 +44,29 @@ class BookDetailsScreen extends StatelessWidget {
             const Expanded(
                 child: SeesionsList(
               isDimmed: false,
-            ))
+            )),
+            const SizedBox(height: 10),
+            CustomButtonLarge(
+                text: 'الغاء الحجز نهائيا',
+                color: AppColors.primaryColor,
+                function: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => PopUpDialog(
+                            function2: () {},
+                            function: () {
+                              Navigator.pop(context);
+                            },
+                            title: 'هل تريد بالتأكيد الغاء هذا الحجز بالكامل ؟',
+                            img: AssetsData.deleteAccount,
+                            subTitle: '',
+                            colorButton1: AppColors.primaryColor,
+                            colorButton2: AppColors.white,
+                            textColortcolor1: Colors.white,
+                            textColortcolor2: AppColors.primaryColor,
+                            context: context,
+                          ));
+                }),
           ],
         ),
       ),

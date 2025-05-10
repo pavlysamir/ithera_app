@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_small.dart';
+import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/custom_circle_line.dart';
 
 class SeesionsList extends StatelessWidget {
@@ -46,7 +48,24 @@ class SeesionsList extends StatelessWidget {
                       height: 45.h,
                       child: CustomButtonSmall(
                         width: 80.w,
-                        function: () {},
+                        function: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => PopUpDialog(
+                                    function2: () {},
+                                    function: () {
+                                      Navigator.pop(context);
+                                    },
+                                    title: 'هل تريد بالتأكيد الغاء هذه الجلسة؟',
+                                    img: AssetsData.deleteAccount,
+                                    subTitle: '',
+                                    colorButton1: AppColors.primaryColor,
+                                    colorButton2: AppColors.white,
+                                    textColortcolor1: Colors.white,
+                                    textColortcolor2: AppColors.primaryColor,
+                                    context: context,
+                                  ));
+                        },
                         text: 'تأجيل',
                         color: AppColors.white,
                         borderColor: AppColors.primaryColor,

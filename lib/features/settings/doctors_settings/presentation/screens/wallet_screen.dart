@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/extensions/mediaQuery_extensions.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/widgets/my_current_balance_container.dart';
@@ -34,14 +33,14 @@ class WalletScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                MyCurrentBalanceContainer(),
+                const MyCurrentBalanceContainer(),
                 SizedBox(
                   height: 28.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: SmallBalanceContainer(
                         colorIcon: AppColors.textGreen,
                         balance: '0 جنيه',
@@ -52,7 +51,7 @@ class WalletScreen extends StatelessWidget {
                     SizedBox(
                       width: 10.w,
                     ),
-                    Expanded(
+                    const Expanded(
                       child: SmallBalanceContainer(
                         colorIcon: AppColors.error100,
                         balance: '0 جنيه',

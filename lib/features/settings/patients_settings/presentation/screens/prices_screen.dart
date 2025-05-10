@@ -42,7 +42,7 @@ class PricesScreen extends StatelessWidget {
                   .copyWith(color: AppColors.blackLight),
             ),
             SizedBox(height: 2.h),
-            Divider(
+            const Divider(
               color: AppColors.grey50,
               thickness: 1,
             ),

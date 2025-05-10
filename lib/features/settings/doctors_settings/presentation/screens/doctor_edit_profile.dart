@@ -98,7 +98,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 16.h,
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.center,
                   child: CustomSvgimage(
                     hight: 70,
@@ -113,15 +113,6 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                   child: Text(
                     'تعديل حسابك',
                     style: AppTextStyles.font28Medium,
-                  ),
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                const Center(
-                  child: CustomSmoothIndicator(
-                    activeIndex: 2,
-                    count: 3,
                   ),
                 ),
                 SizedBox(
@@ -156,7 +147,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 24.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: false,
                   firstText: 'الأسم',
                 ),
@@ -171,7 +162,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 32.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: false,
                   firstText: 'رقم الموبيل',
                 ),
@@ -186,7 +177,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 32.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: true,
                   firstText: 'رقم موبايل آخر',
                 ),
@@ -201,7 +192,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 32.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: true,
                   firstText: 'إيميل',
                 ),
@@ -216,7 +207,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 32.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: false,
                   firstText: 'المحافظة',
                 ),
@@ -246,7 +237,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 32.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: false,
                   firstText: 'التخصص (اثنين بحد اقصى)',
                 ),
@@ -278,7 +269,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 SizedBox(
                   height: 32.h,
                 ),
-                CustomNormalRichText(
+                const CustomNormalRichText(
                   ischoosen: false,
                   firstText: 'صورة كارنيه النقابة ( سارى)',
                 ),
@@ -345,7 +336,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                         isMale == null ||
                         profileImagePath == null ||
                         karnehImagePath == null
-                    ? CustomButtonLargeDimmed(
+                    ? const CustomButtonLargeDimmed(
                         text: 'حفظ',
                       )
                     : CustomButtonLarge(

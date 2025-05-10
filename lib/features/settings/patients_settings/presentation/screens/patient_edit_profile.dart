@@ -63,7 +63,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: CustomSvgimage(
                       hight: 70,
@@ -83,7 +83,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                   SizedBox(
                     height: 24.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'الأسم',
                   ),
@@ -98,7 +98,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'رقم الموبيل',
                   ),
@@ -113,7 +113,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: true,
                     firstText: 'إيميل',
                   ),
@@ -134,7 +134,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomNormalRichText(
+                            const CustomNormalRichText(
                               ischoosen: false,
                               firstText: 'المدينة',
                             ),
@@ -164,7 +164,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomNormalRichText(
+                            const CustomNormalRichText(
                               ischoosen: false,
                               firstText: 'المنطقة',
                             ),
@@ -224,7 +224,7 @@ class _PatientEditProfileState extends State<PatientEditProfile> {
                           selectedValueCity == null ||
                           selectedValueRegion == null ||
                           isMale == null
-                      ? CustomButtonLargeDimmed(
+                      ? const CustomButtonLargeDimmed(
                           text: 'التالي',
                         )
                       : CustomButtonLarge(

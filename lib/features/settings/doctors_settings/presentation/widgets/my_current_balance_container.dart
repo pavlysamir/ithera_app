@@ -52,7 +52,7 @@ class MyCurrentBalanceContainer extends StatelessWidget {
                   ],
                 ),
               ),
-              CustomSvgimage(
+              const CustomSvgimage(
                 path: AssetsData.wallet,
                 hight: 122,
               ),
