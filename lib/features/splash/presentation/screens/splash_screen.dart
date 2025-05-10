@@ -46,7 +46,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
             builder: (context, _) {
               return FadeTransition(
                   opacity: animation,
-                  child: CustomSvgimage(
+                  child: const CustomSvgimage(
                     path: AssetsData.logoWhite,
                   ));
             },

@@ -80,7 +80,7 @@ class _HomeLayoutState extends State<PatientHomeLayout> {
                   child: Container(
                     width: 110, // Width of the underline
                     height: 6, // Thickness of the line
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.primaryColor, // Blue color
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(8),

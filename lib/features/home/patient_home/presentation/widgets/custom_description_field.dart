@@ -48,7 +48,7 @@ class CustomDescriptionFormField extends StatelessWidget {
 
 InputBorder? outlineInputBorder(BuildContext context) {
   return OutlineInputBorder(
-    borderSide: BorderSide(color: AppColors.grey400),
+    borderSide: const BorderSide(color: AppColors.grey400),
     borderRadius: BorderRadius.circular(5.0),
   );
 }

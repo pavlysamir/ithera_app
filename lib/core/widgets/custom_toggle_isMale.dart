@@ -30,7 +30,7 @@ class CustomToggleisMale extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               fromAuth
-                  ? CustomNormalRichText(
+                  ? const CustomNormalRichText(
                       ischoosen: false,
                       firstText: 'النوع',
                     )
@@ -92,7 +92,7 @@ class CustomToggleisMale extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(''),
+              const Text(''),
               SizedBox(
                 height: 18.h,
               ),

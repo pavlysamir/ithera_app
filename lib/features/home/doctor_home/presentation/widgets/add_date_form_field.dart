@@ -125,7 +125,7 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
         height: 250.h,
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             SizedBox(
@@ -137,7 +137,7 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
                   hintText: 'بحث ',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.r),
-                    borderSide: BorderSide(color: AppColors.primaryColor),
+                    borderSide: const BorderSide(color: AppColors.primaryColor),
                   ),
                 ),
               ),

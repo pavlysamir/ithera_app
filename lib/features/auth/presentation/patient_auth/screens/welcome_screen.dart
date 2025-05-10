@@ -17,7 +17,7 @@ class WelcomeScreen extends StatelessWidget {
         body: Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: AppColors.backgroundWelcome,
           begin: Alignment.topCenter,
@@ -34,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
             child: IntrinsicHeight(
               child: Column(
                 children: [
-                  CustomSvgimage(
+                  const CustomSvgimage(
                     hight: 150,
                     path: AssetsData.logoWhite,
                   ),

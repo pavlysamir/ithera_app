@@ -35,4 +35,8 @@ class Routes {
   //doctor settings screens
   static const String doctorEditProfileScreen = '/doctorEditProfileScreen';
   static const String walletScreen = '/walletScreen';
+
+  //doctor booking screens
+  static const String noRequestesScreen = '/noRequestesScreen';
+  static const String bookDetailsScreen = '/bookDetailsScreen';
 }

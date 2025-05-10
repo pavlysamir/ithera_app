@@ -92,7 +92,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: CustomSvgimage(
                       hight: 70,
@@ -150,7 +150,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 24.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'الأسم',
                   ),
@@ -165,7 +165,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'رقم الموبيل',
                   ),
@@ -180,7 +180,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: true,
                     firstText: 'رقم موبايل آخر',
                   ),
@@ -195,7 +195,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: true,
                     firstText: 'إيميل',
                   ),
@@ -210,7 +210,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'المحافظة',
                   ),
@@ -240,7 +240,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'التخصص (اثنين بحد اقصى)',
                   ),
@@ -272,7 +272,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'صورة كارنيه النقابة ( سارى)',
                   ),
@@ -339,7 +339,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                           isMale == null ||
                           profileImagePath == null ||
                           karnehImagePath == null
-                      ? CustomButtonLargeDimmed(
+                      ? const CustomButtonLargeDimmed(
                           text: 'التالي',
                         )
                       : CustomButtonLarge(

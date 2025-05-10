@@ -24,8 +24,8 @@ class CustomNormalRichText extends StatelessWidget {
                 ? '   (أختياري)'
                 : '  *', // الجزء الثاني باللون الأحمر
             style: ischoosen
-                ? TextStyle(color: Colors.grey, fontSize: 11)
-                : TextStyle(color: Colors.red, fontSize: 16),
+                ? const TextStyle(color: Colors.grey, fontSize: 11)
+                : const TextStyle(color: Colors.red, fontSize: 16),
           ),
         ],
       ),

@@ -67,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: CustomSvgimage(
                       hight: 70,
@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 24.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'الأسم',
                   ),
@@ -111,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'رقم الموبيل',
                   ),
@@ -126,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: true,
                     firstText: 'إيميل',
                   ),
@@ -147,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomNormalRichText(
+                            const CustomNormalRichText(
                               ischoosen: false,
                               firstText: 'المدينة',
                             ),
@@ -191,7 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomNormalRichText(
+                            const CustomNormalRichText(
                               ischoosen: false,
                               firstText: 'المنطقة',
                             ),
@@ -201,7 +201,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
                               builder: (context, state) {
                                 return selectedValueCity == null
-                                    ? Text('برجاء اختيار المدينة أولا')
+                                    ? const Text('برجاء اختيار المدينة أولا')
                                     : CustomDropDownMenu(
                                         isLoading: state.regionsStatus ==
                                             LookupStatus.loading,
@@ -262,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           selectedValueCity == null ||
                           selectedValueRegion == null ||
                           isMale == null
-                      ? CustomButtonLargeDimmed(
+                      ? const CustomButtonLargeDimmed(
                           text: 'التالي',
                         )
                       : CustomButtonLarge(

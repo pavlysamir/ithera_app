@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ithera_app/core/cashe/cache_helper.dart';
-import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
@@ -19,7 +17,7 @@ class DoctorHomeScreen extends StatelessWidget {
       appBar: AppBar(
           toolbarHeight: 70.h,
           bottom: PreferredSize(
-              preferredSize: Size.fromHeight(0),
+              preferredSize: const Size.fromHeight(0),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Container(
@@ -28,7 +26,7 @@ class DoctorHomeScreen extends StatelessWidget {
                   color: AppColors.grey100,
                 ),
               )),
-          title: CustomTitleAppBar(),
+          title: const CustomTitleAppBar(),
           actionsPadding: EdgeInsets.symmetric(horizontal: 20.w),
           actions: [
             IconButton(
@@ -44,7 +42,7 @@ class DoctorHomeScreen extends StatelessWidget {
         create: (context) => getIt<BadeLookUpCubit>()..getAllRegions(
             // CacheHelper.getInt(key: CacheConstants.regionId)!,
             1),
-        child: AddAppountmentScreen(),
+        child: const AddAppountmentScreen(),
       ),
 
       //AcceptedAccount(),

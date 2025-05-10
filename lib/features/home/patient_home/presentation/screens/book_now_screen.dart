@@ -57,7 +57,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
       appBar: AppBar(
         forceMaterialTransparency: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
+          icon: const Icon(Icons.arrow_back, color: AppColors.primaryColor),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -75,8 +75,8 @@ class _BookNowScreenState extends State<BookNowScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomAppountmentContainer(),
-                    SizedBox(height: 25),
+                    const CustomAppountmentContainer(),
+                    const SizedBox(height: 25),
                     CustomCheckboxRow(
                       isChecked: isChecked,
                       onChanged: (value) {
@@ -86,12 +86,12 @@ class _BookNowScreenState extends State<BookNowScreen> {
                       },
                     ),
                     isChecked ? isCheckWithTrue() : const SizedBox(),
-                    SizedBox(height: 25),
-                    CustomNormalRichText(
+                    const SizedBox(height: 25),
+                    const CustomNormalRichText(
                       ischoosen: true,
                       firstText: 'تقارير الحالة أو تحويل الدكتور',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 18,
                     ),
                     CustomImportImageField(onTap: () {
@@ -115,12 +115,12 @@ class _BookNowScreenState extends State<BookNowScreen> {
                             ),
                           )
                         : const SizedBox(),
-                    SizedBox(height: 25),
-                    CustomNormalRichText(
+                    const SizedBox(height: 25),
+                    const CustomNormalRichText(
                       ischoosen: true,
                       firstText: 'أرفع صورة  الاشعة',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 18,
                     ),
                     CustomImportImageField(onTap: () {
@@ -144,12 +144,12 @@ class _BookNowScreenState extends State<BookNowScreen> {
                             ),
                           )
                         : const SizedBox(),
-                    SizedBox(height: 25),
-                    CustomNormalRichText(
+                    const SizedBox(height: 25),
+                    const CustomNormalRichText(
                       ischoosen: false,
                       firstText: 'وصف التاريخ المرضى والاعراض',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 18,
                     ),
                     CustomDescriptionFormField(
@@ -163,12 +163,12 @@ class _BookNowScreenState extends State<BookNowScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 25),
-                    CustomNormalRichText(
+                    const SizedBox(height: 25),
+                    const CustomNormalRichText(
                       ischoosen: false,
                       firstText: 'عنوانك بالتفصيل',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 18,
                     ),
                     CustomDescriptionFormField(
@@ -182,7 +182,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     ValueListenableBuilder<TextEditingValue>(
                       valueListenable: addressDescriptionController,
                       builder: (context, addressVaue, _) {
@@ -215,12 +215,13 @@ class _BookNowScreenState extends State<BookNowScreen> {
                                       );
                                     },
                                   )
-                                : CustomButtonLargeDimmed(text: 'تأكيد الحجز');
+                                : const CustomButtonLargeDimmed(
+                                    text: 'تأكيد الحجز');
                           },
                         );
                       },
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),
@@ -235,8 +236,8 @@ class _BookNowScreenState extends State<BookNowScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 25),
-        CustomNormalRichText(
+        const SizedBox(height: 25),
+        const CustomNormalRichText(
           ischoosen: false,
           firstText: 'الأسم',
         ),
@@ -251,7 +252,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
         SizedBox(
           height: 32.h,
         ),
-        CustomNormalRichText(
+        const CustomNormalRichText(
           ischoosen: false,
           firstText: 'رقم الموبيل',
         ),
@@ -263,7 +264,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
             validate: conditionOfValidationPhone,
             hintText: '01000000000',
             textInputType: TextInputType.phone),
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
         CustomToggleisMale(
           isMale: isMale,
           onMaleTap: () {

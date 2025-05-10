@@ -70,7 +70,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: CustomSvgimage(
                       hight: 70,
@@ -91,7 +91,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     height: 16.h,
                   ),
                   widget.isFromPatient
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Align(
                           alignment: Alignment.center,
                           child: Text('تسجيل الدخول كدكتور',
@@ -101,7 +101,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   SizedBox(
                     height: 24.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'رقم الموبيل',
                   ),
@@ -116,7 +116,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'كلمة المرور',
                   ),
@@ -209,7 +209,8 @@ class _SigninScreenState extends State<SigninScreen> {
                                           );
                                   },
                                 )
-                              : CustomButtonLargeDimmed(text: 'تسجيل الدخول');
+                              : const CustomButtonLargeDimmed(
+                                  text: 'تسجيل الدخول');
                         },
                       );
                     },

@@ -4,9 +4,9 @@ import 'package:ithera_app/core/theme/app_fonts.dart';
 
 ThemeData getLightTheme() {
   return ThemeData(
-    bottomSheetTheme: BottomSheetThemeData(
+    bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: AppColors.white,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
@@ -22,7 +22,7 @@ ThemeData getLightTheme() {
       seedColor: AppColors.primaryColor,
       brightness: Brightness.light,
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
         // Headline styles
         // headlineLarge: AppTextStyles.font25Bold.copyWith(color: AppColors.white),
         // headlineMedium:
@@ -50,7 +50,7 @@ ThemeData getLightTheme() {
         // labelMedium: AppTextStyles.font12Medium.copyWith(color: AppColors.white),
         // labelSmall: AppTextStyles.font10Medium.copyWith(color: AppColors.white),
         ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       showSelectedLabels: true,
       showUnselectedLabels: true,
       backgroundColor: Colors.white,

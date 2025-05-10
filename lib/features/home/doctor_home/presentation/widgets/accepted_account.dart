@@ -16,7 +16,7 @@ class AcceptedAccount extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CustomSvgimage(
+          const CustomSvgimage(
             path: AssetsData.acceptedAccount,
           ),
           const SizedBox(

@@ -56,7 +56,7 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                       SizedBox(
                         height: 16.h,
                       ),
-                      Align(
+                      const Align(
                         alignment: Alignment.center,
                         child: CustomSvgimage(
                           hight: 70,
@@ -78,7 +78,7 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                       SizedBox(
                         height: 24.h,
                       ),
-                      CustomNormalRichText(
+                      const CustomNormalRichText(
                         ischoosen: false,
                         firstText: 'كلمة المرور',
                       ),
@@ -94,7 +94,7 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                       SizedBox(
                         height: 32.h,
                       ),
-                      CustomNormalRichText(
+                      const CustomNormalRichText(
                         ischoosen: false,
                         firstText: 'تأكيد كلمة المرور',
                       ),
@@ -118,7 +118,7 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                       ),
                       passwordController.text.isEmpty ||
                               confirmPasswordasswordController.text.isEmpty
-                          ? CustomButtonLargeDimmed(
+                          ? const CustomButtonLargeDimmed(
                               text: 'تسجيل الدخول',
                             )
                           : BlocConsumer<DoctorAuthCubit, DoctorAuthState>(

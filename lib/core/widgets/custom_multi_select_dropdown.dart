@@ -23,7 +23,7 @@ class CustomMultiSelectDropDown extends StatelessWidget {
     return SizedBox(
       height: 55.h,
       child: isLoading
-          ? Center(child: CircularProgressIndicator(strokeWidth: 1.5))
+          ? const Center(child: CircularProgressIndicator(strokeWidth: 1.5))
           : InkWell(
               onTap: () async {
                 final result = await showDialog<List<String>>(
@@ -53,7 +53,7 @@ class CustomMultiSelectDropDown extends StatelessWidget {
                         children: [
                           Text('اختار من القائمة',
                               style: AppTextStyles.font10Regular),
-                          RotatedBox(
+                          const RotatedBox(
                             quarterTurns: 1,
                             child: Icon(
                               Icons.arrow_back_ios_outlined,
@@ -73,7 +73,7 @@ class CustomMultiSelectDropDown extends StatelessWidget {
                               ),
                             ),
                           ),
-                          RotatedBox(
+                          const RotatedBox(
                             quarterTurns: 1,
                             child: Icon(
                               Icons.arrow_back_ios_outlined,
@@ -144,7 +144,7 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
                         } else {
                           // ممكن تضيف SnackBar أو Alert هنا
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('مسموح باختيار عنصرين فقط'),
                               duration: Duration(seconds: 1),
                             ),
@@ -163,7 +163,7 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
       ),
       actions: [
         TextButton(
-          child: Text('إلغاء'),
+          child: const Text('إلغاء'),
           onPressed: () => Navigator.of(context).pop(),
         ),
         CustomButtonSmall(

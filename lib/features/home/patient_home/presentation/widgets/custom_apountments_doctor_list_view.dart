@@ -85,7 +85,7 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     height: 38.h,
                     child: CustomButtonLarge(

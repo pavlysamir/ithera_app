@@ -15,7 +15,7 @@ class UnderReviewWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CustomSvgimage(
+          const CustomSvgimage(
             path: AssetsData.underReview,
           ),
           const SizedBox(

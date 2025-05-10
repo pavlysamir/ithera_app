@@ -44,7 +44,7 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
           selectedDays.add(day);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('يمكنك اختيار ٣ أيام فقط')),
+            const SnackBar(content: Text('يمكنك اختيار ٣ أيام فقط')),
           );
         }
       }
@@ -116,7 +116,7 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
@@ -145,7 +145,7 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
                       );
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 11,
                   ),
                   AddDateFormField(
@@ -179,7 +179,7 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
                     },
                     selectedItems: selectedDatesItemsList,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 17,
                   ),
                   selectedDays.isEmpty ||
@@ -189,7 +189,8 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: SizedBox(
                               height: 40.h,
-                              child: CustomButtonLargeDimmed(text: 'أضافة')),
+                              child:
+                                  const CustomButtonLargeDimmed(text: 'أضافة')),
                         )
                       : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),

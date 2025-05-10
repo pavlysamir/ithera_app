@@ -24,7 +24,7 @@ class CustomDropDownMenu extends StatelessWidget {
       height: 55.h,
       width: double.infinity,
       child: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: AppColors.primaryColor,
                 strokeWidth: 1.5,
@@ -32,7 +32,7 @@ class CustomDropDownMenu extends StatelessWidget {
             )
           : DropdownButtonFormField(
               padding: EdgeInsets.zero,
-              icon: RotatedBox(
+              icon: const RotatedBox(
                 quarterTurns: 1,
                 child: Icon(
                   Icons.arrow_back_ios_outlined,

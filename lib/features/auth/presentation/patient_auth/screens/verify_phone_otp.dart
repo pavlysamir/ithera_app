@@ -62,9 +62,9 @@ class _VerifyPhoneOtpRegisterScreenState
                     SizedBox(
                       height: 16.h,
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
-                      child: CustomSvgimage(
+                      child: const CustomSvgimage(
                         hight: 70,
                         path: AssetsData.logoBlue,
                       ),
@@ -141,7 +141,7 @@ class _VerifyPhoneOtpRegisterScreenState
                               selectedFillColor: Colors.grey[200],
                               inactiveFillColor: Colors.grey[100],
                               errorBorderColor: Colors.red),
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black,
                           )),
                     ),

@@ -14,6 +14,7 @@ import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signi
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signup_screen.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/welcome_screen.dart';
+import 'package:ithera_app/features/booking/doctor_booking/presentation/screens/book_details_screen.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/screens/doctor_home_screen.dart';
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
@@ -39,7 +40,7 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => SplashViewBody(),
+          builder: (_) => const SplashViewBody(),
           settings: settings,
         );
       case Routes.onBoardingScreen:
@@ -49,7 +50,7 @@ class AppRouter {
         );
       case Routes.welcomeScreen:
         return MaterialPageRoute(
-          builder: (_) => WelcomeScreen(),
+          builder: (_) => const WelcomeScreen(),
           settings: settings,
         );
       case Routes.signUpScreen:
@@ -63,7 +64,7 @@ class AppRouter {
                 create: (context) => getIt<PatientAuthCubit>(),
               ),
             ],
-            child: SignUpScreen(),
+            child: const SignUpScreen(),
           ),
           settings: settings,
         );
@@ -122,33 +123,33 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => getIt<PatientAuthCubit>(),
-            child: ForgetPasswordScreen(),
+            child: const ForgetPasswordScreen(),
           ),
           settings: settings,
         );
       case Routes.patientHomeLayout:
         return MaterialPageRoute(
-          builder: (_) => PatientHomeLayout(),
+          builder: (_) => const PatientHomeLayout(),
           settings: settings,
         );
       case Routes.filterScreen:
         return MaterialPageRoute(
-          builder: (_) => FilterScreen(),
+          builder: (_) => const FilterScreen(),
           settings: settings,
         );
       case Routes.patientEditProfileScreen:
         return MaterialPageRoute(
-          builder: (_) => PatientEditProfile(),
+          builder: (_) => const PatientEditProfile(),
           settings: settings,
         );
       case Routes.patientContentUsScreen:
         return MaterialPageRoute(
-          builder: (_) => ContantUsScreen(),
+          builder: (_) => const ContantUsScreen(),
           settings: settings,
         );
       case Routes.patientPricesScreen:
         return MaterialPageRoute(
-          builder: (_) => PricesScreen(),
+          builder: (_) => const PricesScreen(),
           settings: settings,
         );
       case Routes.doctorSignUpScreen:
@@ -164,26 +165,26 @@ class AppRouter {
                 create: (context) => getIt<DoctorAuthCubit>(),
               ),
             ],
-            child: DoctorSignupScreen(),
+            child: const DoctorSignupScreen(),
           ),
           settings: settings,
         );
       case Routes.doctorScreen:
         return MaterialPageRoute(
-          builder: (_) => DoctorScreen(),
+          builder: (_) => const DoctorScreen(),
           settings: settings,
         );
       case Routes.bookNowScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<BookingCubit>(),
-            child: BookNowScreen(),
+            child: const BookNowScreen(),
           ),
           settings: settings,
         );
       case Routes.doctorHomeScreen:
         return MaterialPageRoute(
-          builder: (_) => DoctorHomeScreen(),
+          builder: (_) => const DoctorHomeScreen(),
           settings: settings,
         );
       case Routes.doctorEditProfileScreen:
@@ -194,12 +195,17 @@ class AppRouter {
                 ..getAllCities()
                 ..getAllSpecialties(),
             ),
-          ], child: DoctorEditProfile()),
+          ], child: const DoctorEditProfile()),
           settings: settings,
         );
       case Routes.walletScreen:
         return MaterialPageRoute(
-          builder: (_) => WalletScreen(),
+          builder: (_) => const WalletScreen(),
+          settings: settings,
+        );
+      case Routes.bookDetailsScreen:
+        return MaterialPageRoute(
+          builder: (_) => const BookDetailsScreen(),
           settings: settings,
         );
       default:

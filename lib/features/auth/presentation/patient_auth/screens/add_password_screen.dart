@@ -13,7 +13,6 @@ import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
-import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
@@ -55,7 +54,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       SizedBox(
                         height: 16.h,
                       ),
-                      Align(
+                      const Align(
                         alignment: Alignment.center,
                         child: CustomSvgimage(
                           hight: 70,
@@ -77,7 +76,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       SizedBox(
                         height: 24.h,
                       ),
-                      CustomNormalRichText(
+                      const CustomNormalRichText(
                         ischoosen: false,
                         firstText: 'كلمة المرور',
                       ),
@@ -93,7 +92,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       SizedBox(
                         height: 32.h,
                       ),
-                      CustomNormalRichText(
+                      const CustomNormalRichText(
                         ischoosen: false,
                         firstText: 'تأكيد كلمة المرور',
                       ),
@@ -117,7 +116,7 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       ),
                       passwordController.text.isEmpty ||
                               confirmPasswordasswordController.text.isEmpty
-                          ? CustomButtonLargeDimmed(
+                          ? const CustomButtonLargeDimmed(
                               text: 'تسجيل الدخول',
                             )
                           : BlocConsumer<PatientAuthCubit, PatientAuthState>(

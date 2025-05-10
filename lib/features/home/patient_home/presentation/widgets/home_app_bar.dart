@@ -44,7 +44,7 @@ class HomeAppbar extends StatelessWidget {
       titleSpacing: 20.w,
       automaticallyImplyLeading: false,
       flexibleSpace: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: AppColors.backgroundHomeAppBar,
             begin: Alignment.centerLeft,
@@ -62,7 +62,7 @@ class HomeAppbar extends StatelessWidget {
                 kToolbarHeight + MediaQuery.of(context).padding.top + 80.h;
             return isCollapsed
                 ? Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: AppColors.backgroundHomeAppBar,
                         begin: Alignment.centerLeft,
@@ -96,13 +96,13 @@ class HomeAppbar extends StatelessWidget {
                                 vertical: 10.h,
                               ),
                               hintText: 'ابحث عن دكتورك',
-                              hintStyle: TextStyle(color: Colors.grey),
+                              hintStyle: const TextStyle(color: Colors.grey),
                               prefixIcon: Row(
                                 children: [
                                   SizedBox(
                                     width: 10.w,
                                   ),
-                                  CustomSvgimage(
+                                  const CustomSvgimage(
                                     path: 'assets/icons/search_icon.svg',
                                     hight: 25,
                                   ),

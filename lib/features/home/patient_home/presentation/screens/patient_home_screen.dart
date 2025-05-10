@@ -28,14 +28,14 @@ class PatientHomeScreen extends StatelessWidget {
                   .copyWith(color: AppColors.blackLight),
             ),
             SizedBox(height: 2.h),
-            Divider(
+            const Divider(
               color: AppColors.grey100,
               thickness: 1,
             ),
           ],
         ),
       )),
-      CustomDoctorsListView(),
+      const CustomDoctorsListView(),
     ]));
   }
 }

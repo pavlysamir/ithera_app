@@ -21,7 +21,7 @@ class DoctorScreen extends StatelessWidget {
             expandedHeight: 270.0.h,
             pinned: true,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: AppColors.white),
+              icon: const Icon(Icons.arrow_back, color: AppColors.white),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -38,7 +38,7 @@ class DoctorScreen extends StatelessWidget {
                           'https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg'),
                   Container(
                     height: 20,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
@@ -69,14 +69,14 @@ class DoctorScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      StarRating(
+                      const StarRating(
                         rating: 4.2, // خليها القيمه اللي عندك
                         size: 20,
                         color: Colors.amber,
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(
                     'اخصائى العلاج الطبيعى لحالات العظام والاطفال',
                     maxLines: 2,
@@ -85,14 +85,14 @@ class DoctorScreen extends StatelessWidget {
                       color: AppColors.blackLight,
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Text('نبذة عن الدكتور',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font16Regular.copyWith(
                         color: AppColors.primaryColor,
                       )),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(
                     'علاج طبيعي معتمد، يتمتع بخبرة واسعة في تشخيص وعلاج الحالات العضلية والعصبية والهيكلية. يقدّم برامج تأهيلية مخصصة تساعد المرضى على استعادة حركتهم الطبيعية وتحسين جودة حياتهم',
                     style: AppTextStyles.font14Regular.copyWith(
@@ -100,8 +100,8 @@ class DoctorScreen extends StatelessWidget {
                       height: 1.8,
                     ),
                   ),
-                  SizedBox(height: 20.0),
-                  Divider(
+                  const SizedBox(height: 20.0),
+                  const Divider(
                     color: AppColors.grey300,
                     thickness: 1,
                   ),
@@ -131,14 +131,14 @@ class DoctorScreen extends StatelessWidget {
                           .copyWith(color: AppColors.blackLight),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Text('المواعيد المتاحة',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font16Regular.copyWith(
                         color: AppColors.primaryColor,
                       )),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                 ],
               ),
             ),
@@ -150,8 +150,8 @@ class DoctorScreen extends StatelessWidget {
                   height: 10.h,
                   color: AppColors.white,
                 ),
-                CustomApountmentsDoctorListView(),
-                SizedBox(height: 30.0),
+                const CustomApountmentsDoctorListView(),
+                const SizedBox(height: 30.0),
               ],
             ),
           ),

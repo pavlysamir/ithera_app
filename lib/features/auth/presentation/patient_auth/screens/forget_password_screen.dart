@@ -49,7 +49,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: CustomSvgimage(
                       hight: 70,
@@ -69,7 +69,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   SizedBox(
                     height: 24.h,
                   ),
-                  CustomNormalRichText(
+                  const CustomNormalRichText(
                     ischoosen: false,
                     firstText: 'رقم الموبيل',
                   ),
@@ -85,7 +85,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     height: MediaQuery.of(context).size.height * 0.45,
                   ),
                   phoneController.text.isEmpty
-                      ? CustomButtonLargeDimmed(
+                      ? const CustomButtonLargeDimmed(
                           text: 'ارسال',
                         )
                       : CustomButtonLarge(

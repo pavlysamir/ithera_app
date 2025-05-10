@@ -27,7 +27,7 @@ class BuildBoardingItem extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        CustomSvgimage(
+        const CustomSvgimage(
           hight: 50,
           path: AssetsData.onBordingLines,
         ),

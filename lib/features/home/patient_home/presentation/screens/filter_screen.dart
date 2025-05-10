@@ -48,12 +48,12 @@ class _FilterScreenState extends State<FilterScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: RotatedBox(
+                      icon: const RotatedBox(
                           quarterTurns: 2,
                           child: Icon(
                             Icons.arrow_back,
@@ -61,14 +61,14 @@ class _FilterScreenState extends State<FilterScreen> {
                           ))),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'ابحث عن دكتور من خلال المنطقة او التخصص الذي تحتاجه',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.font12Regular,
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               SizedBox(
                 height: 60.h,
                 child: TextFormField(
@@ -82,13 +82,13 @@ class _FilterScreenState extends State<FilterScreen> {
                       vertical: 10.h,
                     ),
                     hintText: 'ابحث عن دكتورك بالأسم',
-                    hintStyle: TextStyle(color: Colors.grey),
+                    hintStyle: const TextStyle(color: Colors.grey),
                     prefixIcon: Row(
                       children: [
                         SizedBox(
                           width: 10.w,
                         ),
-                        CustomSvgimage(
+                        const CustomSvgimage(
                           path: 'assets/icons/search_icon.svg',
                           hight: 25,
                         ),
@@ -127,13 +127,13 @@ class _FilterScreenState extends State<FilterScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 28),
+              const SizedBox(height: 28),
               Text(
                 'المنطقة',
                 style:
                     AppTextStyles.font16Regular.copyWith(color: Colors.black),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomDropDownMenu(
                 items: ['القاهرة', 'الجيزة'],
                 onChange: (newValue) {
@@ -142,13 +142,13 @@ class _FilterScreenState extends State<FilterScreen> {
                   });
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'التخصص',
                 style:
                     AppTextStyles.font16Regular.copyWith(color: Colors.black),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomDropDownMenu(
                 items: ['اختر التخصص'],
                 onChange: (newValue) {
@@ -157,7 +157,7 @@ class _FilterScreenState extends State<FilterScreen> {
                   });
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomToggleisMale(
                 fromAuth: false,
                 isMale: isMale,
@@ -200,7 +200,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       },
                       color: AppColors.primaryColor,
                     )
-                  : CustomButtonLargeDimmed(
+                  : const CustomButtonLargeDimmed(
                       text: 'بحث',
                     ),
             ],

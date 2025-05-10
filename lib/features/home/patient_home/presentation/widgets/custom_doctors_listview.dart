@@ -11,7 +11,7 @@ class CustomDoctorsListView extends StatelessWidget {
     return SliverList.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return CustomItemDoctor();
+          return const CustomItemDoctor();
         });
   }
 }
