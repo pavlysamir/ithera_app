@@ -31,6 +31,28 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
       TextEditingController();
 
   var formAddPasswordPhoneKey = GlobalKey<FormState>();
+
+  bool isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    passwordController.addListener(_updateButtonState);
+    confirmPasswordasswordController.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+    final shouldEnable = passwordController.text.isNotEmpty &&
+        confirmPasswordasswordController.text.isNotEmpty;
+
+    if (isButtonEnabled != shouldEnable) {
+      setState(() {
+        isButtonEnabled = shouldEnable;
+      });
+    }
+  }
+
   @override
   void dispose() {
     passwordController.dispose();
@@ -114,12 +136,8 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.1,
                       ),
-                      passwordController.text.isEmpty ||
-                              confirmPasswordasswordController.text.isEmpty
-                          ? const CustomButtonLargeDimmed(
-                              text: 'تسجيل الدخول',
-                            )
-                          : BlocConsumer<PatientAuthCubit, PatientAuthState>(
+                      isButtonEnabled
+                          ? BlocConsumer<PatientAuthCubit, PatientAuthState>(
                               listener: (context, state) {
                                 if (state is PatientAuthSuccess) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -169,6 +187,9 @@ class _AddPasswordScreenState extends State<AddPasswordScreen> {
                                         color: AppColors.primaryColor,
                                       );
                               },
+                            )
+                          : const CustomButtonLargeDimmed(
+                              text: 'تسجيل الدخول',
                             ),
                       SizedBox(
                         height: 50.h,

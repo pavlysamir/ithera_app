@@ -19,7 +19,6 @@ import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/custom
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
-import '../../../../auth/presentation/patient_auth/widgets/custom_smooth_indicaror.dart';
 
 class DoctorEditProfile extends StatefulWidget {
   const DoctorEditProfile({super.key});

@@ -27,7 +27,6 @@ class ApiKey {
   static String errors = "errors";
   static String email = "email";
   static String password = "password";
-  static String mobNumber = "mobileNumber";
   static String userName = "userName";
   static String phoneNumber = "phoneNumber";
   static String cityId = "cityId";

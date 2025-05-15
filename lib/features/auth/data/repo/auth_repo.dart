@@ -19,9 +19,9 @@ class AuthRepo {
     try {
       final response = await api.post(
         EndPoint.login,
-        queryParameters: {
-          ApiKey.mobNumber: mobileNumber,
+        data: {
           ApiKey.password: password,
+          ApiKey.phoneNumber: mobileNumber,
           ApiKey.role: roleId,
         },
       );
