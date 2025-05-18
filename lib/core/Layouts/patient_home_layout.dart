@@ -43,7 +43,8 @@ class _HomeLayoutState extends State<PatientHomeLayout> {
                             color: cubit.currentIndex == 0
                                 ? AppColors.primaryColor
                                 : Colors.black,
-                            height: 24,
+                            width: 13.w,
+                            height: 24.h,
                           ),
                           label: 'الإعدادت'),
                       BottomNavigationBarItem(
@@ -52,7 +53,8 @@ class _HomeLayoutState extends State<PatientHomeLayout> {
                             color: cubit.currentIndex == 1
                                 ? AppColors.primaryColor
                                 : Colors.black,
-                            height: 24,
+                            height: 24.h,
+                            width: 13.w,
                           ),
                           label: 'الصفحة الرئيسية'),
                       BottomNavigationBarItem(
@@ -61,7 +63,8 @@ class _HomeLayoutState extends State<PatientHomeLayout> {
                           color: cubit.currentIndex == 2
                               ? AppColors.primaryColor
                               : Colors.black,
-                          height: 24,
+                          width: 13.w,
+                          height: 24.h,
                         ),
                         label: 'الحجوزات',
                       ),
@@ -76,9 +79,10 @@ class _HomeLayoutState extends State<PatientHomeLayout> {
                   bottom: 0, // Adjust the position to be under the label
                   right: (MediaQuery.of(context).size.width / 3) *
                           cubit.currentIndex +
-                      13, // Adjust the position to be under the icon
+                      3.w, // Adjust the position to be under the icon
                   child: Container(
-                    width: 110, // Width of the underline
+                    width: MediaQuery.of(context).size.width /
+                        3, // Width of the underline
                     height: 6, // Thickness of the line
                     decoration: const BoxDecoration(
                       color: AppColors.primaryColor, // Blue color

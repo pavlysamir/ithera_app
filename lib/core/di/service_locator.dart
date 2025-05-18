@@ -7,6 +7,7 @@ import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_au
 import 'package:ithera_app/features/get_baseLookUp/data/repo/base_look_repo.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
+import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
 
 final getIt = GetIt.instance;
 void setUpServiceLocator() {
@@ -30,4 +31,5 @@ void setUpServiceLocator() {
       )));
 
   getIt.registerFactory<BookingCubit>((() => BookingCubit()));
+  getIt.registerFactory<SettingsCubit>((() => SettingsCubit()));
 }

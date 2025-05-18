@@ -1,9 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
+import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/patient_settings_screen.dart';
 
 class DoctorSettingsScreen extends StatelessWidget {
@@ -61,21 +64,45 @@ class DoctorSettingsScreen extends StatelessWidget {
           title: 'تسجيل الخروج',
           icon: Icons.exit_to_app,
           onTap: () {
+            final settingsCubit =
+                SettingsCubit.get(context); // خده من السياق الحالي
             showDialog(
                 context: context,
-                builder: (BuildContext context) => PopUpDialog(
-                      function2: () {},
-                      function: () {
-                        Navigator.pop(context);
-                      },
-                      title: 'هل تريد بالتأكيد تسجيل الخروج من هذا الحساب؟',
-                      img: AssetsData.logout,
-                      subTitle: '',
-                      colorButton1: AppColors.primaryColor,
-                      colorButton2: AppColors.white,
-                      textColortcolor1: Colors.white,
-                      textColortcolor2: AppColors.primaryColor,
-                      context: context,
+                builder: (BuildContext context) => BlocProvider.value(
+                      value: settingsCubit,
+                      child: BlocConsumer<SettingsCubit, SeetingsState>(
+                        listener: (context, state) {
+                          if (state is SignOutSuccess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('تم تسجيل الخروج بنجاح'),
+                              ),
+                            );
+                            NavigationService()
+                                .navigateAndRemoveUntil(Routes.welcomeScreen);
+                          }
+                        },
+                        builder: (context, state) {
+                          return PopUpDialog(
+                            function2: () {
+                              SettingsCubit.get(context).lgOut();
+                            },
+                            function: () {
+                              Navigator.pop(context);
+                            },
+                            title:
+                                'هل تريد بالتأكيد تسجيل الخروج من هذا الحساب؟',
+                            img: AssetsData.logout,
+                            subTitle: '',
+                            colorButton1: AppColors.primaryColor,
+                            colorButton2: AppColors.white,
+                            textColortcolor1: Colors.white,
+                            textColortcolor2: AppColors.primaryColor,
+                            context: context,
+                          );
+                        },
+                      ),
                     ));
           }),
     ];

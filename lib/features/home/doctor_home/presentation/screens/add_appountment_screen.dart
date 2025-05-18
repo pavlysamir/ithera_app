@@ -9,6 +9,7 @@ import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/widgets/add_date_form_field.dart';
+import 'package:ithera_app/features/home/doctor_home/presentation/widgets/custom_calender_field.dart';
 
 class AddAppountmentScreen extends StatefulWidget {
   const AddAppountmentScreen({super.key});
@@ -59,7 +60,7 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
         children: [
           Container(
             width: double.infinity,
-            height: context.hightMediaQuery * 0.3,
+            height: context.hightMediaQuery * 0.4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -154,18 +155,19 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
                         ? 'اختار السعات المتاحة لديك  '
                         : selectedDatesItemsList.join(', '),
                     isLoading: false,
-                    items: [
-                      '2-4 صباحاً',
-                      '4-6 صباحاً',
-                      '6-8 صباحاً',
-                      '8-10 صباحاً',
+                    items: const [
                       '10-12 صباحاً',
+                      '11-1 صباحاً',
                       '12-2 مساءاً',
+                      '1-3 مساءاً',
                       '2-4 مساءاً',
+                      '3-5 مساءاً',
                       '4-6 مساءاً',
+                      '5-7 مساءاً',
                       '6-8 مساءاً',
+                      '7-9 مساءاً',
                       '8-10 مساءاً',
-                      '10-12 مساءاً',
+                      '9-11 مساءاً',
                     ],
                     onSelectionChanged: (newDate) {
                       setState(() {
@@ -179,6 +181,10 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
                     },
                     selectedItems: selectedDatesItemsList,
                   ),
+                  const SizedBox(
+                    height: 11,
+                  ),
+                  const DatePickerField(),
                   const SizedBox(
                     height: 17,
                   ),

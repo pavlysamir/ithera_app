@@ -14,10 +14,12 @@ class AssetsData {
   static const rejectedAccount = 'assets/images/rejected_account.svg';
   static const wallet = 'assets/images/wallet.svg';
   static const noRequestes = 'assets/images/no_requestes.svg';
+  static const noBooking = 'assets/images/no_booking.svg';
 
   //icons
   static const male = 'assets/icons/male.svg';
   static const female = 'assets/icons/female.svg';
   static const time_range = 'assets/icons/time_range.svg';
   static const call = 'assets/icons/call.svg';
+  static const calender = 'assets/icons/calendar_icon.svg';
 }

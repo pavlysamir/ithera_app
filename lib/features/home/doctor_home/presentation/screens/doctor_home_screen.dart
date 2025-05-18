@@ -7,6 +7,7 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/screens/add_appountment_screen.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/widgets/custom_title_appBar.dart';
+import 'package:ithera_app/features/home/doctor_home/presentation/widgets/new_appountment_details.dart';
 
 class DoctorHomeScreen extends StatelessWidget {
   const DoctorHomeScreen({super.key});
@@ -42,7 +43,11 @@ class DoctorHomeScreen extends StatelessWidget {
         create: (context) => getIt<BadeLookUpCubit>()..getAllRegions(
             // CacheHelper.getInt(key: CacheConstants.regionId)!,
             1),
-        child: const AddAppountmentScreen(),
+        child: const SingleChildScrollView(
+          child: Column(
+            children: [AddAppountmentScreen(), NewApppountmentDetails()],
+          ),
+        ),
       ),
 
       //AcceptedAccount(),
