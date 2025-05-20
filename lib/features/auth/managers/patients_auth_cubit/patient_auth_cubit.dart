@@ -71,9 +71,6 @@ class PatientAuthCubit extends Cubit<PatientAuthState> {
       (failure) => emit(PatientLoginError(failure)),
       (success) async {
         emit(PatientLoginSuccess('success'));
-        await CacheHelper.setSecureData(
-            key: CacheConstants.token, value: success.token);
-        await CacheHelper.set(key: CacheConstants.userId, value: success.id);
       },
     );
   }

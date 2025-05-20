@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/Layouts/patient_home_layout.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/routing/routes.dart';
+import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/screens/doctor_add_password_screen.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/screens/doctor_signup_screen.dart';
 import 'package:ithera_app/features/auth/managers/doctor_auth_cubit/doctor_auth_cubit.dart';
@@ -91,8 +92,15 @@ class AppRouter {
 
       case Routes.doctorAddPasswordScreen:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => getIt<DoctorAuthCubit>(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<AddFilesCubit>(
+                create: (context) => getIt<AddFilesCubit>(),
+              ),
+              BlocProvider<DoctorAuthCubit>(
+                create: (context) => getIt<DoctorAuthCubit>(),
+              ),
+            ],
             child: DoctorAddPasswordScreen(
               isFromForgetPassword: settings.arguments as bool,
             ),
