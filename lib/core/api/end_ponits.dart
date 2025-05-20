@@ -16,6 +16,8 @@ class EndPoint {
 
   static String addFile = "File/AddFile";
 
+  static String manageSchedules = "api/Doctor/manageSchedules";
+
   static String getUserDataEndPoint(id) {
     return "/User/$id";
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -130,7 +131,7 @@ class DoctorAuthCubit extends Cubit<DoctorAuthState> {
     emit(CashedDoctorRegisterUserDataSuccess());
   }
 
-  doctorSignUp() async {
+  Future<Either<String, String>> doctorSignUp() async {
     emit(DoctorAuthLoading());
 
     final result = await authRepo.doctorRegister(
@@ -148,8 +149,16 @@ class DoctorAuthCubit extends Cubit<DoctorAuthState> {
     );
 
     result.fold(
-      (failure) => emit(DoctorAuthError(failure)),
-      (success) => emit(DoctorAuthSuccess('success')),
+      (failure) {
+        emit(DoctorAuthError(failure));
+        return Left(failure);
+      },
+      (success) {
+        emit(DoctorAuthSuccess('success'));
+        return Right(success);
+      },
     );
+
+    return result;
   }
 }

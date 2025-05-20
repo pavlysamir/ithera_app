@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +16,7 @@ import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
 import 'package:ithera_app/features/auth/managers/doctor_auth_cubit/doctor_auth_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
@@ -124,15 +127,18 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                           : BlocConsumer<DoctorAuthCubit, DoctorAuthState>(
                               listener: (context, state) {
                                 if (state is DoctorAuthSuccess) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: Colors.green,
-                                      content: Text('تم تسجيل الدخول بنجاح'),
-                                    ),
+                                  AddFilesCubit.get(context).addFile(
+                                    rileId: 1,
+                                    fileType: [3],
+                                    files: [
+                                      File(CacheHelper.getString(
+                                          key: CacheConstants.doctorImage)!),
+                                      File(CacheHelper.getString(
+                                          key: CacheConstants.karnehImage)!),
+                                    ],
                                   );
-                                  NavigationService().navigateAndRemoveUntil(
-                                      arguments: false, Routes.signInScreen);
-                                } else if (state is DoctorAuthError) {
+                                }
+                                if (state is DoctorAuthError) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       backgroundColor: Colors.red,
@@ -148,27 +154,51 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                                           color: AppColors.primaryColor,
                                         ),
                                       )
-                                    : CustomButtonLarge(
-                                        text: 'تسجيل الدخول',
-                                        textColor: Colors.white,
-                                        function: () async {
-                                          if (formAddPasswordPhoneKey
-                                              .currentState!
-                                              .validate()) {
-                                            // Delay the state-changing operations until after the current frame
-                                            SchedulerBinding.instance
-                                                .addPostFrameCallback((_) {
-                                              CacheHelper.set(
-                                                key: CacheConstants.password,
-                                                value: passwordController.text,
-                                              ).then((value) async {
-                                                DoctorAuthCubit.get(context)
-                                                    .doctorSignUp();
-                                              });
-                                            });
+                                    : BlocConsumer<AddFilesCubit,
+                                        AddFilesState>(
+                                        listener: (context, state) {
+                                          if (state is AddFileSuccess) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                backgroundColor: Colors.green,
+                                                content: Text(
+                                                    'تم تسجيل الدخول بنجاح'),
+                                              ),
+                                            );
+                                            NavigationService()
+                                                .navigateAndRemoveUntil(
+                                                    arguments: false,
+                                                    Routes.signInScreen);
                                           }
                                         },
-                                        color: AppColors.primaryColor,
+                                        builder: (context, state) {
+                                          return CustomButtonLarge(
+                                            text: 'تسجيل الدخول',
+                                            textColor: Colors.white,
+                                            function: () async {
+                                              if (formAddPasswordPhoneKey
+                                                  .currentState!
+                                                  .validate()) {
+                                                // Delay the state-changing operations until after the current frame
+                                                SchedulerBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  CacheHelper.set(
+                                                    key:
+                                                        CacheConstants.password,
+                                                    value:
+                                                        passwordController.text,
+                                                  ).then((value) async {
+                                                    await DoctorAuthCubit.get(
+                                                            context)
+                                                        .doctorSignUp();
+                                                  });
+                                                });
+                                              }
+                                            },
+                                            color: AppColors.primaryColor,
+                                          );
+                                        },
                                       );
                               },
                             ),

@@ -5,9 +5,7 @@ import 'package:ithera_app/core/api/general_response_model.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/errors/exceptions.dart';
-import 'package:ithera_app/features/auth/data/models/doctor_register_model.dart';
 import 'package:ithera_app/features/auth/data/models/login_model.dart';
-import 'package:ithera_app/features/auth/data/models/patient_register_model.dart';
 
 class AuthRepo {
   final ApiConsumer api;
@@ -34,6 +32,9 @@ class AuthRepo {
             key: CacheConstants.token, value: parsed.data!.token);
         await CacheHelper.set(
             key: CacheConstants.userId, value: parsed.data!.id);
+
+        await CacheHelper.set(
+            key: CacheConstants.userName, value: parsed.data!.userName);
         return Right(parsed.data!);
       } else {
         return Left(parsed.message);
@@ -43,7 +44,7 @@ class AuthRepo {
     }
   }
 
-  Future<Either<String, PatientRegisterModel>> patientRegister({
+  Future<Either<String, String>> patientRegister({
     required String email,
     required String phoneNumber,
     required String userName,
@@ -63,22 +64,17 @@ class AuthRepo {
         ApiKey.gender: genderId,
         ApiKey.dateOfBirth: DateTime.now().toIso8601String(),
       });
-      final parsed = BaseResponse<PatientRegisterModel>.fromJson(
-        response,
-        (data) => PatientRegisterModel.fromJson(data),
-      );
 
-      if (parsed.success && parsed.data != null) {
-        return Right(parsed.data!);
-      } else {
-        return Left(parsed.message);
-      }
+      await CacheHelper.set(
+          key: CacheConstants.userId, value: response['data']);
+
+      return Right(response['message']);
     } on ServerException catch (e) {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }
   }
 
-  Future<Either<String, DoctorRegisterModel>> doctorRegister({
+  Future<Either<String, String>> doctorRegister({
     required String email,
     required String phoneNumber,
     required String anotherMobileNumber,
@@ -99,18 +95,10 @@ class AuthRepo {
         ApiKey.gender: genderId,
         ApiKey.specializationFieldIds: specializationIds,
       });
-      final parsed = BaseResponse<DoctorRegisterModel>.fromJson(
-        response,
-        (data) => DoctorRegisterModel.fromJson(data),
-      );
+      await CacheHelper.set(
+          key: CacheConstants.userId, value: response['data']);
 
-      if (parsed.success && parsed.data != null) {
-        //     await CacheHelper.set(
-        // key: CacheConstants.userId, value: parsed.data!.);
-        return Right(parsed.data!);
-      } else {
-        return Left(parsed.message);
-      }
+      return Right(response['message']);
     } on ServerException catch (e) {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 
@@ -41,7 +43,9 @@ class CustomTitleAppBar extends StatelessWidget {
                 // getIt
                 //         .get<CashHelperSharedPreferences>()
                 //         .getData(key: ApiKey.userName) ??
-                'د/ بيتر يونس',
+
+                CacheHelper.getString(key: CacheConstants.userName) ??
+                    'د/ بيتر يونس',
                 style: AppTextStyles.font20Regular.copyWith(
                   color: AppColors.primaryColor,
                 ),
