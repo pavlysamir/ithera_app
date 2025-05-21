@@ -17,6 +17,8 @@ class AssetsData {
   static const noBooking = 'assets/images/no_booking.svg';
 
   //icons
+  static const notification = 'assets/icons/notification_icon.svg';
+
   static const male = 'assets/icons/male.svg';
   static const female = 'assets/icons/female.svg';
   static const time_range = 'assets/icons/time_range.svg';

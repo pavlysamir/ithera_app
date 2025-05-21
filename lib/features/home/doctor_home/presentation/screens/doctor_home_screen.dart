@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
+import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/screens/add_appountment_screen.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/widgets/custom_title_appBar.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/widgets/new_appountment_details.dart';
@@ -34,15 +38,23 @@ class DoctorHomeScreen extends StatelessWidget {
               icon: CustomSvgimage(
                 hight: 30.h,
                 color: AppColors.blackLight,
-                path: 'assets/icons/notification_icon.svg',
+                path: AssetsData.notification,
               ),
               onPressed: () {},
             ),
           ]),
-      body: BlocProvider(
-        create: (context) => getIt<BadeLookUpCubit>()..getAllRegions(
-            // CacheHelper.getInt(key: CacheConstants.regionId)!,
-            1),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => getIt<DoctorManageSchedulesCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => getIt<BadeLookUpCubit>()
+              ..getAllRegions(
+                CacheHelper.getInt(key: CacheConstants.regionId)!,
+              ),
+          ),
+        ],
         child: const SingleChildScrollView(
           child: Column(
             children: [AddAppountmentScreen(), NewApppountmentDetails()],

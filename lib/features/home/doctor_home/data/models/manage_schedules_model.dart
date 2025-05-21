@@ -17,6 +17,14 @@ class ManageSchedulesModel {
           json['regions'].map((x) => RegionsModel.fromJson(x))),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['doctorId'] = doctorId;
+    data['startDate'] = startDate;
+    data['regions'] = regions.map((v) => v.toJson()).toList();
+    return data;
+  }
 }
 
 class RegionsModel {
@@ -35,6 +43,13 @@ class RegionsModel {
           json['schedules'].map((x) => SchedulesModel.fromJson(x))),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['regionId'] = regionId;
+    data['schedules'] = schedules.map((v) => v.toJson()).toList();
+    return data;
+  }
 }
 
 class SchedulesModel {
@@ -42,9 +57,23 @@ class SchedulesModel {
   String? startTime;
   String? endTime;
 
+  SchedulesModel({
+    this.day,
+    this.startTime,
+    this.endTime,
+  });
+
   SchedulesModel.fromJson(Map<String, dynamic> json) {
     day = json['day'];
     startTime = json['startTime'];
     endTime = json['endTime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['day'] = day;
+    data['startTime'] = startTime;
+    data['endTime'] = endTime;
+    return data;
   }
 }

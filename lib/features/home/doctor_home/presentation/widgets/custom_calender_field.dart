@@ -6,40 +6,24 @@ import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 
 class DatePickerField extends StatefulWidget {
-  const DatePickerField({super.key});
+  const DatePickerField(
+      {super.key, this.selectedDate, required this.onDateSelected});
+  final DateTime? selectedDate;
+  final Function(BuildContext) onDateSelected;
 
   @override
   State<DatePickerField> createState() => _DatePickerFieldState();
 }
 
 class _DatePickerFieldState extends State<DatePickerField> {
-  DateTime? selectedDate;
-
-  Future<void> _selectDate(BuildContext context) async {
-    final now = DateTime.now();
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? now,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      locale: const Locale('ar', ''), // لعرض التاريخ بالعربي
-    );
-
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String displayDate = selectedDate != null
-        ? DateFormat('d MMMM yyyy', 'ar').format(selectedDate!)
+    String displayDate = widget.selectedDate != null
+        ? DateFormat('d MMMM yyyy', 'ar').format(widget.selectedDate!)
         : 'اختر التاريخ';
 
     return InkWell(
-        onTap: () => _selectDate(context),
+        onTap: () => widget.onDateSelected(context),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
@@ -62,7 +46,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       displayDate,
-                      style: selectedDate != null
+                      style: widget.selectedDate != null
                           ? AppTextStyles.font12Regular
                               .copyWith(color: AppColors.black)
                           : AppTextStyles.font12Regular,

@@ -4,6 +4,7 @@ class LoginData {
   final String email;
   final int role;
   final String token;
+  final int? cityId; // ← خليه nullable
 
   LoginData({
     required this.id,
@@ -11,6 +12,7 @@ class LoginData {
     required this.email,
     required this.role,
     required this.token,
+    this.cityId, // ← مش required
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class LoginData {
       email: json['email'],
       role: json['role'],
       token: json['token'],
+      cityId: json.containsKey('cityId') ? json['cityId'] : null, // ← check
     );
   }
 
@@ -30,6 +33,7 @@ class LoginData {
       'email': email,
       'role': role,
       'token': token,
+      if (cityId != null) 'cityId': cityId, // ← send only if not null
     };
   }
 }

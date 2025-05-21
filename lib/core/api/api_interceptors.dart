@@ -1,19 +1,10 @@
 import 'package:dio/dio.dart';
-import 'dart:convert'; // For base64 encoding
+import 'dart:convert';
 
 class ApiInterceptor extends Interceptor {
   ApiInterceptor();
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // Get the token from SharedPreferences
-    // String? token =
-    //     getIt.get<CashHelperSharedPreferences>().getData(key: ApiKey.token);
-
-    // If token is not null, add it to the request headers as a Bearer token
-    // if (token != null) {
-    //   options.headers[ApiKey.authorizationHeader] = 'Bearer $token';
-    // }
-    //options.headers[ApiKey.contantType] = 'application/json-patch+json';
     const String username = '11236180'; // Replace with your username
     const String password = '60-dayfreetrial'; // Replace with your password
     final String basicAuth =
