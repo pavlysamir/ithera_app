@@ -37,7 +37,7 @@ class CustomButtonLarge extends StatelessWidget {
             children: [
               TextSpan(
                   text: text,
-                  style: AppTextStyles.font14Regular.copyWith(color: textColor)
+                  style: AppTextStyles.font20Regular.copyWith(color: textColor)
                   // const TextStyle(
                   //   fontFamily: ,
                   //   overflow: TextOverflow.ellipsis)

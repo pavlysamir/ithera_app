@@ -23,7 +23,9 @@ class CustomButtonLargeDimmed extends StatelessWidget {
       ),
       child: Center(
           child: Text(text,
-              style: AppTextStyles.font14Regular
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.font20Regular
                   .copyWith(color: AppColors.white))),
     );
   }

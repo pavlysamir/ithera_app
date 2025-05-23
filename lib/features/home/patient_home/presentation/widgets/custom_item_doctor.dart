@@ -10,6 +10,7 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 
 import 'package:ithera_app/core/theme/app_shadows.dart';
+import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_star_rating.dart';
 
 class CustomItemDoctor extends StatelessWidget {
   const CustomItemDoctor({
@@ -66,22 +67,10 @@ class CustomItemDoctor extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 5.h),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: AppColors.warning100,
-                          size: 15.sp,
-                        ),
-                        SizedBox(width: 5.w),
-                        Flexible(
-                          child: Text(
-                            '4.8',
-                            style: AppTextStyles.font14Regular
-                                .copyWith(color: AppColors.blackLight),
-                          ),
-                        ),
-                      ],
+                    const StarRating(
+                      rating: 4.2, // خليها القيمه اللي عندك
+                      size: 15,
+                      color: Colors.amber,
                     ),
                     SizedBox(height: 5.h),
                     Row(

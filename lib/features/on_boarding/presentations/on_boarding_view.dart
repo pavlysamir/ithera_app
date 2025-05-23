@@ -50,23 +50,26 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Directionality(
-        textDirection: TextDirection.ltr,
-        child: FloatingActionButton(
-          backgroundColor: AppColors.white,
-          shape: ShapeBorder.lerp(
-              const CircleBorder(), const StadiumBorder(), 0.5),
-          onPressed: () {
-            if (widget.isLast) {
-              submit();
-            } else {
-              widget.boardController.nextPage(
-                  duration: const Duration(milliseconds: 750),
-                  curve: Curves.fastLinearToSlowEaseIn);
-            }
-          },
-          child: const Icon(Icons.arrow_forward,
-              color: AppColors.textGreen, size: 34),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: FloatingActionButton(
+            backgroundColor: AppColors.white,
+            shape: ShapeBorder.lerp(
+                const CircleBorder(), const StadiumBorder(), 0.5),
+            onPressed: () {
+              if (widget.isLast) {
+                submit();
+              } else {
+                widget.boardController.nextPage(
+                    duration: const Duration(milliseconds: 750),
+                    curve: Curves.fastLinearToSlowEaseIn);
+              }
+            },
+            child: const Icon(Icons.arrow_forward,
+                color: AppColors.textGreen, size: 34),
+          ),
         ),
       ),
       body: Padding(

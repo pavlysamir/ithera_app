@@ -44,6 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                   Text('اهلا بك في\nتطبيق i-Thera\nللعلاج الطبيعي',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.font25Medium.copyWith(
+                        height: 1.9,
                         fontSize: 25 / MediaQuery.of(context).textScaleFactor,
                       )),
                   SizedBox(
@@ -67,6 +68,9 @@ class WelcomeScreen extends StatelessWidget {
                     textColor: AppColors.white,
                   ),
                   //  Spacer(),
+                  SizedBox(
+                    height: 110.h,
+                  ),
                   TextButton(
                     onPressed: () {
                       NavigationService().navigateTo(Routes.doctorSignUpScreen);

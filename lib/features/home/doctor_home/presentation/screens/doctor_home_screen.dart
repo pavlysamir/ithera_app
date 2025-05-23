@@ -51,7 +51,7 @@ class DoctorHomeScreen extends StatelessWidget {
           BlocProvider(
             create: (context) => getIt<BadeLookUpCubit>()
               ..getAllRegions(
-                CacheHelper.getInt(key: CacheConstants.regionId)!,
+                CacheHelper.getInt(key: CacheConstants.cityId)!,
               ),
           ),
         ],

@@ -55,7 +55,7 @@ class BuildBoardingItem extends StatelessWidget {
                 height: 20,
               ),
               Align(
-                alignment: Alignment.bottomLeft,
+                alignment: Alignment.center,
                 child: Image.asset(
                   model.image!,
                   height: 350.h,

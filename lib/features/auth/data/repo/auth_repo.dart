@@ -32,8 +32,10 @@ class AuthRepo {
             key: CacheConstants.token, value: parsed.data!.token);
         await CacheHelper.set(
             key: CacheConstants.userId, value: parsed.data!.id);
-        await CacheHelper.set(
-            key: CacheConstants.cityId, value: parsed.data!.cityId);
+        roleId == 1
+            ? await CacheHelper.set(
+                key: CacheConstants.cityId, value: parsed.data!.cityId)
+            : null;
 
         await CacheHelper.set(
             key: CacheConstants.userName, value: parsed.data!.userName);
