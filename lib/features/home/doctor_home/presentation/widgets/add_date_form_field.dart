@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
+import 'package:ithera_app/core/widgets/custom_form_field.dart';
 
 class AddDateFormField extends StatelessWidget {
   const AddDateFormField(
@@ -134,12 +135,17 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
                 cursorHeight: 10,
                 controller: searchController,
                 decoration: InputDecoration(
-                  hintText: 'بحث ',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    borderSide: const BorderSide(color: AppColors.primaryColor),
-                  ),
-                ),
+                    hintText: 'بحث ',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: AppColors.primaryColor),
+                      borderRadius: BorderRadius.circular(5.0),
+                    )),
               ),
             ),
             SizedBox(height: 10.h),
@@ -167,18 +173,17 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
                         onChanged: (checked) {
                           setState(() {
                             if (checked == true) {
-                              // if (tempSelected.length < 2) {
-                              //   tempSelected.add(item);
-                              // } else {
-                              //   // ممكن تضيف SnackBar أو Alert هنا
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(
-                              //       content: Text('مسموح باختيار عنصرين فقط'),
-                              //       duration: Duration(seconds: 1),
-                              //     ),
-                              //   );
-                              // }
-                              tempSelected.add(item);
+                              if (tempSelected.isEmpty) {
+                                tempSelected.add(item);
+                              } else {
+                                // ممكن تضيف SnackBar أو Alert هنا
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('يمكنك اختيار واحد فقط'),
+                                    duration: Duration(seconds: 1),
+                                  ),
+                                );
+                              }
                             } else {
                               tempSelected.remove(item);
                             }
