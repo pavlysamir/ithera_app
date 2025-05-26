@@ -47,11 +47,19 @@ class DoctorHomeScreen extends StatelessWidget {
               onPressed: () {},
             ),
           ]),
-      body: BlocProvider(
-        create: (context) => getIt<BadeLookUpCubit>()
-          ..getAllRegions(
-            CacheHelper.getInt(key: CacheConstants.cityId)!,
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => getIt<BadeLookUpCubit>()
+              ..getAllRegions(
+                CacheHelper.getInt(key: CacheConstants.cityId)!,
+              ),
           ),
+          BlocProvider(
+            create: (context) =>
+                getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),
+          ),
+        ],
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -89,33 +97,45 @@ class DoctorHomeScreen extends StatelessWidget {
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (BuildContext context) => PopUpDialog(
-                                    function2: () async {
-                                      await DoctorManageSchedulesCubit.get(
-                                              context)
-                                          .deleteDoctorSchadules(
-                                              regionId: regions[index].regionId,
-                                              scheduleId:
-                                                  regions[index].cardId);
-                                    },
-                                    function: () {
-                                      Navigator.pop(context);
-                                    },
-                                    title:
-                                        'هل تريد بالتأكيد الغاء هذا الحجز بالكامل ؟',
-                                    img: AssetsData.deleteAccount,
-                                    subTitle: '',
-                                    colorButton1: AppColors.primaryColor,
-                                    colorButton2: AppColors.white,
-                                    textColortcolor1: Colors.white,
-                                    textColortcolor2: AppColors.primaryColor,
-                                    context: context,
+                              builder: (BuildContext context) =>
+                                  BlocProvider.value(
+                                    value: getIt<DoctorManageSchedulesCubit>(),
+                                    child: BlocBuilder<
+                                        DoctorManageSchedulesCubit,
+                                        DoctorManageSchedulesState>(
+                                      builder: (context, state) {
+                                        return PopUpDialog(
+                                          function2: () async {
+                                            await DoctorManageSchedulesCubit
+                                                    .get(context)
+                                                .deleteDoctorSchadules(
+                                                    regionId:
+                                                        regions[index].regionId,
+                                                    scheduleId:
+                                                        regions[index].cardId);
+                                          },
+                                          function: () {
+                                            Navigator.pop(context);
+                                          },
+                                          title:
+                                              'هل تريد بالتأكيد حذف هذا الحجز  ؟',
+                                          img: AssetsData.deleteAccount,
+                                          subTitle: '',
+                                          colorButton1: AppColors.primaryColor,
+                                          colorButton2: AppColors.white,
+                                          textColortcolor1: Colors.white,
+                                          textColortcolor2:
+                                              AppColors.primaryColor,
+                                          context: context,
+                                        );
+                                      },
+                                    ),
                                   ));
                         },
                       ),
                     );
                   } else if (state is GetDoctorSchedulesError) {
-                    return Text('حدث خطأ: ${state.errorMessage}');
+                    return Text('حدث خطأ: //${state.errorMessage}');
                   }
                   return const SizedBox();
                 },

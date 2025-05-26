@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
-import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
-import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
 
 class NewApppountmentDetails extends StatelessWidget {
   final RegionSchedule schadule;
@@ -84,12 +81,7 @@ class NewApppountmentDetails extends StatelessWidget {
                     child: CustomButtonLarge(
                         text: 'حذف',
                         color: AppColors.primaryColor,
-                        function: () {
-                          DoctorManageSchedulesCubit.get(context)
-                              .deleteDoctorSchadules(
-                                  regionId: schadule.regionId,
-                                  scheduleId: schadule.cardId);
-                        })),
+                        function: onTap)),
               ),
             ],
           ),

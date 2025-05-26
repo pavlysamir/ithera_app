@@ -37,7 +37,7 @@ class ApiInterceptor extends Interceptor {
               .contains('invalid_token')) {
         // Token is expired, navigate to login screen
         // navigatorKey.currentState?.pushReplacementNamed();
-        NavigationService().navigateToReplacement(Routes.welcomeScreen);
+        NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
       }
     }
     super.onError(err, handler);

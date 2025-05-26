@@ -135,7 +135,6 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
         }
       },
       (data) {
-        _feachData = true;
         if (!isClosed) {
           emit(DeleteDoctorSchedulesSuccess(message: data));
         }
