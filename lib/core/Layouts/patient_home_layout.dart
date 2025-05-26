@@ -96,7 +96,7 @@ class _HomeLayoutState extends State<PatientHomeLayout> {
               ],
             ),
             body: CacheHelper.getBool(key: CacheConstants.isFromPatient) == true
-                ? cubit.patintScreens[cubit.currentIndex]
+                ? cubit.patientScreens[cubit.currentIndex]
                 : cubit.doctorScreens[cubit.currentIndex],
           );
         },

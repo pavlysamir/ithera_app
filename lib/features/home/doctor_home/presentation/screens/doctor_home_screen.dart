@@ -6,7 +6,6 @@ import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/widgets/custom_listview_loading_indicator.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
@@ -23,30 +22,32 @@ class DoctorHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          forceMaterialTransparency: true,
-          toolbarHeight: 70.h,
-          bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(0),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Container(
-                  margin: EdgeInsets.only(top: 10.h),
-                  height: 1,
-                  color: AppColors.grey100,
-                ),
-              )),
-          title: const CustomTitleAppBar(),
-          actionsPadding: EdgeInsets.symmetric(horizontal: 20.w),
-          actions: [
-            IconButton(
-              icon: CustomSvgimage(
-                hight: 30.h,
-                color: AppColors.blackLight,
-                path: AssetsData.notification,
-              ),
-              onPressed: () {},
+        forceMaterialTransparency: true,
+        toolbarHeight: 70.h,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Container(
+              margin: EdgeInsets.only(top: 10.h),
+              height: 1,
+              color: AppColors.grey100,
             ),
-          ]),
+          ),
+        ),
+        title: const CustomTitleAppBar(),
+        actionsPadding: EdgeInsets.symmetric(horizontal: 20.w),
+        actions: [
+          IconButton(
+            icon: CustomSvgimage(
+              hight: 30.h,
+              color: AppColors.blackLight,
+              path: AssetsData.notification,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -60,92 +61,174 @@ class DoctorHomeScreen extends StatelessWidget {
                 getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),
           ),
         ],
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const AddAppountmentScreen(),
-              BlocConsumer<DoctorManageSchedulesCubit,
-                  DoctorManageSchedulesState>(
-                listener: (context, state) {
-                  if (state is DeleteDoctorSchedulesSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: AppColors.textGreenLight,
-                        content: Text('تم حذف الموعد بنجاح'),
-                      ),
-                    );
-                  } else if (state is DeleteDoctorSchedulesError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: AppColors.error100,
-                        content: Text(state.errorMessage),
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is GetDoctorSchedulesLoading) {
-                    return const CircularProgressIndicator();
-                  } else if (state is GetDoctorSchedulesSuccess) {
-                    final regions = state.data.responseData.regionSchedules;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: regions.length,
-                      itemBuilder: (context, index) => NewApppountmentDetails(
-                        schadule: regions[index],
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  BlocProvider.value(
-                                    value: getIt<DoctorManageSchedulesCubit>(),
-                                    child: BlocBuilder<
-                                        DoctorManageSchedulesCubit,
-                                        DoctorManageSchedulesState>(
-                                      builder: (context, state) {
-                                        return PopUpDialog(
-                                          function2: () async {
-                                            await DoctorManageSchedulesCubit
-                                                    .get(context)
-                                                .deleteDoctorSchadules(
-                                                    regionId:
-                                                        regions[index].regionId,
-                                                    scheduleId:
-                                                        regions[index].cardId);
-                                          },
-                                          function: () {
-                                            Navigator.pop(context);
-                                          },
-                                          title:
-                                              'هل تريد بالتأكيد حذف هذا الحجز  ؟',
-                                          img: AssetsData.deleteAccount,
-                                          subTitle: '',
-                                          colorButton1: AppColors.primaryColor,
-                                          colorButton2: AppColors.white,
-                                          textColortcolor1: Colors.white,
-                                          textColortcolor2:
-                                              AppColors.primaryColor,
-                                          context: context,
-                                        );
-                                      },
-                                    ),
-                                  ));
-                        },
-                      ),
-                    );
-                  } else if (state is GetDoctorSchedulesError) {
-                    return Text('حدث خطأ: //${state.errorMessage}');
-                  }
-                  return const SizedBox();
-                },
+        child: const _DoctorHomeBody(),
+      ),
+    );
+  }
+}
+
+class _DoctorHomeBody extends StatelessWidget {
+  const _DoctorHomeBody();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<DoctorManageSchedulesCubit, DoctorManageSchedulesState>(
+      listener: (context, state) {
+        if (state is DeleteDoctorSchedulesSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: AppColors.textGreenLight,
+              content: Text('تم حذف الموعد بنجاح'),
+            ),
+          );
+        } else if (state is DeleteDoctorSchedulesError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.error100,
+              content: Text(state.errorMessage),
+            ),
+          );
+        } else if (state is DoctorManageSchedulesSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: AppColors.textGreenLight,
+              content: Text('تم إضافة المواعيد بنجاح'),
+            ),
+          );
+        } else if (state is DoctorManageSchedulesError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.error100,
+              content: Text(state.errorMessage),
+            ),
+          );
+        }
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const AddAppountmentScreen(),
+            const _SchedulesList(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SchedulesList extends StatelessWidget {
+  const _SchedulesList();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DoctorManageSchedulesCubit, DoctorManageSchedulesState>(
+      builder: (context, state) {
+        if (state is GetDoctorSchedulesLoading) {
+          return const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is GetDoctorSchedulesError) {
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Text(
+                  'حدث خطأ: ${state.errorMessage}',
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    context
+                        .read<DoctorManageSchedulesCubit>()
+                        .getManageSchedules(forceRefresh: true);
+                  },
+                  child: const Text('إعادة المحاولة'),
+                ),
+              ],
+            ),
+          );
+        } else if (state is GetDoctorSchedulesSuccess) {
+          final schedules = state.data.responseData.regionSchedules;
+
+          if (schedules.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Center(
+                child: Text(
+                  'لا توجد مواعيد محجوزة',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
               ),
-            ],
+            );
+          }
+
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: schedules.length,
+            itemBuilder: (context, index) => NewAppointmentDetails(
+              schadule: schedules[index],
+              onTap: () => _showDeleteDialog(context, schedules[index]),
+            ),
+          );
+        }
+
+        // Handle other states or initial state
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, RegionSchedule schedule) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => BlocProvider.value(
+        value: context.read<DoctorManageSchedulesCubit>(),
+        child: BlocListener<DoctorManageSchedulesCubit,
+            DoctorManageSchedulesState>(
+          listener: (context, state) {
+            if (state is DeleteDoctorSchedulesSuccess ||
+                state is DeleteDoctorSchedulesError) {
+              Navigator.of(dialogContext).pop();
+            }
+          },
+          child: BlocBuilder<DoctorManageSchedulesCubit,
+              DoctorManageSchedulesState>(
+            builder: (context, state) {
+              final isLoading = state is DeleteDoctorSchedulesLoading;
+
+              return PopUpDialog(
+                function2: isLoading
+                    ? () {}
+                    : () async {
+                        await context
+                            .read<DoctorManageSchedulesCubit>()
+                            .deleteDoctorSchedules(
+                              regionId: schedule.regionId,
+                              scheduleId: schedule.cardId,
+                            );
+                      },
+                function: isLoading
+                    ? () {}
+                    : () {
+                        Navigator.of(dialogContext).pop();
+                      },
+                title: 'هل تريد بالتأكيد حذف هذا الحجز؟',
+                img: AssetsData.deleteAccount,
+                subTitle: isLoading ? 'جاري الحذف...' : '',
+                colorButton1: AppColors.primaryColor,
+                colorButton2: AppColors.white,
+                textColortcolor1: Colors.white,
+                textColortcolor2: AppColors.primaryColor,
+                context: context,
+              );
+            },
           ),
         ),
       ),
-
-      //AcceptedAccount(),
     );
   }
 }

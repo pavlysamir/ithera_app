@@ -18,31 +18,32 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   static HomeLayoutCubit get(context) => BlocProvider.of(context);
 
   int currentIndex = 1;
-  List patintScreens = [
-    BlocProvider(
-      create: (context) => getIt<SettingsCubit>(),
-      child: const PatientSettingsScreen(),
-    ),
-    const PatientHomeScreen(),
-    const PatientBookingScreen(),
-  ];
 
-  List doctorScreens = [
-    BlocProvider(
-      create: (context) => getIt<SettingsCubit>(),
-      child: const DoctorSettingsScreen(),
-    ),
-    BlocProvider(
-      create: (context) =>
-          getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),
-      child: const DoctorHomeScreen(),
-    ),
-    const DoctorBookingScreen(),
-  ];
+  List<Widget> get patientScreens => [
+        BlocProvider(
+          create: (context) => getIt<SettingsCubit>(),
+          child: const PatientSettingsScreen(),
+        ),
+        const PatientHomeScreen(),
+        const PatientBookingScreen(),
+      ];
+
+  List<Widget> get doctorScreens => [
+        BlocProvider(
+          create: (context) => getIt<SettingsCubit>(),
+          child: const DoctorSettingsScreen(),
+        ),
+        // Create fresh instance each time to avoid state conflicts
+        BlocProvider(
+          create: (context) =>
+              getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),
+          child: const DoctorHomeScreen(),
+        ),
+        const DoctorBookingScreen(),
+      ];
 
   void changeBottomNavBar(int index) {
     currentIndex = index;
-
     emit(HomeChaneNavBar());
   }
 }

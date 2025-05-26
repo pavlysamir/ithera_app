@@ -7,6 +7,7 @@ import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadule
 import 'package:ithera_app/features/home/doctor_home/data/models/manage_schedules_model.dart';
 import 'package:ithera_app/features/home/doctor_home/data/repos/manage_schedules_booking_repo.dart';
 import 'package:meta/meta.dart';
+
 part 'doctor_manage_schedules_state.dart';
 
 class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
@@ -18,62 +19,84 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
 
   static DoctorManageSchedulesCubit get(context) => BlocProvider.of(context);
 
+  bool _fetchData = false;
+  DoctorScheduleResponse? _cachedData;
+
   Future<void> manageSchedulesBooking({
     required DateTime selectedDate,
     required List<String> selectedDays,
     required List<String> timeRanges,
     required List<int> selectedRegionIds,
   }) async {
+    if (isClosed) return;
+
     emit(DoctorManageSchedulesLoading());
-    final List<String> weekDays = [
-      'السبت',
-      'الأحد',
-      'الاثنين',
-      'الثلاثاء',
-      'الأربعاء',
-      'الخميس',
-      'الجمعة'
-    ];
 
-    // تحويل الأيام لأرقام
-    final dayIndices =
-        selectedDays.map((day) => weekDays.indexOf(day)).toList();
+    try {
+      final List<String> weekDays = [
+        'السبت',
+        'الأحد',
+        'الاثنين',
+        'الثلاثاء',
+        'الأربعاء',
+        'الخميس',
+        'الجمعة'
+      ];
 
-    final schedules = generateSchedules(timeRanges, dayIndices);
+      // تحويل الأيام لأرقام
+      final dayIndices =
+          selectedDays.map((day) => weekDays.indexOf(day)).toList();
 
-    // تجهيز الـ Regions
-    final regions = selectedRegionIds
-        .map((regionId) => RegionsModel(
-            regionId: regionId, days: dayIndices, schedules: schedules))
-        .toList();
+      final schedules = generateSchedules(timeRanges, dayIndices);
 
-    // تنسيق التاريخ
-    final formattedDate = selectedDate.toUtc().toIso8601String();
+      // تجهيز الـ Regions
+      final regions = selectedRegionIds
+          .map((regionId) => RegionsModel(
+              regionId: regionId, days: dayIndices, schedules: schedules))
+          .toList();
 
-    ManageSchedulesModel model = ManageSchedulesModel(
-      doctorId: CacheHelper.getInt(key: CacheConstants.userId)!,
-      startDate: formattedDate,
-      regions: regions,
-    );
+      // تنسيق التاريخ
+      final formattedDate = selectedDate.toUtc().toIso8601String();
 
-    final response = await _manageSchedulesBookingRepo.manageSchedulesBooking(
-        model: model.toJson());
-    print('-------------------------------------------------');
-    print(jsonEncode(model.toJson()));
-    print('-------------------------------------------------');
+      ManageSchedulesModel model = ManageSchedulesModel(
+        doctorId: CacheHelper.getInt(key: CacheConstants.userId)!,
+        startDate: formattedDate,
+        regions: regions,
+      );
 
-    response.fold(
-      (failure) {
-        emit(DoctorManageSchedulesError(errorMessage: failure));
-      },
-      (success) async {
-        if (isClosed) return;
-        emit(DoctorManageSchedulesSuccess(message: success));
-        await Future.delayed(const Duration(milliseconds: 100));
-        if (isClosed) return;
-        await getManageSchedules(forseRefresh: true);
-      },
-    );
+      final response = await _manageSchedulesBookingRepo.manageSchedulesBooking(
+          model: model.toJson());
+
+      print('-------------------------------------------------');
+      print(jsonEncode(model.toJson()));
+      print('-------------------------------------------------');
+
+      if (isClosed) return;
+
+      response.fold(
+        (failure) {
+          if (!isClosed) {
+            emit(DoctorManageSchedulesError(errorMessage: failure));
+          }
+        },
+        (success) async {
+          if (!isClosed) {
+            emit(DoctorManageSchedulesSuccess(message: success));
+            // Reset fetch flag to force refresh
+            _fetchData = false;
+            // Small delay to ensure state is processed
+            await Future.delayed(const Duration(milliseconds: 200));
+            if (!isClosed) {
+              await getManageSchedules(forceRefresh: true);
+            }
+          }
+        },
+      );
+    } catch (e) {
+      if (!isClosed) {
+        emit(DoctorManageSchedulesError(errorMessage: e.toString()));
+      }
+    }
   }
 
   // تجهيز الـ Schedules
@@ -88,57 +111,101 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
     }).toList();
   }
 
-  bool _feachData = false;
-  Future<void> getManageSchedules({bool forseRefresh = false}) async {
-    if (_feachData && !forseRefresh) return;
+  Future<void> getManageSchedules({bool forceRefresh = false}) async {
+    if (isClosed) return;
 
-    if (isClosed) return; // ✅ مهم جدًا
+    // If we already have data and not forcing refresh, return cached data
+    if (_fetchData && !forceRefresh && _cachedData != null) {
+      if (!isClosed) {
+        emit(GetDoctorSchedulesSuccess(data: _cachedData!));
+      }
+      return;
+    }
 
-    emit(GetDoctorSchedulesLoading());
+    if (!isClosed) {
+      emit(GetDoctorSchedulesLoading());
+    }
 
-    final response = await _manageSchedulesBookingRepo.getDoctorSchedules();
+    try {
+      final response = await _manageSchedulesBookingRepo.getDoctorSchedules();
 
-    if (isClosed) return; // ✅ مرة تانية بعد await
+      if (isClosed) return;
 
-    response.fold(
-      (failure) {
-        if (!isClosed) {
-          emit(GetDoctorSchedulesError(errorMessage: failure));
-        }
-      },
-      (data) {
-        _feachData = true;
-        if (!isClosed) {
-          emit(GetDoctorSchedulesSuccess(data: data));
-        }
-      },
-    );
+      response.fold(
+        (failure) {
+          if (!isClosed) {
+            emit(GetDoctorSchedulesError(errorMessage: failure));
+          }
+        },
+        (data) {
+          _fetchData = true;
+          _cachedData = data;
+          if (!isClosed) {
+            emit(GetDoctorSchedulesSuccess(data: data));
+          }
+        },
+      );
+    } catch (e) {
+      if (!isClosed) {
+        emit(GetDoctorSchedulesError(errorMessage: e.toString()));
+      }
+    }
   }
 
-  Future<void> deleteDoctorSchadules(
+  Future<void> deleteDoctorSchedules(
       {required int regionId, required int scheduleId}) async {
     if (isClosed) return;
 
     emit(DeleteDoctorSchedulesLoading());
 
-    final response = await _manageSchedulesBookingRepo.deleteDoctorSchedules(
-      regionId: regionId,
-      scheduleId: scheduleId,
-    );
+    try {
+      final response = await _manageSchedulesBookingRepo.deleteDoctorSchedules(
+        regionId: regionId,
+        scheduleId: scheduleId,
+      );
 
-    if (isClosed) return; // ✅ مرة تانية بعد await
+      if (isClosed) return;
 
-    response.fold(
-      (failure) {
-        if (!isClosed) {
-          emit(DeleteDoctorSchedulesError(errorMessage: failure));
-        }
-      },
-      (data) {
-        if (!isClosed) {
-          emit(DeleteDoctorSchedulesSuccess(message: data));
-        }
-      },
-    );
+      response.fold(
+        (failure) {
+          if (!isClosed) {
+            emit(DeleteDoctorSchedulesError(errorMessage: failure));
+          }
+        },
+        (data) async {
+          if (!isClosed) {
+            emit(DeleteDoctorSchedulesSuccess(message: data));
+            // Reset cache to force fresh data
+            _fetchData = false;
+            _cachedData = null;
+            // Small delay before refreshing
+            await Future.delayed(const Duration(milliseconds: 100));
+            if (!isClosed) {
+              await getManageSchedules(forceRefresh: true);
+            }
+          }
+        },
+      );
+    } catch (e) {
+      if (!isClosed) {
+        emit(DeleteDoctorSchedulesError(errorMessage: e.toString()));
+      }
+    }
+  }
+
+  void resetState() {
+    if (!isClosed) {
+      _fetchData = false;
+      _cachedData = null;
+      emit(DoctorManageSchedulesInitial());
+    }
+  }
+
+  @override
+  Future<void> close() {
+    // Clear any cached data
+    _cachedData = null;
+    _fetchData = false;
+    return super.close();
   }
 }

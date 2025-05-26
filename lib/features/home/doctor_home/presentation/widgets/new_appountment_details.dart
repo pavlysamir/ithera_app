@@ -7,10 +7,11 @@ import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
 
-class NewApppountmentDetails extends StatelessWidget {
+class NewAppointmentDetails extends StatelessWidget {
   final RegionSchedule schadule;
   final Function() onTap;
-  const NewApppountmentDetails({
+
+  const NewAppointmentDetails({
     super.key,
     required this.schadule,
     required this.onTap,
@@ -35,10 +36,13 @@ class NewApppountmentDetails extends StatelessWidget {
             spacing: 12,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Days display
               Text(
                 schadule.days.join(', '),
                 style: AppTextStyles.font16Regular,
               ),
+
+              // Location row
               Row(
                 children: [
                   CustomSvgimage(
@@ -56,6 +60,8 @@ class NewApppountmentDetails extends StatelessWidget {
                   ),
                 ],
               ),
+
+              // Time range row
               Row(
                 children: [
                   CustomSvgimage(
@@ -65,7 +71,7 @@ class NewApppountmentDetails extends StatelessWidget {
                   SizedBox(width: 5.w),
                   Expanded(
                     child: Text(
-                      'من ${schadule.schedules[0].startTime} إلي ${schadule.schedules[0].endTime} ',
+                      _getTimeRangeText(),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font14Regular
@@ -74,19 +80,39 @@ class NewApppountmentDetails extends StatelessWidget {
                   ),
                 ],
               ),
+
+              // Delete button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SizedBox(
-                    height: 40.h,
-                    child: CustomButtonLarge(
-                        text: 'حذف',
-                        color: AppColors.primaryColor,
-                        function: onTap)),
+                  height: 40.h,
+                  child: CustomButtonLarge(
+                    text: 'حذف',
+                    color: AppColors.primaryColor,
+                    function: onTap,
+                  ),
+                ),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  String _getTimeRangeText() {
+    if (schadule.schedules.isEmpty) {
+      return 'غير محدد';
+    }
+
+    if (schadule.schedules.length == 1) {
+      final schedule = schadule.schedules[0];
+      return 'من ${schedule.startTime} إلي ${schedule.endTime}';
+    }
+
+    // If multiple schedules, show range from first to last
+    final firstSchedule = schadule.schedules.first;
+    final lastSchedule = schadule.schedules.last;
+    return 'من ${firstSchedule.startTime} إلي ${lastSchedule.endTime}';
   }
 }

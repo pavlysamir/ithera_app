@@ -190,11 +190,11 @@ class AppRouter {
           ),
           settings: settings,
         );
-      case Routes.doctorHomeScreen:
-        return MaterialPageRoute(
-          builder: (_) => const DoctorHomeScreen(),
-          settings: settings,
-        );
+      // case Routes.doctorHomeScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const DoctorHomeScreen(),
+      //     settings: settings,
+      //   );
       case Routes.doctorEditProfileScreen:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(providers: [
