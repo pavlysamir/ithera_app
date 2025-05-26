@@ -1,4 +1,6 @@
-class CityModel {
+import 'package:equatable/equatable.dart';
+
+class CityModel extends Equatable {
   final String nameAr;
   final String nameEn;
   final String internalCode;
@@ -13,7 +15,7 @@ class CityModel {
   final DateTime createdOn;
   final DateTime modifyOn;
 
-  CityModel({
+  const CityModel({
     required this.nameAr,
     required this.nameEn,
     required this.internalCode,
@@ -31,19 +33,19 @@ class CityModel {
 
   factory CityModel.fromJson(Map<String, dynamic> json) {
     return CityModel(
-      nameAr: json['nameAr'],
-      nameEn: json['nameEn'],
-      internalCode: json['internalCode'],
-      internalRef: json['internalRef'],
-      isActive: json['isActive'],
-      description: json['description'],
-      patients: List<dynamic>.from(json['patients']),
-      regions: List<dynamic>.from(json['regions']),
+      nameAr: json['nameAr'] ?? '',
+      nameEn: json['nameEn'] ?? '',
+      internalCode: json['internalCode'] ?? '',
+      internalRef: json['internalRef'] ?? 0,
+      isActive: json['isActive'] ?? false,
+      description: json['description'] ?? '',
+      patients: List<dynamic>.from(json['patients'] ?? []),
+      regions: List<dynamic>.from(json['regions'] ?? []),
       doctors: json['doctors'],
-      id: json['id'],
-      isDeleted: json['isDeleted'],
-      createdOn: DateTime.parse(json['createdOn']),
-      modifyOn: DateTime.parse(json['modifyOn']),
+      id: json['id'] ?? 0,
+      isDeleted: json['isDeleted'] ?? false,
+      createdOn: DateTime.tryParse(json['createdOn'] ?? '') ?? DateTime.now(),
+      modifyOn: DateTime.tryParse(json['modifyOn'] ?? '') ?? DateTime.now(),
     );
   }
 
@@ -64,4 +66,21 @@ class CityModel {
       'modifyOn': modifyOn.toIso8601String(),
     };
   }
+
+  @override
+  List<Object?> get props => [
+        nameAr,
+        nameEn,
+        internalCode,
+        internalRef,
+        isActive,
+        description,
+        patients,
+        regions,
+        doctors,
+        id,
+        isDeleted,
+        createdOn,
+        modifyOn,
+      ];
 }

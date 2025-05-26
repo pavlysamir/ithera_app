@@ -1,4 +1,6 @@
-class SpecializationModel {
+import 'package:equatable/equatable.dart';
+
+class SpecializationModel extends Equatable {
   final String nameAr;
   final String nameEn;
   final String internalCode;
@@ -9,7 +11,7 @@ class SpecializationModel {
   final int id;
   final bool isDeleted;
 
-  SpecializationModel({
+  const SpecializationModel({
     required this.nameAr,
     required this.nameEn,
     required this.internalCode,
@@ -23,16 +25,16 @@ class SpecializationModel {
 
   factory SpecializationModel.fromJson(Map<String, dynamic> json) {
     return SpecializationModel(
-      nameAr: json['nameAr'],
-      nameEn: json['nameEn'],
-      internalCode: json['internalCode'],
-      internalRef: json['internalRef'],
-      isActive: json['isActive'],
-      description: json['description'],
+      nameAr: json['nameAr'] ?? '',
+      nameEn: json['nameEn'] ?? '',
+      internalCode: json['internalCode'] ?? '',
+      internalRef: json['internalRef'] ?? 0,
+      isActive: json['isActive'] ?? false,
+      description: json['description'] ?? '',
       userSpecializationField:
-          List<dynamic>.from(json['userSpecializationField']),
-      id: json['id'],
-      isDeleted: json['isDeleted'],
+          List<dynamic>.from(json['userSpecializationField'] ?? []),
+      id: json['id'] ?? 0,
+      isDeleted: json['isDeleted'] ?? false,
     );
   }
 
@@ -49,4 +51,17 @@ class SpecializationModel {
       'isDeleted': isDeleted,
     };
   }
+
+  @override
+  List<Object?> get props => [
+        nameAr,
+        nameEn,
+        internalCode,
+        internalRef,
+        isActive,
+        description,
+        userSpecializationField,
+        id,
+        isDeleted,
+      ];
 }

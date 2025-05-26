@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
+import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
 import 'package:ithera_app/features/home/doctor_home/data/models/manage_schedules_model.dart';
 import 'package:ithera_app/features/home/doctor_home/data/repos/manage_schedules_booking_repo.dart';
 import 'package:meta/meta.dart';
@@ -42,8 +43,8 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
 
     // تجهيز الـ Regions
     final regions = selectedRegionIds
-        .map((regionId) =>
-            RegionsModel(regionId: regionId, schedules: schedules))
+        .map((regionId) => RegionsModel(
+            regionId: regionId, days: dayIndices, schedules: schedules))
         .toList();
 
     // تنسيق التاريخ
@@ -65,8 +66,12 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
       (failure) {
         emit(DoctorManageSchedulesError(errorMessage: failure));
       },
-      (success) {
+      (success) async {
+        if (isClosed) return;
         emit(DoctorManageSchedulesSuccess(message: success));
+        await Future.delayed(const Duration(milliseconds: 100));
+        if (isClosed) return;
+        await getManageSchedules(forseRefresh: true);
       },
     );
   }
@@ -74,14 +79,67 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
   // تجهيز الـ Schedules
   List<SchedulesModel> generateSchedules(
       List<String> timeRanges, List<int> days) {
-    return days.expand((day) {
-      return timeRanges.map((range) {
-        final times = range.split(' ')[0].split('-');
-        return SchedulesModel()
-          ..day = day
-          ..startTime = "${times[0]}:00"
-          ..endTime = "${times[1]}:00";
-      });
+    return timeRanges.map((range) {
+      final times = range.split(' ')[0].split('-');
+      return SchedulesModel(
+        startTime: "${times[0]}:00",
+        endTime: "${times[1]}:00",
+      );
     }).toList();
+  }
+
+  bool _feachData = false;
+  Future<void> getManageSchedules({bool forseRefresh = false}) async {
+    if (_feachData && !forseRefresh) return;
+
+    if (isClosed) return; // ✅ مهم جدًا
+
+    emit(GetDoctorSchedulesLoading());
+
+    final response = await _manageSchedulesBookingRepo.getDoctorSchedules();
+
+    if (isClosed) return; // ✅ مرة تانية بعد await
+
+    response.fold(
+      (failure) {
+        if (!isClosed) {
+          emit(GetDoctorSchedulesError(errorMessage: failure));
+        }
+      },
+      (data) {
+        _feachData = true;
+        if (!isClosed) {
+          emit(GetDoctorSchedulesSuccess(data: data));
+        }
+      },
+    );
+  }
+
+  Future<void> deleteDoctorSchadules(
+      {required int regionId, required int scheduleId}) async {
+    if (isClosed) return;
+
+    emit(DeleteDoctorSchedulesLoading());
+
+    final response = await _manageSchedulesBookingRepo.deleteDoctorSchedules(
+      regionId: regionId,
+      scheduleId: scheduleId,
+    );
+
+    if (isClosed) return; // ✅ مرة تانية بعد await
+
+    response.fold(
+      (failure) {
+        if (!isClosed) {
+          emit(DeleteDoctorSchedulesError(errorMessage: failure));
+        }
+      },
+      (data) {
+        _feachData = true;
+        if (!isClosed) {
+          emit(DeleteDoctorSchedulesSuccess(message: data));
+        }
+      },
+    );
   }
 }

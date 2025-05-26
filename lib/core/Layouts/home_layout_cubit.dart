@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/screens/doctor_booking_screen.dart';
 import 'package:ithera_app/features/booking/patient_booking/presentation/screens/patient_booking_screen.dart';
+import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/presentation/screens/doctor_home_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/patient_home_screen.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/doctor_settings_screen.dart';
@@ -31,7 +32,11 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
       create: (context) => getIt<SettingsCubit>(),
       child: const DoctorSettingsScreen(),
     ),
-    const DoctorHomeScreen(),
+    BlocProvider(
+      create: (context) =>
+          getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),
+      child: const DoctorHomeScreen(),
+    ),
     const DoctorBookingScreen(),
   ];
 

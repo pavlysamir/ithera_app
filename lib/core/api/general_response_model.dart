@@ -1,5 +1,5 @@
 class BaseResponse<T> {
-  final int id;
+  final int? id;
   final bool success;
   final String message;
   final T? data;
@@ -18,7 +18,7 @@ class BaseResponse<T> {
     T Function(dynamic) fromJsonT,
   ) {
     return BaseResponse<T>(
-      id: json['id'],
+      id: json['id'] ?? 0,
       success: json['success'],
       message: json['message'],
       data: json['data'] != null ? fromJsonT(json['data']) : null,

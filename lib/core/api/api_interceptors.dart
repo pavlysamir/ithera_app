@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
-import 'dart:convert';
 
 import 'package:ithera_app/core/routing/navigation_services.dart';
 import 'package:ithera_app/core/routing/routes.dart';
@@ -11,11 +10,12 @@ class ApiInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    // final token =
-    //     await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
-    // if (token != '') {
-    //   options.headers['Authorization'] = 'Bearer $token';
-    // } else {
+    final token =
+        await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
+    if (token != '') {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
+    //  else {
     //   const String username = '11236180';
     //   const String password = '60-dayfreetrial';
     //   final String basicAuth =
@@ -23,11 +23,6 @@ class ApiInterceptor extends Interceptor {
     //   options.headers['Authorization'] = basicAuth;
     // }
 
-    const String username = '11236180';
-    const String password = '60-dayfreetrial';
-    final String basicAuth =
-        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-    options.headers['Authorization'] = basicAuth;
     options.headers['Content-Type'] = 'application/json';
     super.onRequest(options, handler);
   }

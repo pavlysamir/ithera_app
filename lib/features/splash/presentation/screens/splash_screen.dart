@@ -91,7 +91,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     final hasViewedOnBoarding =
         await CacheHelper.getBool(key: CacheConstants.onBoardingViewed);
 
-    print('token: $token');
+    debugPrint(token, wrapWidth: 1024);
     print('isFromPatient: $isFromPatient');
     print('hasViewedOnBoarding: $hasViewedOnBoarding');
 

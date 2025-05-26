@@ -1,4 +1,6 @@
-class RegionModel {
+import 'package:equatable/equatable.dart';
+
+class RegionModel extends Equatable {
   final String nameAr;
   final String nameEn;
   final String internalCode;
@@ -15,7 +17,7 @@ class RegionModel {
   final DateTime createdOn;
   final DateTime modifyOn;
 
-  RegionModel({
+  const RegionModel({
     required this.nameAr,
     required this.nameEn,
     required this.internalCode,
@@ -35,21 +37,21 @@ class RegionModel {
 
   factory RegionModel.fromJson(Map<String, dynamic> json) {
     return RegionModel(
-      nameAr: json['nameAr'],
-      nameEn: json['nameEn'],
-      internalCode: json['internalCode'],
-      internalRef: json['internalRef'],
-      description: json['description'],
-      cityId: json['cityId'],
+      nameAr: json['nameAr'] ?? '',
+      nameEn: json['nameEn'] ?? '',
+      internalCode: json['internalCode'] ?? '',
+      internalRef: json['internalRef'] ?? 0,
+      description: json['description'] ?? '',
+      cityId: json['cityId'] ?? 0,
       city: json['city'],
-      doctorRegionPrices: List<dynamic>.from(json['doctorRegionPrices']),
+      doctorRegionPrices: List<dynamic>.from(json['doctorRegionPrices'] ?? []),
       patient: json['patient'],
       regionPrices: json['regionPrices'],
-      id: json['id'],
-      isActive: json['isActive'],
-      isDeleted: json['isDeleted'],
-      createdOn: DateTime.parse(json['createdOn']),
-      modifyOn: DateTime.parse(json['modifyOn']),
+      id: json['id'] ?? 0,
+      isActive: json['isActive'] ?? false,
+      isDeleted: json['isDeleted'] ?? false,
+      createdOn: DateTime.tryParse(json['createdOn'] ?? '') ?? DateTime.now(),
+      modifyOn: DateTime.tryParse(json['modifyOn'] ?? '') ?? DateTime.now(),
     );
   }
 
@@ -72,4 +74,23 @@ class RegionModel {
       'modifyOn': modifyOn.toIso8601String(),
     };
   }
+
+  @override
+  List<Object?> get props => [
+        nameAr,
+        nameEn,
+        internalCode,
+        internalRef,
+        description,
+        cityId,
+        city,
+        doctorRegionPrices,
+        patient,
+        regionPrices,
+        id,
+        isActive,
+        isDeleted,
+        createdOn,
+        modifyOn,
+      ];
 }

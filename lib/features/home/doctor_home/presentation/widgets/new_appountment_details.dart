@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
+import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
 
 class NewApppountmentDetails extends StatelessWidget {
+  final RegionSchedule schadule;
+  final Function() onTap;
   const NewApppountmentDetails({
     super.key,
+    required this.schadule,
+    required this.onTap,
   });
 
   @override
@@ -31,7 +39,7 @@ class NewApppountmentDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'السبت - الأحد - الأتنين ',
+                schadule.days.join(', '),
                 style: AppTextStyles.font16Regular,
               ),
               Row(
@@ -44,7 +52,7 @@ class NewApppountmentDetails extends StatelessWidget {
                   SizedBox(width: 5.w),
                   Expanded(
                     child: Text(
-                      '12ش صلاح سالم - مدينة نصر ',
+                      schadule.regionName,
                       style: AppTextStyles.font14Regular
                           .copyWith(color: AppColors.blackLight),
                     ),
@@ -60,7 +68,7 @@ class NewApppountmentDetails extends StatelessWidget {
                   SizedBox(width: 5.w),
                   Expanded(
                     child: Text(
-                      'من 4 إلي 6 مساءً',
+                      'من ${schadule.schedules[0].startTime} إلي ${schadule.schedules[0].endTime} ',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font14Regular
@@ -72,12 +80,16 @@ class NewApppountmentDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SizedBox(
-                  height: 40.h,
-                  child: CustomButtonLarge(
-                      text: 'حذف',
-                      color: AppColors.primaryColor,
-                      function: () {}),
-                ),
+                    height: 40.h,
+                    child: CustomButtonLarge(
+                        text: 'حذف',
+                        color: AppColors.primaryColor,
+                        function: () {
+                          DoctorManageSchedulesCubit.get(context)
+                              .deleteDoctorSchadules(
+                                  regionId: schadule.regionId,
+                                  scheduleId: schadule.cardId);
+                        })),
               ),
             ],
           ),

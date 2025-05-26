@@ -1,9 +1,11 @@
-class ManageSchedulesModel {
+import 'package:equatable/equatable.dart';
+
+class ManageSchedulesModel extends Equatable {
   final int doctorId;
   final String startDate;
   final List<RegionsModel> regions;
 
-  ManageSchedulesModel({
+  const ManageSchedulesModel({
     required this.doctorId,
     required this.startDate,
     required this.regions,
@@ -14,66 +16,79 @@ class ManageSchedulesModel {
       doctorId: json['doctorId'],
       startDate: json['startDate'],
       regions: List<RegionsModel>.from(
-          json['regions'].map((x) => RegionsModel.fromJson(x))),
+        json['regions'].map((x) => RegionsModel.fromJson(x)),
+      ),
     );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['doctorId'] = doctorId;
-    data['startDate'] = startDate;
-    data['regions'] = regions.map((v) => v.toJson()).toList();
-    return data;
+    return {
+      'doctorId': doctorId,
+      'startDate': startDate,
+      'regions': regions.map((v) => v.toJson()).toList(),
+    };
   }
+
+  @override
+  List<Object> get props => [doctorId, startDate, regions];
 }
 
-class RegionsModel {
+class RegionsModel extends Equatable {
   final int regionId;
+  final List<int> days;
   final List<SchedulesModel> schedules;
 
-  RegionsModel({
+  const RegionsModel({
     required this.regionId,
+    required this.days,
     required this.schedules,
   });
 
   factory RegionsModel.fromJson(Map<String, dynamic> json) {
     return RegionsModel(
       regionId: json['regionId'],
+      days: List<int>.from(json['days']),
       schedules: List<SchedulesModel>.from(
-          json['schedules'].map((x) => SchedulesModel.fromJson(x))),
+        json['schedules'].map((x) => SchedulesModel.fromJson(x)),
+      ),
     );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['regionId'] = regionId;
-    data['schedules'] = schedules.map((v) => v.toJson()).toList();
-    return data;
+    return {
+      'regionId': regionId,
+      'days': days,
+      'schedules': schedules.map((v) => v.toJson()).toList(),
+    };
   }
+
+  @override
+  List<Object> get props => [regionId, days, schedules];
 }
 
-class SchedulesModel {
-  int? day;
-  String? startTime;
-  String? endTime;
+class SchedulesModel extends Equatable {
+  final String? startTime;
+  final String? endTime;
 
-  SchedulesModel({
-    this.day,
+  const SchedulesModel({
     this.startTime,
     this.endTime,
   });
 
-  SchedulesModel.fromJson(Map<String, dynamic> json) {
-    day = json['day'];
-    startTime = json['startTime'];
-    endTime = json['endTime'];
+  factory SchedulesModel.fromJson(Map<String, dynamic> json) {
+    return SchedulesModel(
+      startTime: json['startTime'],
+      endTime: json['endTime'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['day'] = day;
-    data['startTime'] = startTime;
-    data['endTime'] = endTime;
-    return data;
+    return {
+      'startTime': startTime,
+      'endTime': endTime,
+    };
   }
+
+  @override
+  List<Object?> get props => [startTime, endTime];
 }

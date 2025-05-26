@@ -60,9 +60,11 @@ class _AddAppountmentScreenState extends State<AddAppountmentScreen> {
     setState(() {
       if (selectedDays.contains(day)) {
         selectedDays.remove(day);
+        print(selectedDays);
       } else {
         if (selectedDays.length < 3) {
           selectedDays.add(day);
+          print(selectedDays);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('يمكنك اختيار ٣ أيام فقط')),

@@ -43,9 +43,9 @@ void setUpServiceLocator() {
         baseLookRepo: getIt(),
       )));
 
-  getIt.registerFactory<BookingCubit>((() => BookingCubit()));
+  getIt.registerLazySingleton<BookingCubit>((() => BookingCubit()));
   getIt.registerFactory<SettingsCubit>((() => SettingsCubit()));
   getIt.registerFactory<AddFilesCubit>((() => AddFilesCubit(getIt())));
-  getIt.registerFactory<DoctorManageSchedulesCubit>(
+  getIt.registerLazySingleton<DoctorManageSchedulesCubit>(
       (() => DoctorManageSchedulesCubit(getIt())));
 }
