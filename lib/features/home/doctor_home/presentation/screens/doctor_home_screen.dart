@@ -104,11 +104,11 @@ class _DoctorHomeBody extends StatelessWidget {
           );
         }
       },
-      child: SingleChildScrollView(
+      child: const SingleChildScrollView(
         child: Column(
           children: [
-            const AddAppountmentScreen(),
-            const _SchedulesList(),
+            AddAppountmentScreen(),
+            _SchedulesList(),
           ],
         ),
       ),

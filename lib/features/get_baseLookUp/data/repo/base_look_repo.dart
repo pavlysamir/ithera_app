@@ -19,7 +19,12 @@ class BaseLookRepo {
       for (var city in response) {
         cities.add(CityModel.fromJson(city));
       }
-
+      // CacheHelper.set(
+      //   key: 'cities',
+      //   value: cities.map((e) => e.nameAr).toList(),
+      // );
+      // print(
+      //     'Cities saved to cache: ${CacheHelper.getStringList(key: 'cities')}');
       return Right(cities);
     } on ServerException catch (e) {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');

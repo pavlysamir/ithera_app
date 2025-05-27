@@ -18,6 +18,8 @@ class EndPoint {
 
   static String manageSchedules = "api/Doctor/manageSchedules";
 
+  static String getAllDoctors = "api/Patient/GetAllDoctors";
+
   static String getDoctorDataEndPoint(id) {
     return "api/Doctor/$id";
   }

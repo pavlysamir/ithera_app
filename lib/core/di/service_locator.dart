@@ -10,7 +10,9 @@ import 'package:ithera_app/features/get_baseLookUp/data/repo/base_look_repo.dart
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/data/repos/manage_schedules_booking_repo.dart';
 import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
+import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_repo.dart';
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
+import 'package:ithera_app/features/home/patient_home/managers/pagination_cubit/pagination_cubit.dart';
 import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -35,6 +37,15 @@ void setUpServiceLocator() {
       .registerSingleton<ManageSchedulesBookingRepo>(ManageSchedulesBookingRepo(
     getIt.get<DioConsumer>(),
   ));
+
+  getIt.registerSingleton<PatientHomeRepo>(PatientHomeRepo(
+    getIt.get<DioConsumer>(),
+  ));
+
+  getIt.registerFactory<PaginationCubit>((() => PaginationCubit(
+        getIt(),
+      )));
+
   getIt.registerFactory<PatientAuthCubit>((() => PatientAuthCubit(
         getIt(),
       )));

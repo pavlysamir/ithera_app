@@ -7,6 +7,7 @@ class BadeLookUpCubit extends Cubit<BadeLookUpState> {
       : super(const BadeLookUpState());
 
   final BaseLookRepo baseLookRepo;
+  static BadeLookUpCubit get(context) => BlocProvider.of(context);
 
   void getAllCities() async {
     emit(state.copyWith(citiesStatus: LookupStatus.loading));
@@ -59,5 +60,12 @@ class BadeLookUpCubit extends Cubit<BadeLookUpState> {
         specialties: r,
       )),
     );
+  }
+
+  String? getCityNameById(int id) {
+    final city = state.cities?.firstWhere(
+      (element) => element.id == id,
+    );
+    return city?.nameAr ?? 'مدينة غير معروفه';
   }
 }

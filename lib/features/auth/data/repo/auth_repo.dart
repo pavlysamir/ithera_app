@@ -22,7 +22,7 @@ class AuthRepo {
           ApiKey.role: roleId,
         },
       );
-      final parsed = BaseResponse<LoginData>.fromJson(
+      final parsed = BaseAuthResponse<LoginData>.fromJson(
         response,
         (data) => LoginData.fromJson(data),
       );
