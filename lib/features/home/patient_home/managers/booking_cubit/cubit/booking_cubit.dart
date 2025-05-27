@@ -4,12 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
+import 'package:ithera_app/features/home/patient_home/data/models/book_session_request_model.dart';
+import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_repo.dart';
 import 'package:path/path.dart' as path;
 part 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
-  BookingCubit() : super(BookingInitial());
-
+  BookingCubit(this._patientHomeRepo) : super(BookingInitial());
+  final PatientHomeRepo _patientHomeRepo;
   String? base64BackImage;
 
   File? file;
@@ -47,5 +49,19 @@ class BookingCubit extends Cubit<BookingState> {
     } else {
       emit(FailPickImage());
     }
+  }
+
+  Future<void> bookSession({required BookingRequest request}) async {
+    emit(BookingLoading());
+
+    final result = await _patientHomeRepo.bookSession(request);
+    result.fold(
+      (error) {
+        emit(FailBookSession(error));
+      },
+      (successMessage) {
+        emit(SuccessfulBookSession(successMessage));
+      },
+    );
   }
 }

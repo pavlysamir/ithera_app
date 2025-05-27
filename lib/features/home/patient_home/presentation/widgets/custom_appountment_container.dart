@@ -7,14 +7,24 @@ import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 
 class CustomAppountmentContainer extends StatelessWidget {
-  const CustomAppountmentContainer({super.key});
+  const CustomAppountmentContainer(
+      {super.key,
+      required this.days,
+      required this.city,
+      required this.timeRange,
+      required this.startDate});
+  final String days;
+  final String city;
+
+  final String timeRange;
+  final String startDate;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.none,
       width: double.infinity,
-      height: 120.h,
+      //height: 180.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
@@ -26,7 +36,7 @@ class CustomAppountmentContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'السبت - الأحد - الأتنين',
+            days,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.font16Regular
@@ -43,7 +53,7 @@ class CustomAppountmentContainer extends StatelessWidget {
               SizedBox(width: 5.w),
               Expanded(
                 child: Text(
-                  'مدينة نصر',
+                  city,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.font14Regular
@@ -62,7 +72,27 @@ class CustomAppountmentContainer extends StatelessWidget {
               SizedBox(width: 5.w),
               Expanded(
                 child: Text(
-                  'من 4 إلي 6 مساءً',
+                  timeRange,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.font14Regular
+                      .copyWith(color: AppColors.blackLight),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              CustomSvgimage(
+                path: AssetsData.calender,
+                hight: 16.sp,
+                color: AppColors.primaryColor,
+              ),
+              SizedBox(width: 5.w),
+              Expanded(
+                child: Text(
+                  startDate,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.font14Regular

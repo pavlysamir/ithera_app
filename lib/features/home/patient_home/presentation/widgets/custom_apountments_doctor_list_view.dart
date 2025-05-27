@@ -12,8 +12,9 @@ import 'package:ithera_app/features/home/patient_home/data/models/doctors_model.
 
 class CustomApountmentsDoctorListView extends StatelessWidget {
   const CustomApountmentsDoctorListView(
-      {super.key, required this.regionSchedule});
+      {super.key, required this.regionSchedule, required this.doctorId});
   final List<DoctorRegionSchedule> regionSchedule;
+  final int doctorId;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,11 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
                       text: 'احجز الأن',
                       color: AppColors.primaryColor,
                       function: () {
-                        NavigationService().navigateTo(Routes.bookNowScreen);
+                        NavigationService().navigateTo(Routes.bookNowScreen,
+                            arguments: {
+                              'schedule': schedule,
+                              'doctorId': doctorId
+                            });
                       },
                     ),
                   ),

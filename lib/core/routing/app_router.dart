@@ -185,10 +185,15 @@ class AppRouter {
           settings: settings,
         );
       case Routes.bookNowScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<BookingCubit>(),
-            child: const BookNowScreen(),
+            child: BookNowScreen(
+              doctorId: args['doctorId'] as int,
+              schedule: args['schedule'] as DoctorRegionSchedule,
+            ),
           ),
           settings: settings,
         );

@@ -177,6 +177,7 @@ class DoctorScreen extends StatelessWidget {
                         color: AppColors.white,
                       ),
                       CustomApountmentsDoctorListView(
+                        doctorId: doctorModel.doctorId,
                         regionSchedule: doctorModel.regionSchedules ?? [],
                       ),
                       const SizedBox(height: 30.0),
@@ -186,9 +187,5 @@ class DoctorScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String getAllNameAr(List<dynamic> list) {
-    return list.map((e) => e.nameAr.toString()).join(', ');
   }
 }
