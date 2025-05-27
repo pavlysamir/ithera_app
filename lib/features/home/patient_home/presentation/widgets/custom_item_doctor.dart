@@ -67,7 +67,7 @@ class CustomItemDoctor extends StatelessWidget {
                             )),
                         SizedBox(height: 4.h),
                         Text(
-                          doctorModel.specializationFields.first.nameAr,
+                          getAllNameAr(doctorModel.specializationFields),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.font14Regular.copyWith(
@@ -146,5 +146,9 @@ class CustomItemDoctor extends StatelessWidget {
         );
       },
     );
+  }
+
+  String getAllNameAr(List<dynamic> list) {
+    return list.map((e) => e.nameAr.toString()).join(', ');
   }
 }

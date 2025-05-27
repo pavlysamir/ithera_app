@@ -162,22 +162,33 @@ class DoctorScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Container(
-                  height: 10.h,
-                  color: AppColors.white,
+          doctorModel.regionSchedules!.isEmpty
+              ? SliverToBoxAdapter(
+                  child: Center(
+                    child: Text('لا يوجد مواعيد متاحة',
+                        style: AppTextStyles.font14Regular),
+                  ),
+                )
+              : SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 10.h,
+                        color: AppColors.white,
+                      ),
+                      CustomApountmentsDoctorListView(
+                        regionSchedule: doctorModel.regionSchedules ?? [],
+                      ),
+                      const SizedBox(height: 30.0),
+                    ],
+                  ),
                 ),
-                CustomApountmentsDoctorListView(
-                  regionSchedule: doctorModel.regionSchedules,
-                ),
-                const SizedBox(height: 30.0),
-              ],
-            ),
-          ),
         ],
       ),
     );
+  }
+
+  String getAllNameAr(List<dynamic> list) {
+    return list.map((e) => e.nameAr.toString()).join(', ');
   }
 }

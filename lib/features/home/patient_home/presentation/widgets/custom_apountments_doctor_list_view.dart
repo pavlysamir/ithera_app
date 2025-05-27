@@ -19,15 +19,16 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.white,
-      height: 166.h,
+      height: 230.h,
       child: ListView.builder(
         clipBehavior: Clip.none,
 
         //   physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: 10,
+        itemCount: regionSchedule.length,
 
         itemBuilder: (context, index) {
+          final schedule = regionSchedule[index];
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
@@ -43,8 +44,8 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    regionSchedule[index].days.join(", "),
-                    maxLines: 1,
+                    schedule.days.join(", "),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.font16Regular,
                   ),
@@ -59,7 +60,7 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
                       SizedBox(width: 5.w),
                       Expanded(
                         child: Text(
-                          'مدينة نصر',
+                          schedule.regionName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.font14Regular
@@ -78,7 +79,27 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
                       SizedBox(width: 5.w),
                       Expanded(
                         child: Text(
-                          'من 4 إلي 6 مساءً',
+                          'من ${schedule.schedules[0].startTime} إلي ${schedule.schedules[0].endTime}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.font14Regular
+                              .copyWith(color: AppColors.blackLight),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      CustomSvgimage(
+                        path: AssetsData.calender,
+                        hight: 16.sp,
+                        color: AppColors.primaryColor,
+                      ),
+                      SizedBox(width: 5.w),
+                      Expanded(
+                        child: Text(
+                          'بداية من ${schedule.schedules[0].startDate.day}/${schedule.schedules[0].startDate.month}/${schedule.schedules[0].startDate.year}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.font14Regular

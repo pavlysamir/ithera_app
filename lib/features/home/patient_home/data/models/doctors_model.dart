@@ -37,7 +37,7 @@ class DoctorModel extends Equatable {
   final num? sessionPrice;
   final double averageRating;
   final String? profilePicture;
-  final List<DoctorRegionSchedule> regionSchedules;
+  final List<DoctorRegionSchedule>? regionSchedules;
   final List<dynamic> doctorSessionsIds;
 
   const DoctorModel({
@@ -65,7 +65,12 @@ class DoctorModel extends Equatable {
       sessionPrice: (json['sessionPrice'] as num?)?.toDouble() ?? 0.0,
       averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0.0,
       profilePicture: json['profilePicture'],
-      regionSchedules: json['regionSchedules'] ?? [],
+      regionSchedules: json['regionSchedules'] != null
+          ? List<DoctorRegionSchedule>.from(
+              json['regionSchedules']
+                  .map((e) => DoctorRegionSchedule.fromJson(e)),
+            )
+          : [],
       doctorSessionsIds: json['doctorSessionsIds'] ?? [],
     );
   }
@@ -112,7 +117,7 @@ class DoctorRegionSchedule extends Equatable {
   final int regionId;
   final int cardId;
   final String regionName;
-  final int sessionPrice;
+  final num sessionPrice;
   final List<String> days;
   final List<Schedule> schedules;
 

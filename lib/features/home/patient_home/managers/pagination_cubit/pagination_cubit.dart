@@ -50,4 +50,8 @@ class PaginationCubit extends Cubit<PaginationState> {
     _hasReachedEnd = false;
     emit(PaginationInitial());
   }
+
+  String getAllNameAr(List<dynamic> list) {
+    return list.map((e) => e['nameAr'].toString()).join('، ');
+  }
 }
