@@ -23,7 +23,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
     context.read<PaginationCubit>().fetchItems();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          0.7 * _scrollController!.position.maxScrollExtent) {
+          0.7 * _scrollController.position.maxScrollExtent) {
         context.read<PaginationCubit>().fetchItems();
       }
     });

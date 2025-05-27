@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/routing/navigation_services.dart';
@@ -9,9 +8,12 @@ import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/home/patient_home/data/models/doctors_model.dart';
 
 class CustomApountmentsDoctorListView extends StatelessWidget {
-  const CustomApountmentsDoctorListView({super.key});
+  const CustomApountmentsDoctorListView(
+      {super.key, required this.regionSchedule});
+  final List<DoctorRegionSchedule> regionSchedule;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class CustomApountmentsDoctorListView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'السبت - الأحد - الأتنين',
+                    regionSchedule[index].days.join(", "),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.font16Regular,

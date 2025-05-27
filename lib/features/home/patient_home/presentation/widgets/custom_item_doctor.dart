@@ -127,8 +127,12 @@ class CustomItemDoctor extends StatelessWidget {
                             text: 'احجز الأن',
                             color: AppColors.primaryColor,
                             function: () {
-                              NavigationService()
-                                  .navigateTo(Routes.doctorScreen);
+                              if (doctorModel != null) {
+                                NavigationService().navigateTo(
+                                  Routes.doctorScreen,
+                                  arguments: doctorModel,
+                                );
+                              }
                             },
                           ),
                         ),

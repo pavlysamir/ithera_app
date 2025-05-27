@@ -1,14 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
+import 'package:ithera_app/features/home/patient_home/data/models/doctors_model.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_apountments_doctor_list_view.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_star_rating.dart';
 
 class DoctorScreen extends StatelessWidget {
-  const DoctorScreen({super.key});
+  const DoctorScreen({super.key, required this.doctorModel});
+  final DoctorModel doctorModel;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,7 @@ class DoctorScreen extends StatelessWidget {
                       height: 270.0.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      imageUrl:
+                      imageUrl: doctorModel.profilePicture ??
                           'https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg'),
                   Container(
                     height: 20,
@@ -61,7 +67,7 @@ class DoctorScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'د/ كريم حسن',
+                          'د/ ${doctorModel.doctorName}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.font22Regular.copyWith(
@@ -69,8 +75,9 @@ class DoctorScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const StarRating(
-                        rating: 4.2, // خليها القيمه اللي عندك
+                      StarRating(
+                        rating:
+                            doctorModel.averageRating, // خليها القيمه اللي عندك
                         size: 20,
                         color: Colors.amber,
                       ),
@@ -78,7 +85,9 @@ class DoctorScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10.0),
                   Text(
-                    'اخصائى العلاج الطبيعى لحالات العظام والاطفال',
+                    doctorModel.specializationFields.isNotEmpty
+                        ? doctorModel.specializationFields.first.nameAr
+                        : 'تخصص غير محدد',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.font14Regular.copyWith(
@@ -111,24 +120,34 @@ class DoctorScreen extends StatelessWidget {
                       hight: 16.sp,
                     ),
                     title: Text(
-                      'سعر الجلسة : 300 جنيه',
+                      'سعر الجلسة : ${doctorModel.sessionPrice} جنيه',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.font14Regular
                           .copyWith(color: AppColors.blackLight),
                     ),
                   ),
-                  ListTile(
-                    leading: CustomSvgimage(
-                      path: 'assets/icons/location.svg',
-                      hight: 16.sp,
-                    ),
-                    title: Text(
-                      'مدينة نصر',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.font14Regular
-                          .copyWith(color: AppColors.blackLight),
+                  BlocProvider(
+                    create: (context) =>
+                        getIt<BadeLookUpCubit>()..getAllCities(),
+                    child: BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
+                      builder: (context, state) {
+                        return ListTile(
+                          leading: CustomSvgimage(
+                            path: 'assets/icons/location.svg',
+                            hight: 16.sp,
+                          ),
+                          title: Text(
+                            BadeLookUpCubit.get(context)
+                                    .getCityNameById(doctorModel.cityId) ??
+                                'المدينه....',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.font14Regular
+                                .copyWith(color: AppColors.blackLight),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 20.0),
@@ -150,7 +169,9 @@ class DoctorScreen extends StatelessWidget {
                   height: 10.h,
                   color: AppColors.white,
                 ),
-                const CustomApountmentsDoctorListView(),
+                CustomApountmentsDoctorListView(
+                  regionSchedule: doctorModel.regionSchedules,
+                ),
                 const SizedBox(height: 30.0),
               ],
             ),

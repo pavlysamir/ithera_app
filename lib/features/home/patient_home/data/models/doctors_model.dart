@@ -37,7 +37,7 @@ class DoctorModel extends Equatable {
   final num? sessionPrice;
   final double averageRating;
   final String? profilePicture;
-  final List<dynamic> regionSchedules;
+  final List<DoctorRegionSchedule> regionSchedules;
   final List<dynamic> doctorSessionsIds;
 
   const DoctorModel({
@@ -53,8 +53,6 @@ class DoctorModel extends Equatable {
     required this.doctorSessionsIds,
   });
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
-    print('Parsing doctor: ${json['doctorName']}');
-    print('Gender type: ${json['gender']} (${json['gender']?.runtimeType})');
     return DoctorModel(
       doctorName: json['doctorName'],
       doctorId: json['doctorId'],
@@ -108,4 +106,84 @@ class SpecializationField extends Equatable {
 
   @override
   List<Object?> get props => [id, nameEn, nameAr];
+}
+
+class DoctorRegionSchedule extends Equatable {
+  final int regionId;
+  final int cardId;
+  final String regionName;
+  final int sessionPrice;
+  final List<String> days;
+  final List<Schedule> schedules;
+
+  const DoctorRegionSchedule({
+    required this.regionId,
+    required this.cardId,
+    required this.regionName,
+    required this.sessionPrice,
+    required this.days,
+    required this.schedules,
+  });
+
+  factory DoctorRegionSchedule.fromJson(Map<String, dynamic> json) {
+    return DoctorRegionSchedule(
+      regionId: json['regionId'],
+      cardId: json['cardId'],
+      regionName: json['regionName'],
+      sessionPrice: json['sessionPrice'],
+      days: List<String>.from(json['days']),
+      schedules:
+          (json['schedules'] as List).map((e) => Schedule.fromJson(e)).toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'regionId': regionId,
+      'cardId': cardId,
+      'regionName': regionName,
+      'sessionPrice': sessionPrice,
+      'days': days,
+      'schedules': schedules.map((e) => e.toJson()).toList(),
+    };
+  }
+
+  @override
+  List<Object?> get props =>
+      [regionId, cardId, regionName, sessionPrice, days, schedules];
+}
+
+class Schedule extends Equatable {
+  final int scheduleId;
+  final String startTime;
+  final String endTime;
+  final DateTime startDate;
+
+  const Schedule({
+    required this.scheduleId,
+    required this.startTime,
+    required this.endTime,
+    required this.startDate,
+  });
+
+  factory Schedule.fromJson(Map<String, dynamic> json) {
+    return Schedule(
+      scheduleId: json['scheduleId'],
+      startTime: json['startTime'],
+      endTime: json['endTime'],
+      startDate: DateTime.parse(json['startDate']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'scheduleId': scheduleId,
+      'startTime': startTime,
+      'endTime': endTime,
+      'startDate': startDate.toIso8601String(),
+    };
+  }
+
+  @override
+  List<Object?> get props => [scheduleId, startTime, endTime, startDate];
 }
