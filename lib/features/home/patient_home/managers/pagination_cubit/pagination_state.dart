@@ -27,5 +27,5 @@ class PaginationError extends PaginationState {
   final String message;
   PaginationError(this.message) : super([]);
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [items, message];
 }

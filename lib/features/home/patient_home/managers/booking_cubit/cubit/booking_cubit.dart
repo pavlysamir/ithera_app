@@ -7,10 +7,12 @@ import 'package:image/image.dart' as img;
 import 'package:ithera_app/features/home/patient_home/data/models/book_session_request_model.dart';
 import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_repo.dart';
 import 'package:path/path.dart' as path;
+import 'package:equatable/equatable.dart';
+
 part 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
-  BookingCubit(this._patientHomeRepo) : super(BookingInitial());
+  BookingCubit(this._patientHomeRepo) : super(const BookingInitial());
   final PatientHomeRepo _patientHomeRepo;
   String? base64BackImage;
 
