@@ -104,7 +104,7 @@ class CustomBookingDoctorListView extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: 32.h,
+                      height: 40.h,
                       child: CustomButtonLarge(
                         text: 'مزيد من التفاصيل',
                         color: AppColors.primaryColor,
