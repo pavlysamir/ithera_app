@@ -21,7 +21,7 @@ class BuildBoardingItem extends StatelessWidget {
           '${model.title}',
           textAlign: TextAlign.center,
           style: AppTextStyles.font25Bold.copyWith(
-            fontSize: 25 / MediaQuery.of(context).textScaleFactor,
+            fontSize: 25 / scaleFactor,
           ),
         ),
         const SizedBox(
@@ -42,12 +42,9 @@ class BuildBoardingItem extends StatelessWidget {
                   ? const Text('')
                   : Text(
                       '${model.messege}',
-                      maxLines:
-                          MediaQuery.of(context).textScaleFactor > 1.3 ? 3 : 5,
+                      maxLines: scaleFactor > 1.3 ? 3 : 5,
                       style: AppTextStyles.font20Regular.copyWith(
-                        fontSize: MediaQuery.of(context).textScaleFactor > 1.3
-                            ? 16
-                            : 20,
+                        fontSize: scaleFactor > 1.3 ? 16 : 20,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -55,10 +52,12 @@ class BuildBoardingItem extends StatelessWidget {
                 height: 20,
               ),
               Align(
-                alignment: Alignment.center,
+                alignment: Alignment.bottomCenter,
                 child: Image.asset(
                   model.image!,
-                  height: 350.h,
+                  height: 400.h,
+                  width: double.infinity,
+                  fit: BoxFit.fill,
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,10 +7,8 @@ import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
+import 'package:ithera_app/core/widgets/custom_listview_shimmer.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
-
-import 'package:ithera_app/core/assets/assets.dart';
-
 import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
@@ -44,10 +43,15 @@ class CustomItemDoctor extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        AssetsData.onBording_1,
-                        fit: BoxFit.cover,
-                      ),
+                      child: CachedNetworkImage(
+                          placeholder: (context, url) =>
+                              const CustomItemDoctorShimmer(
+                                isDocImage: true,
+                              ),
+                          fit: BoxFit.fill,
+                          // height: 140,
+                          imageUrl: doctorModel.profilePicture ??
+                              'https://img.freepik.com/free-photo/portrait-male-doctor_23-2148480369.jpg?semt=ais_hybrid&w=740'),
                     ),
                   ),
                 ),
@@ -121,6 +125,7 @@ class CustomItemDoctor extends StatelessWidget {
                           ],
                         ),
                         // Spacer(),
+                        SizedBox(height: 10.h),
                         SizedBox(
                           height: 45.h,
                           child: CustomButtonLarge(

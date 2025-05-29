@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
+import 'package:ithera_app/core/widgets/custom_listview_shimmer.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
@@ -23,11 +24,11 @@ class DoctorScreen extends StatelessWidget {
         slivers: [
           SliverAppBar(
             // forceMaterialTransparency: true,
-            backgroundColor: AppColors.blueLight,
+            backgroundColor: AppColors.white,
             expandedHeight: 270.0.h,
             pinned: true,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.white),
+              icon: const Icon(Icons.arrow_back, color: AppColors.primaryColor),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -37,11 +38,15 @@ class DoctorScreen extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 children: [
                   CachedNetworkImage(
+                      placeholder: (context, url) =>
+                          const CustomItemDoctorShimmer(
+                            isDocImage: true,
+                          ),
                       height: 270.0.h,
                       width: double.infinity,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       imageUrl: doctorModel.profilePicture ??
-                          'https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg'),
+                          'https://img.freepik.com/free-photo/portrait-male-doctor_23-2148480369.jpg?semt=ais_hybrid&w=740'),
                   Container(
                     height: 20,
                     decoration: const BoxDecoration(
