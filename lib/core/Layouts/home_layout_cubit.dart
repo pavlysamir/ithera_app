@@ -21,6 +21,10 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
 
   int currentIndex = 1;
 
+  // إنشاء الـ cubit instances مرة واحدة عشان نحافظ على الـ state
+  late final PaginationCubit _paginationCubit = getIt<PaginationCubit>();
+  late final BadeLookUpCubit _badeLookUpCubit = getIt<BadeLookUpCubit>();
+
   List<Widget> get patientScreens => [
         BlocProvider(
           create: (context) => getIt<SettingsCubit>(),
@@ -28,11 +32,11 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
         ),
         MultiBlocProvider(
           providers: [
-            BlocProvider<PaginationCubit>(
-              create: (context) => getIt<PaginationCubit>()..fetchItems(),
+            BlocProvider<PaginationCubit>.value(
+              value: _paginationCubit, // استخدام نفس الـ instance
             ),
-            BlocProvider<BadeLookUpCubit>(
-              create: (context) => getIt<BadeLookUpCubit>()..getAllCities(),
+            BlocProvider<BadeLookUpCubit>.value(
+              value: _badeLookUpCubit..getAllCities(),
             ),
           ],
           child: const PatientHomeScreen(),
@@ -45,7 +49,6 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
           create: (context) => getIt<SettingsCubit>(),
           child: const DoctorSettingsScreen(),
         ),
-        // Create fresh instance each time to avoid state conflicts
         BlocProvider(
           create: (context) =>
               getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),

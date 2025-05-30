@@ -35,18 +35,17 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    CacheHelper.set(
-      key: CacheConstants.isFromPatient,
-      value: widget.isFromPatient,
-    );
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      CacheHelper.set(
+        key: CacheConstants.isFromPatient,
+        value: widget.isFromPatient,
+      );
+    });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     phoneController.dispose();
     passwordController.dispose();
 

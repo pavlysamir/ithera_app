@@ -9,8 +9,17 @@ class PaginationCubit extends Cubit<PaginationState> {
   int _currentOffset = 1;
   int? _totalCount;
   bool _hasReachedEnd = false;
+  bool _hasInitialized = false; // دي الحل الصحيح!
 
   PaginationCubit(this._patientHomeRepo) : super(PaginationInitial());
+
+  // Method جديدة للتأكد من الـ initialization
+  Future<void> initializeIfNeeded() async {
+    if (!_hasInitialized && state is PaginationInitial) {
+      _hasInitialized = true;
+      await fetchItems();
+    }
+  }
 
   Future<void> fetchItems() async {
     // تحقق إذا كنا بالفعل بنحمّل أو خلصنا تحميل كل العناصر
@@ -48,6 +57,7 @@ class PaginationCubit extends Cubit<PaginationState> {
     _currentOffset = 1;
     _totalCount = null;
     _hasReachedEnd = false;
+    _hasInitialized = false; // مهم نعمل reset للـ initialization كمان
     emit(PaginationInitial());
   }
 

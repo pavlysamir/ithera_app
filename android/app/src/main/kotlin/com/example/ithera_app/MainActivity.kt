@@ -1,4 +1,4 @@
-package com.example.ithera_app
+package com.ithera.app
 
 import io.flutter.embedding.android.FlutterActivity
 
