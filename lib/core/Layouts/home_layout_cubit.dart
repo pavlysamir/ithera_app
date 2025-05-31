@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/screens/doctor_booking_screen.dart';
+import 'package:ithera_app/features/booking/patient_booking/managers/cubit/patient_booking_cubit.dart';
 import 'package:ithera_app/features/booking/patient_booking/presentation/screens/patient_booking_screen.dart';
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
@@ -24,6 +25,8 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
   // إنشاء الـ cubit instances مرة واحدة عشان نحافظ على الـ state
   late final PaginationCubit _paginationCubit = getIt<PaginationCubit>();
   late final BadeLookUpCubit _badeLookUpCubit = getIt<BadeLookUpCubit>();
+  late final PatientBookingCubit _patientBookingCubit =
+      getIt<PatientBookingCubit>();
 
   List<Widget> get patientScreens => [
         BlocProvider(
@@ -41,7 +44,10 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
           ],
           child: const PatientHomeScreen(),
         ),
-        const PatientBookingScreen(),
+        BlocProvider.value(
+          value: _patientBookingCubit,
+          child: const PatientBookingScreen(),
+        ),
       ];
 
   List<Widget> get doctorScreens => [

@@ -9,7 +9,7 @@ class PaginationCubit extends Cubit<PaginationState> {
   int _currentOffset = 1;
   int? _totalCount;
   bool _hasReachedEnd = false;
-  bool _hasInitialized = false; // دي الحل الصحيح!
+  bool _hasInitialized = false;
 
   PaginationCubit(this._patientHomeRepo) : super(PaginationInitial());
 

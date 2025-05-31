@@ -1,124 +1,189 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
-import 'package:ithera_app/core/widgets/custom_button_small.dart';
+import 'package:ithera_app/core/widgets/custom_listview_shimmer.dart';
+import 'package:ithera_app/features/booking/patient_booking/data/models/patient_booking_model.dart';
+import 'package:ithera_app/features/booking/patient_booking/managers/cubit/patient_booking_cubit.dart';
+import 'package:ithera_app/features/booking/patient_booking/presentation/screens/no_booking_screen.dart';
 import 'package:ithera_app/features/booking/patient_booking/presentation/widgets/custom_active_booking_container.dart';
+import 'package:ithera_app/features/booking/patient_booking/presentation/widgets/custom_listview_last_patient_booking.dart';
 
-class PatientBookingScreen extends StatelessWidget {
+class PatientBookingScreen extends StatefulWidget {
   const PatientBookingScreen({super.key});
 
   @override
+  State<PatientBookingScreen> createState() => _PatientBookingScreenState();
+}
+
+class _PatientBookingScreenState extends State<PatientBookingScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    super.initState();
+    context.read<PatientBookingCubit>().initializeIfNeeded();
+  }
+
+  Future<void> _onRefresh() async {
+    await context.read<PatientBookingCubit>().refresh();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'الحجوزات النشطة',
-                  style: AppTextStyles.font14Regular
-                      .copyWith(color: AppColors.blackLight),
-                ),
-                SizedBox(height: 2.h),
-                const Divider(
-                  color: AppColors.grey100,
-                  thickness: 1,
-                ),
-                SizedBox(height: 20.h),
-                const CustomActiveBookingContainer(),
-                const SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'الحجوزات السابقة',
-                  style: AppTextStyles.font14Regular
-                      .copyWith(color: AppColors.blackLight),
-                ),
-                SizedBox(height: 2.h),
-                const Divider(
-                  color: AppColors.grey100,
-                  thickness: 1,
-                ),
-                SizedBox(height: 20.h),
-                ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 8,
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          color: AppColors.primaryColor,
+          backgroundColor: Colors.white,
+          child: BlocConsumer<PatientBookingCubit, PatientBookingState>(
+            listener: (context, state) {
+              if (state is PatientBookingError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.error100,
+                    content: Text(state.message),
                   ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [AppShadows.shadow1],
+                );
+              }
+            },
+            builder: (context, state) {
+              List<PatientBookingModel> activeBookings = [];
+              List<PatientBookingModel> lastBookings = [];
+              bool isInitialLoading = state is PatientBookingInitial;
+              bool isLoading = state is PatientBookingLoading;
+
+              // استخراج البيانات من جميع الحالات
+              switch (state.runtimeType) {
+                case PatientBookingLoading:
+                  final loadingState = state as PatientBookingLoading;
+                  activeBookings = loadingState.activeBookings;
+                  lastBookings = loadingState.lastBookings;
+                  break;
+                case PatientBookingLoaded:
+                  final loadedState = state as PatientBookingLoaded;
+                  activeBookings = loadedState.activeBookings;
+                  lastBookings = loadedState.lastBookings;
+                  break;
+                case PatientBookingError:
+                  final errorState = state as PatientBookingError;
+                  activeBookings = errorState.activeBookings;
+                  lastBookings = errorState.lastBookings;
+                  break;
+              }
+
+              // تحقق من عدم وجود بيانات نهائياً فقط بعد انتهاء التحميل
+              bool hasNoData = activeBookings.isEmpty && lastBookings.isEmpty;
+              bool isDataFinal =
+                  state is PatientBookingLoaded || state is PatientBookingError;
+
+              if (isDataFinal && hasNoData) {
+                return const NoBookingScreen();
+              }
+
+              // عرض loading indicator فقط في البداية
+              if (isInitialLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 30),
+                      _buildActiveBookingsSection(
+                        activeBookings: activeBookings,
+                        isLoading: isLoading && activeBookings.isEmpty,
                       ),
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border:
-                                      Border.all(color: AppColors.blackLight)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                    placeholder: (context, url) => const Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                    fit: BoxFit.fill,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    imageUrl:
-                                        'https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg'),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Text(' د/ أمجد هاني ',
-                                maxLines: 1,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: AppTextStyles.font16Regular.copyWith(
-                                  color: AppColors.primaryColor,
-                                )),
-                          ),
-                          Expanded(
-                              flex: 2,
-                              child: CustomButtonSmall(
-                                  width: 120.w,
-                                  function: () {},
-                                  text: 'اعادة الحجز',
-                                  color: AppColors.textGreen,
-                                  borderColor: AppColors.textGreen))
-                        ],
+                      const SizedBox(height: 30),
+                      _buildLastBookingsSection(
+                        lastBookings: lastBookings,
+                        isLoading: isLoading && lastBookings.isEmpty,
                       ),
-                    );
-                  },
-                  itemCount: 10,
-                )
-              ],
-            ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
+
+  Widget _buildActiveBookingsSection({
+    required List<PatientBookingModel> activeBookings,
+    required bool isLoading,
+  }) {
+    if (isLoading) {
+      return const CustomItemDoctorShimmer();
+    }
+
+    if (activeBookings.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'الحجوزات النشطة',
+          style: AppTextStyles.font14Regular.copyWith(
+            color: AppColors.blackLight,
+          ),
+        ),
+        SizedBox(height: 2.h),
+        const Divider(
+          color: AppColors.grey100,
+          thickness: 1,
+        ),
+        SizedBox(height: 20.h),
+        CustomActiveBookingContainer(
+          activeBookings: activeBookings.first,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLastBookingsSection({
+    required List<PatientBookingModel> lastBookings,
+    required bool isLoading,
+  }) {
+    if (isLoading) {
+      return const CustomItemDoctorShimmer();
+    }
+
+    if (lastBookings.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'الحجوزات السابقة',
+          style: AppTextStyles.font14Regular.copyWith(
+            color: AppColors.blackLight,
+          ),
+        ),
+        SizedBox(height: 2.h),
+        const Divider(
+          color: AppColors.grey100,
+          thickness: 1,
+        ),
+        SizedBox(height: 20.h),
+        const LastPatinetBooking(),
+      ],
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

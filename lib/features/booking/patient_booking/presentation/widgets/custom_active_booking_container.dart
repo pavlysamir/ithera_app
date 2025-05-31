@@ -9,10 +9,11 @@ import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/booking/patient_booking/data/models/patient_booking_model.dart';
 
 class CustomActiveBookingContainer extends StatelessWidget {
-  const CustomActiveBookingContainer({super.key});
-
+  const CustomActiveBookingContainer({super.key, required this.activeBookings});
+  final PatientBookingModel activeBookings;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,7 +57,7 @@ class CustomActiveBookingContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(' د/ أمجد هاني ',
+                  Text(' د/ ${activeBookings.doctorName}',
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -65,7 +66,7 @@ class CustomActiveBookingContainer extends StatelessWidget {
                       )),
                   SizedBox(height: 4.h),
                   Text(
-                    'اخصائى العلاج الطبيعى لحالات العظام والاطفال',
+                    activeBookings.field,
                     maxLines: 3,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
@@ -87,7 +88,7 @@ class CustomActiveBookingContainer extends StatelessWidget {
             SizedBox(width: 5.w),
             Expanded(
               child: Text(
-                'الجلسة القادمة : يوم الثلاثاء الساعة من 4 إلي 6 مساءً',
+                'الجلسة القادمة : يوم ${activeBookings.sessions.first.arabicDay} الساعة من ${activeBookings.sessions.first.startTime} إلي ${activeBookings.sessions.first.endTime} مساءً',
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.font14Regular
@@ -105,7 +106,7 @@ class CustomActiveBookingContainer extends StatelessWidget {
             SizedBox(width: 5.w),
             Expanded(
               child: Text(
-                '01270347065',
+                activeBookings.mobileNumber,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.font14Regular
