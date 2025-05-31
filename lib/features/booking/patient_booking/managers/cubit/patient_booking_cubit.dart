@@ -20,7 +20,7 @@ class PatientBookingCubit extends Cubit<PatientBookingState> {
       // نحمّل البيانات بشكل متوازي
       final results = await Future.wait([
         _patientBookingRepo.getPatientBookings(status: 0), // active
-        _patientBookingRepo.getPatientBookings(status: 0), // last
+        _patientBookingRepo.getPatientBookings(status: 1), // last
       ]);
 
       List<PatientBookingModel> activeBookings = [];
