@@ -44,7 +44,7 @@ class CustomActiveBookingContainer extends StatelessWidget {
                       fit: BoxFit.fill,
                       width: double.infinity,
                       height: double.infinity,
-                      imageUrl:
+                      imageUrl: activeBookings.doctorImgURL ??
                           'https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg'),
                 ),
               ),
@@ -119,7 +119,8 @@ class CustomActiveBookingContainer extends StatelessWidget {
             text: 'مزيد من التفاصيل',
             color: AppColors.primaryColor,
             function: () {
-              NavigationService().navigateTo(Routes.bookDetailsScreen);
+              NavigationService().navigateTo(Routes.bookPatientDetailsScreen,
+                  arguments: activeBookings);
             })
       ]),
     );

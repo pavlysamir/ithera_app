@@ -5,6 +5,7 @@ class PatientBookingModel extends Equatable {
   final int doctorId;
   final int status;
   final String doctorName;
+  final String? doctorImgURL;
   final String field;
   final String mobileNumber;
   final int gender;
@@ -21,6 +22,7 @@ class PatientBookingModel extends Equatable {
     required this.gender,
     required this.anotherPatient,
     required this.sessions,
+    this.doctorImgURL,
   });
 
   factory PatientBookingModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class PatientBookingModel extends Equatable {
       doctorId: json['doctorId'],
       status: json['status'],
       doctorName: json['doctorName'],
+      doctorImgURL: json['doctorImgURL'],
       field: json['field'],
       mobileNumber: json['mobileNumber'],
       gender: json['gender'],
@@ -45,6 +48,7 @@ class PatientBookingModel extends Equatable {
         doctorId,
         status,
         doctorName,
+        doctorImgURL,
         field,
         mobileNumber,
         gender,
@@ -61,7 +65,7 @@ class PatientSessionModel extends Equatable {
   final int scheduleId;
   final String startTime;
   final String endTime;
-  final String startDate;
+  final DateTime startDate;
   final int day;
   final String arabicDay;
 
@@ -87,7 +91,7 @@ class PatientSessionModel extends Equatable {
       scheduleId: json['scheduleId'],
       startTime: json['startTime'],
       endTime: json['endTime'],
-      startDate: json['startDate'],
+      startDate: DateTime.parse(json['startDate']),
       day: json['day'],
       arabicDay: json['arabicDay'],
     );

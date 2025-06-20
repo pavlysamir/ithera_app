@@ -20,12 +20,12 @@ class PatientSettingsScreen extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(context, Routes.patientEditProfileScreen);
           }),
-      SettingItemModel(
-          title: 'اسعار الجلسات',
-          icon: Icons.payments_outlined,
-          onTap: () {
-            Navigator.pushNamed(context, Routes.patientPricesScreen);
-          }),
+      // SettingItemModel(
+      //     title: 'اسعار الجلسات',
+      //     icon: Icons.payments_outlined,
+      //     onTap: () {
+      //       Navigator.pushNamed(context, Routes.patientPricesScreen);
+      //     }),
       SettingItemModel(
           title: 'تواصل معنا',
           icon: Icons.headphones,

@@ -6,11 +6,11 @@ import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/book_item_details.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/seesions_listview.dart';
+import 'package:ithera_app/features/booking/patient_booking/data/models/patient_booking_model.dart';
 
-class BookDetailsScreen extends StatelessWidget {
-  const BookDetailsScreen({
-    super.key,
-  });
+class BookPatientDetailsScreen extends StatelessWidget {
+  const BookPatientDetailsScreen({super.key, required this.activeBookings});
+  final PatientBookingModel activeBookings;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class BookDetailsScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Expanded(
                 child: SeesionsList(
-              activeBookings: const [],
+              activeBookings: activeBookings.sessions,
             )),
             const SizedBox(height: 10),
             CustomButtonLarge(

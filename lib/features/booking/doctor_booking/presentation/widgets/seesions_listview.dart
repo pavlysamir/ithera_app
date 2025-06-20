@@ -1,79 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ithera_app/core/assets/assets.dart';
-import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/theme/app_text_styles.dart';
-import 'package:ithera_app/core/widgets/custom_button_small.dart';
-import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
-import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/custom_circle_line.dart';
+import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/dimmed_session_item.dart';
+import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/session_item.dart';
+import 'package:ithera_app/features/booking/patient_booking/data/models/patient_booking_model.dart';
 
 class SeesionsList extends StatelessWidget {
-  const SeesionsList({super.key, this.isDimmed = false});
-  final bool isDimmed;
+  const SeesionsList({
+    super.key,
+    required this.activeBookings,
+  });
+
+  final List<PatientSessionModel> activeBookings;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomCircleLine(
-                isDimmed: isDimmed,
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    ' السبت من 4 الي 6 مساءً',
-                    style: AppTextStyles.font14Regular.copyWith(
-                        color:
-                            isDimmed ? AppColors.blackLight : AppColors.black),
-                  ),
-                  const SizedBox(height: 15),
-                  Text(
-                    ' 10/10/2023',
-                    style: AppTextStyles.font12Regular.copyWith(
-                      color: AppColors.blackLight,
-                    ),
-                  )
-                ],
-              ),
-              const Spacer(),
-              isDimmed
-                  ? const SizedBox()
-                  : SizedBox(
-                      height: 45.h,
-                      child: CustomButtonSmall(
-                        width: 80.w,
-                        function: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => PopUpDialog(
-                                    function2: () {},
-                                    function: () {
-                                      Navigator.pop(context);
-                                    },
-                                    title: 'هل تريد بالتأكيد الغاء هذه الجلسة؟',
-                                    img: AssetsData.deleteAccount,
-                                    subTitle: '',
-                                    colorButton1: AppColors.primaryColor,
-                                    colorButton2: AppColors.white,
-                                    textColortcolor1: Colors.white,
-                                    textColortcolor2: AppColors.primaryColor,
-                                    context: context,
-                                  ));
-                        },
-                        text: 'تأجيل',
-                        color: AppColors.white,
-                        borderColor: AppColors.primaryColor,
-                        textColortcolor: AppColors.primaryColor,
-                      ),
-                    ),
-            ],
-          );
-        });
+    return CustomScrollView(
+      slivers: [
+        // قائمة الجلسات (Scrollable بشكل Lazy)
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return SessionListItem(session: activeBookings[index]);
+            },
+            childCount: activeBookings.length,
+          ),
+        ),
+
+        // التلت عناصر (تتسكرول مع القائمة لكن بتتعرض مرة واحدة)
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
+            child: _buildBottomActions(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomActions() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        DimmedSessionListItem(
+          session: activeBookings.last,
+        ),
+        SizedBox(height: 10.h),
+      ],
+    );
   }
 }

@@ -39,4 +39,7 @@ class Routes {
   //doctor booking screens
   static const String noRequestesScreen = '/noRequestesScreen';
   static const String bookDetailsScreen = '/bookDetailsScreen';
+
+  //patients booking screens
+  static const String bookPatientDetailsScreen = '/bookPatientDetailsScreen';
 }

@@ -36,11 +36,12 @@ class DoctorResponseData extends Equatable {
   final int cityId;
   final bool gender;
   final List<SpecializationField> specializationFields;
-  final num sessionPrice;
+  final num? sessionPrice;
   final double averageRating;
   final String? profilePicture;
   final List<RegionSchedule> regionSchedules;
   final List<int> doctorSessionsIds;
+  final String? description;
 
   const DoctorResponseData({
     required this.doctorName,
@@ -53,6 +54,7 @@ class DoctorResponseData extends Equatable {
     required this.profilePicture,
     required this.regionSchedules,
     required this.doctorSessionsIds,
+    this.description,
   });
 
   factory DoctorResponseData.fromJson(Map<String, dynamic> json) {
@@ -71,6 +73,7 @@ class DoctorResponseData extends Equatable {
           .map((e) => RegionSchedule.fromJson(e))
           .toList(),
       doctorSessionsIds: List<int>.from(json['doctorSessionsIds']),
+      description: json['description'],
     );
   }
 
@@ -86,6 +89,7 @@ class DoctorResponseData extends Equatable {
         profilePicture,
         regionSchedules,
         doctorSessionsIds,
+        description,
       ];
 }
 
