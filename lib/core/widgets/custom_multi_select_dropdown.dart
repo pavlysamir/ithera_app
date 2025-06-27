@@ -166,11 +166,14 @@ class _MultiSelectDialogState extends State<_MultiSelectDialog> {
           child: const Text('إلغاء'),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        CustomButtonSmall(
-            function: () => Navigator.of(context).pop(tempSelected),
-            text: 'تم',
-            color: AppColors.primaryColor,
-            borderColor: AppColors.primaryColor),
+        SizedBox(
+          height: 45.h,
+          child: CustomButtonSmall(
+              function: () => Navigator.of(context).pop(tempSelected),
+              text: 'تم',
+              color: AppColors.primaryColor,
+              borderColor: AppColors.primaryColor),
+        ),
       ],
     );
   }

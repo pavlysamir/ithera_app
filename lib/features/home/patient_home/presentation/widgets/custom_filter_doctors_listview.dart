@@ -5,16 +5,17 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_listview_shimmer.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/home/patient_home/managers/filter_cubit/filter_pagination_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/pagination_cubit/pagination_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/widgets/custom_item_doctor.dart';
 
-class CustomDoctorsListView extends StatelessWidget {
-  const CustomDoctorsListView({
+class CustomFilterDoctorsListView extends StatelessWidget {
+  const CustomFilterDoctorsListView({
     super.key,
   });
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PaginationCubit, PaginationState>(
+    return BlocBuilder<FilterPaginationCubit, PaginationState>(
       builder: (context, state) {
         // Show shimmer list while loading first page
         if (state is PaginationLoading && state.items.isEmpty) {

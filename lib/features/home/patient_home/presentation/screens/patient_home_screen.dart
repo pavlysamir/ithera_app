@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +21,8 @@ class PatientHomeScreen extends StatefulWidget {
 class _PatientHomeScreenState extends State<PatientHomeScreen>
     with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController controller = TextEditingController();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -36,21 +40,33 @@ class _PatientHomeScreenState extends State<PatientHomeScreen>
   }
 
   Future<void> _onRefresh() async {
+    controller.clear();
     context.read<PaginationCubit>().reset();
     await context.read<PaginationCubit>().fetchItems();
+  }
+
+  Future<void> onChange(String value) async {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      context.read<PaginationCubit>().fetchItems(
+            searchQuery: value,
+          );
+    });
   }
 
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    controller.dispose();
+    _debounce?.cancel();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final TextEditingController controller = TextEditingController();
 
     return Scaffold(
       body: RefreshIndicator(
@@ -63,6 +79,7 @@ class _PatientHomeScreenState extends State<PatientHomeScreen>
               const AlwaysScrollableScrollPhysics(), // مهم عشان الـ refresh يشتغل
           slivers: [
             HomeAppbar(
+                onChange: onChange,
                 controller: controller,
                 userName:
                     CacheHelper.getString(key: CacheConstants.userName) ?? ''),

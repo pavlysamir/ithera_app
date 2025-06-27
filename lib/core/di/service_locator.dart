@@ -14,6 +14,7 @@ import 'package:ithera_app/features/home/doctor_home/data/repos/manage_schedules
 import 'package:ithera_app/features/home/doctor_home/managers/cubit/doctor_manage_schedules_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_repo.dart';
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
+import 'package:ithera_app/features/home/patient_home/managers/filter_cubit/filter_pagination_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/pagination_cubit/pagination_cubit.dart';
 import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
 
@@ -68,4 +69,7 @@ void setUpServiceLocator() {
 
   getIt.registerFactory<PatientBookingCubit>(
       (() => PatientBookingCubit(getIt())));
+
+  getIt.registerFactory<FilterPaginationCubit>(
+      (() => FilterPaginationCubit(getIt())));
 }

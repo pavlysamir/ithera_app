@@ -12,10 +12,12 @@ class HomeAppbar extends StatelessWidget {
     super.key,
     required this.controller,
     required this.userName,
+    required this.onChange,
   });
 
   final TextEditingController controller;
   final String userName;
+  final Function(String) onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,7 @@ class HomeAppbar extends StatelessWidget {
                         child: SizedBox(
                           height: 60.h,
                           child: TextFormField(
+                            onChanged: onChange,
                             onTapOutside: (event) {
                               FocusManager.instance.primaryFocus?.unfocus();
                             },

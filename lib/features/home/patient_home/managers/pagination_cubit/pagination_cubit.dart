@@ -11,6 +11,9 @@ class PaginationCubit extends Cubit<PaginationState> {
   bool _hasReachedEnd = false;
   bool _hasInitialized = false;
 
+  // for search functionality
+  String? _lastSearchQuery;
+
   PaginationCubit(this._patientHomeRepo) : super(PaginationInitial());
 
   // Method جديدة للتأكد من الـ initialization
@@ -21,32 +24,41 @@ class PaginationCubit extends Cubit<PaginationState> {
     }
   }
 
-  Future<void> fetchItems() async {
-    // تحقق إذا كنا بالفعل بنحمّل أو خلصنا تحميل كل العناصر
+  Future<void> fetchItems({String? searchQuery}) async {
+    // لو الكلمة الجديدة مختلفة عن آخر كلمة → اعمل reset
+    if (_lastSearchQuery != searchQuery && searchQuery != null) {
+      _currentOffset = 1;
+      _totalCount = null;
+      _hasReachedEnd = false;
+      emit(PaginationInitial());
+    }
+
+    // خزن الكلمة للمرات الجاية (سواء جاية من السيرش أو null من الـ scroll)
+    _lastSearchQuery = searchQuery ?? _lastSearchQuery;
+
     if (state is PaginationLoading || _hasReachedEnd) return;
 
-    emit(PaginationLoading(
-        state.items)); // حافظ على العناصر الحالية أثناء التحميل
+    emit(PaginationLoading(state.items));
 
-    final result = await _patientHomeRepo.fetchDoctors(_currentOffset);
+    final result = await _patientHomeRepo.fetchDoctors(
+      pageNumber: _currentOffset,
+      doctorName: _lastSearchQuery, // 👈 استخدم آخر كلمة محفوظة
+    );
+
     result.fold(
-      (error) {
-        emit(PaginationError(error));
-      },
+      (error) => emit(PaginationError(error)),
       (data) {
-        // تعيين التوتال مرة واحدة فقط
         _totalCount ??= data.count;
 
-        final allItems = [...state.items, ...data.items];
+        final allItems =
+            _currentOffset == 1 ? data.items : [...state.items, ...data.items];
 
-        // لو مفيش عناصر جديدة راجعة أو وصلنا للنهاية
         if (data.items.isEmpty || allItems.length >= _totalCount!) {
           _hasReachedEnd = true;
           emit(PaginationLoadedEnd(allItems));
           return;
         }
 
-        // في حالة وجود عناصر جديدة
         _currentOffset++;
         emit(PaginationLoaded(allItems));
       },
@@ -58,10 +70,14 @@ class PaginationCubit extends Cubit<PaginationState> {
     _totalCount = null;
     _hasReachedEnd = false;
     _hasInitialized = false; // مهم نعمل reset للـ initialization كمان
+    _lastSearchQuery = null;
+
     emit(PaginationInitial());
   }
 
   String getAllNameAr(List<dynamic> list) {
     return list.map((e) => e['nameAr'].toString()).join('، ');
   }
+
+  Future<void> filter({String? docName, int? cityId, int? specialtyId}) async {}
 }

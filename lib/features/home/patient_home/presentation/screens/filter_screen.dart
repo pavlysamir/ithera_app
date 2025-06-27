@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/routing/navigation_services.dart';
+import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
+import 'package:ithera_app/core/widgets/custom_multi_select_dropdown.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
+import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_state.dart';
 
 class FilterScreen extends StatefulWidget {
   const FilterScreen({super.key});
@@ -20,8 +26,10 @@ class _FilterScreenState extends State<FilterScreen> {
 
   String? selectedValueCity;
   String? selectedValueSpeciality;
+  int? cityId;
   bool? isMale;
-
+  List<String> selectedItemsList = [];
+  List<int> selectedItemsListIds = [];
   @override
   void dispose() {
     super.dispose();
@@ -134,12 +142,23 @@ class _FilterScreenState extends State<FilterScreen> {
                     AppTextStyles.font16Regular.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 16),
-              CustomDropDownMenu(
-                items: ['القاهرة', 'الجيزة'],
-                onChange: (newValue) {
-                  setState(() {
-                    selectedValueCity = newValue;
-                  });
+              BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
+                builder: (context, state) {
+                  return CustomDropDownMenu(
+                    isLoading: state.citiesStatus == LookupStatus.loading,
+                    items: state.cities != null
+                        ? state.cities!.map((e) => e.nameAr).toList()
+                        : [],
+                    onChange: (newValue) {
+                      setState(() {
+                        selectedValueCity = newValue;
+                        cityId = state.cities!
+                            .firstWhere((element) => element.nameAr == newValue)
+                            .id;
+                        print(cityId);
+                      });
+                    },
+                  );
                 },
               ),
               const SizedBox(height: 16),
@@ -149,12 +168,25 @@ class _FilterScreenState extends State<FilterScreen> {
                     AppTextStyles.font16Regular.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 16),
-              CustomDropDownMenu(
-                items: ['اختر التخصص'],
-                onChange: (newValue) {
-                  setState(() {
-                    selectedValueSpeciality = newValue;
-                  });
+              BlocBuilder<BadeLookUpCubit, BadeLookUpState>(
+                builder: (context, state) {
+                  return CustomMultiSelectDropDown(
+                    items: state.specialties != null
+                        ? state.specialties!.map((e) => e.nameAr).toList()
+                        : [],
+                    isLoading: state.specialtiesStatus == LookupStatus.loading,
+                    selectedItems: selectedItemsList,
+                    onSelectionChanged: (newSelected) {
+                      setState(() {
+                        selectedItemsList = newSelected;
+                        selectedItemsList.map((e) {
+                          selectedItemsListIds.add(state.specialties!
+                              .firstWhere((element) => element.nameAr == e)
+                              .id);
+                        }).toList();
+                      });
+                    },
+                  );
                 },
               ),
               const SizedBox(height: 16),
@@ -188,17 +220,27 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
               controller.text.isNotEmpty ||
                       selectedValueCity != null ||
-                      selectedValueSpeciality != null ||
+                      selectedItemsList.isNotEmpty ||
                       isMale != null
                   ? CustomButtonLarge(
                       text: 'بحث',
                       textColor: Colors.white,
                       function: () {
-                        // NavigationService().navigateToReplacement(
-                        //     Routes.verifyOtpScreen,
-                        //     arguments: false);
+                        print(
+                            'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${controller.text.trim()}');
+                        NavigationService().navigateToReplacement(
+                          Routes.resultFilterScreen,
+                          arguments: {
+                            'doctorName': controller.text.trim(),
+                            'cityId': cityId,
+                            'specialtyId': selectedItemsListIds.isNotEmpty
+                                ? selectedItemsListIds.first
+                                : null,
+                            'gender': isMale,
+                          },
+                        );
                       },
-                      color: AppColors.primaryColor,
+                      color: const Color.fromRGBO(0, 122, 255, 1),
                     )
                   : const CustomButtonLargeDimmed(
                       text: 'بحث',

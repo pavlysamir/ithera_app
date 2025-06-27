@@ -10,12 +10,32 @@ class PatientHomeRepo {
   final DioConsumer _dio;
   PatientHomeRepo(this._dio);
 
-  Future<Either<String, DoctorModelResponse>> fetchDoctors(
-      int pageNumber) async {
+  Future<Either<String, DoctorModelResponse>> fetchDoctors({
+    required int pageNumber,
+    int? doctorId,
+    int? cityId,
+    int? regionId,
+    int? fileTypeId,
+    bool? gender,
+    String? doctorName,
+  }) async {
     try {
+      // بناء الـ request body ديناميكيًا
+      final Map<String, dynamic> data = {
+        'pageNumber': pageNumber,
+        'pageSize': 10,
+      };
+
+      if (doctorId != null) data['doctorId'] = doctorId;
+      if (cityId != null) data['cityId'] = cityId;
+      if (regionId != null) data['regionId'] = regionId;
+      if (fileTypeId != null) data['fileTypeId'] = fileTypeId;
+      if (gender != null) data['gender'] = gender;
+      if (doctorName != null) data['doctorName'] = doctorName;
+
       final response = await _dio.post(
         EndPoint.getAllDoctors,
-        data: {'pageNumber': pageNumber, 'pageSize': 10},
+        data: data,
       );
 
       final parsed = BaseResponse<DoctorModelResponse>.fromJson(

@@ -15,6 +15,7 @@ class AssetsData {
   static const wallet = 'assets/images/wallet.svg';
   static const noRequestes = 'assets/images/no_requestes.svg';
   static const noBooking = 'assets/images/no_booking.svg';
+  static const emptyItems = 'assets/images/empty_items.svg';
 
   //icons
   static const notification = 'assets/icons/notification_icon.svg';

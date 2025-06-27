@@ -21,7 +21,9 @@ import 'package:ithera_app/features/booking/patient_booking/presentation/screens
 import 'package:ithera_app/features/get_baseLookUp/manager/cubit/bade_look_up_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/data/models/doctors_model.dart';
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
+import 'package:ithera_app/features/home/patient_home/managers/filter_cubit/filter_pagination_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/book_now_screen.dart';
+import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_results_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/doctor_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
@@ -144,7 +146,32 @@ class AppRouter {
         );
       case Routes.filterScreen:
         return MaterialPageRoute(
-          builder: (_) => const FilterScreen(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BadeLookUpCubit>(
+                create: (context) => getIt<BadeLookUpCubit>()
+                  ..getAllCities()
+                  ..getAllSpecialties(),
+              ),
+              BlocProvider<FilterPaginationCubit>(
+                create: (context) => getIt<FilterPaginationCubit>(),
+              ),
+            ],
+            child: const FilterScreen(),
+          ),
+          settings: settings,
+        );
+      case Routes.resultFilterScreen:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => getIt<FilterPaginationCubit>()),
+              BlocProvider(
+                create: (context) => getIt<BadeLookUpCubit>()..getAllCities(),
+              ),
+            ],
+            child: const FilterResultsScreen(),
+          ),
           settings: settings,
         );
       case Routes.patientEditProfileScreen:

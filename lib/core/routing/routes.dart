@@ -17,6 +17,7 @@ class Routes {
   static const String filterScreen = '/filterScreen';
   static const String bookNowScreen = '/bookNowScreen';
   static const String doctorScreen = '/doctorScreen';
+  static const String resultFilterScreen = '/resultFilterScreen';
 
   //patients settings screens
   static const String patientEditProfileScreen = '/patientEditProfileScreen';
