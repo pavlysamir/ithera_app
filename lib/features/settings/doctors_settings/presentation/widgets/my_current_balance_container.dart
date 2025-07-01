@@ -7,7 +7,8 @@ import 'package:ithera_app/core/theme/font_weight_helper.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 
 class MyCurrentBalanceContainer extends StatelessWidget {
-  const MyCurrentBalanceContainer({super.key});
+  const MyCurrentBalanceContainer({super.key, required this.currentBalance});
+  final double currentBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class MyCurrentBalanceContainer extends StatelessWidget {
                     SizedBox(
                       height: 20.h,
                     ),
-                    Text('500 جنيه',
+                    Text('$currentBalance جنيه',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: AppTextStyles.font25Medium.copyWith(

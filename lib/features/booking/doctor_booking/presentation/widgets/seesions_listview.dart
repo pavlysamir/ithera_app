@@ -26,25 +26,25 @@ class SeesionsList extends StatelessWidget {
           ),
         ),
 
-        // التلت عناصر (تتسكرول مع القائمة لكن بتتعرض مرة واحدة)
+        //  التلت عناصر (تتسكرول مع القائمة لكن بتتعرض مرة واحدة)
         SliverToBoxAdapter(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
-            child: _buildBottomActions(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                DimmedSessionListItem(
+                  day: activeBookings[0].startDate.day,
+                  month: activeBookings[0].startDate.month,
+                  year: activeBookings[0].startDate.year,
+                  startTime: activeBookings[0].startTime,
+                  endTime: activeBookings[0].endTime,
+                ),
+                SizedBox(height: 10.h),
+              ],
+            ),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildBottomActions() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        DimmedSessionListItem(
-          session: activeBookings.last,
-        ),
-        SizedBox(height: 10.h),
       ],
     );
   }

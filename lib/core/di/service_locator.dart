@@ -6,6 +6,8 @@ import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart
 import 'package:ithera_app/features/auth/data/repo/auth_repo.dart';
 import 'package:ithera_app/features/auth/managers/doctor_auth_cubit/doctor_auth_cubit.dart';
 import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
+import 'package:ithera_app/features/booking/doctor_booking/data/booking_repo/doctor_booking_repo.dart';
+import 'package:ithera_app/features/booking/doctor_booking/managers/cubit/doctor_booking_cubit.dart';
 import 'package:ithera_app/features/booking/patient_booking/data/repos/patient_booking_repo.dart';
 import 'package:ithera_app/features/booking/patient_booking/managers/cubit/patient_booking_cubit.dart';
 import 'package:ithera_app/features/get_baseLookUp/data/repo/base_look_repo.dart';
@@ -16,6 +18,8 @@ import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_re
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/filter_cubit/filter_pagination_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/pagination_cubit/pagination_cubit.dart';
+import 'package:ithera_app/features/settings/doctors_settings/data/repo/settings_repo.dart';
+import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -49,6 +53,18 @@ void setUpServiceLocator() {
     getIt.get<DioConsumer>(),
   ));
 
+  getIt.registerSingleton<DoctorBookingRepo>(DoctorBookingRepo(
+    getIt.get<DioConsumer>(),
+  ));
+
+  getIt.registerSingleton<SettingsRepo>(SettingsRepo(
+    getIt.get<DioConsumer>(),
+  ));
+
+  getIt.registerFactory<SettingCubit>((() => SettingCubit(
+        getIt(),
+      )));
+
   getIt.registerFactory<PaginationCubit>((() => PaginationCubit(
         getIt(),
       )));
@@ -69,6 +85,9 @@ void setUpServiceLocator() {
 
   getIt.registerFactory<PatientBookingCubit>(
       (() => PatientBookingCubit(getIt())));
+
+  getIt
+      .registerFactory<DoctorBookingCubit>((() => DoctorBookingCubit(getIt())));
 
   getIt.registerFactory<FilterPaginationCubit>(
       (() => FilterPaginationCubit(getIt())));

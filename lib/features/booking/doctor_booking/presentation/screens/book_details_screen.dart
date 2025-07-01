@@ -4,13 +4,16 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
+import 'package:ithera_app/features/booking/doctor_booking/data/models/doctor_booking_model.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/book_item_details.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/seesions_listview.dart';
 
 class BookDetailsScreen extends StatelessWidget {
   const BookDetailsScreen({
     super.key,
+    required this.booking,
   });
+  final DoctorBookingModel booking;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class BookDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const BookItemDetails(),
+            DoctorBookItemDetails(booking: booking),
             const SizedBox(height: 20),
             Text(
               'متابعة الجلسات',
@@ -45,7 +48,7 @@ class BookDetailsScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Expanded(
                 child: SeesionsList(
-              activeBookings: const [],
+              activeBookings: booking.sessions,
             )),
             const SizedBox(height: 10),
             CustomButtonLarge(

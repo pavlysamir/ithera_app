@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
+import 'package:ithera_app/features/booking/doctor_booking/managers/cubit/doctor_booking_cubit.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/screens/doctor_booking_screen.dart';
 import 'package:ithera_app/features/booking/patient_booking/managers/cubit/patient_booking_cubit.dart';
 import 'package:ithera_app/features/booking/patient_booking/presentation/screens/patient_booking_screen.dart';
@@ -58,7 +59,10 @@ class HomeLayoutCubit extends Cubit<HomeLayoutState> {
               getIt<DoctorManageSchedulesCubit>()..getManageSchedules(),
           child: const DoctorHomeScreen(),
         ),
-        const DoctorBookingScreen(),
+        BlocProvider(
+          create: (context) => getIt<DoctorBookingCubit>(),
+          child: const DoctorBookingScreen(),
+        ),
       ];
 
   void changeBottomNavBar(int index) {

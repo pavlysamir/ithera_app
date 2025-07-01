@@ -5,9 +5,11 @@ import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
+import 'package:ithera_app/features/booking/doctor_booking/data/models/doctor_booking_model.dart';
 
-class BookItemDetails extends StatelessWidget {
-  const BookItemDetails({super.key});
+class DoctorBookItemDetails extends StatelessWidget {
+  const DoctorBookItemDetails({super.key, required this.booking});
+  final DoctorBookingModel booking;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +27,14 @@ class BookItemDetails extends StatelessWidget {
           spacing: 10.h,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(' أ / أمجد هاني ',
+            Text(' أ / ${booking.patientName} ',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.font16Regular.copyWith(
                   color: AppColors.primaryColor,
                 )),
             Text(
-              'السبت - الأحد - الأتنين ',
+              booking.arabicDaysLine,
               style: AppTextStyles.font16Regular,
             ),
             Row(
@@ -45,7 +47,7 @@ class BookItemDetails extends StatelessWidget {
                 SizedBox(width: 5.w),
                 Expanded(
                   child: Text(
-                    '12ش صلاح سالم - مدينة نصر ',
+                    booking.address,
                     style: AppTextStyles.font14Regular
                         .copyWith(color: AppColors.blackLight),
                   ),
@@ -61,7 +63,7 @@ class BookItemDetails extends StatelessWidget {
                 SizedBox(width: 5.w),
                 Expanded(
                   child: Text(
-                    'من 4 إلي 6 مساءً',
+                    'من ${booking.sessions.first.startTime} إلي ${booking.sessions.first.endTime} مساءً',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.font14Regular
@@ -79,7 +81,7 @@ class BookItemDetails extends StatelessWidget {
                 SizedBox(width: 5.w),
                 Expanded(
                   child: Text(
-                    '01270347065',
+                    booking.mobileNumber,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.font14Regular

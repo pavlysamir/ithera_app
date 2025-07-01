@@ -34,7 +34,7 @@ class BookPatientDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const BookItemDetails(),
+            //  const DoctorBookItemDetails(),
             const SizedBox(height: 20),
             Text(
               'متابعة الجلسات',
@@ -45,7 +45,7 @@ class BookPatientDetailsScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Expanded(
                 child: SeesionsList(
-              activeBookings: activeBookings.sessions,
+              activeBookings: [],
             )),
             const SizedBox(height: 10),
             CustomButtonLarge(

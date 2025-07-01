@@ -15,6 +15,7 @@ import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signi
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/signup_screen.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/verify_phone_otp.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/screens/welcome_screen.dart';
+import 'package:ithera_app/features/booking/doctor_booking/data/models/doctor_booking_model.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/screens/book_details_screen.dart';
 import 'package:ithera_app/features/booking/patient_booking/data/models/patient_booking_model.dart';
 import 'package:ithera_app/features/booking/patient_booking/presentation/screens/patient_booking_details_screen.dart';
@@ -27,6 +28,7 @@ import 'package:ithera_app/features/home/patient_home/presentation/screens/filte
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/doctor_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
+import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/doctor_edit_profile.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/wallet_screen.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/contant_us_screen.dart';
@@ -244,12 +246,18 @@ class AppRouter {
         );
       case Routes.walletScreen:
         return MaterialPageRoute(
-          builder: (_) => const WalletScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                getIt<SettingCubit>()..getDoctorWalletDetails(),
+            child: const WalletScreen(),
+          ),
           settings: settings,
         );
       case Routes.bookDetailsScreen:
         return MaterialPageRoute(
-          builder: (_) => const BookDetailsScreen(),
+          builder: (_) => BookDetailsScreen(
+            booking: settings.arguments as DoctorBookingModel,
+          ),
           settings: settings,
         );
       case Routes.bookPatientDetailsScreen:
