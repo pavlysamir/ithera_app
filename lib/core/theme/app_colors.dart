@@ -26,6 +26,7 @@ class AppColors {
 
   static const blueLight = Color(0xff6BB2FF);
   static const blueMoreLight = Color(0xffE6F2FF);
+  static const blueMedium = Color(0xff8AC2FF);
 
   // grey scale
   static const grey900 = Color(0xff0d0d12);

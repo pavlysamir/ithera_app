@@ -16,6 +16,9 @@ class AssetsData {
   static const noRequestes = 'assets/images/no_requestes.svg';
   static const noBooking = 'assets/images/no_booking.svg';
   static const emptyItems = 'assets/images/empty_items.svg';
+  static const orangeWallet = 'assets/images/orange_wallet.png';
+  static const vodafoneWallet = 'assets/images/vodafone_wallet.svg';
+  static const instapayWallet = 'assets/images/instapay_wallet.svg';
 
   //icons
   static const notification = 'assets/icons/notification_icon.svg';
