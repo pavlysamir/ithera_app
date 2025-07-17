@@ -50,7 +50,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       onChanged: widget.onChanged,
       readOnly: widget.readOnly!,
       initialValue: widget.initialValue,
-      style: AppTextStyles.font14Regular.copyWith(
+      style: AppTextStyles.font12Regular.copyWith(
         color: AppColors.grey800,
       ),
       obscureText: _showPasswordInState ?? false,
@@ -76,7 +76,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
           minWidth: 40,
           minHeight: 40,
         ),
-        hintStyle: AppTextStyles.font14Regular,
+        hintStyle: AppTextStyles.font12Regular,
       ),
     );
   }

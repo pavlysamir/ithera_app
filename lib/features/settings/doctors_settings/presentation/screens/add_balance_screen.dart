@@ -1,9 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
+import 'package:ithera_app/core/widgets/custom_button_large.dart';
+import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
+import 'package:ithera_app/core/widgets/custom_form_field.dart';
+import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
+import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
+import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
+import 'package:ithera_app/features/settings/doctors_settings/presentation/widgets/custom_wallet_field_data.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class AddBalanceScreen extends StatelessWidget {
   const AddBalanceScreen({super.key});
@@ -23,55 +34,264 @@ class AddBalanceScreen extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
-        child: Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
+          child: Column(
+            spacing: 24.h,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'أختار الطريقة المناسبة اليك',
+                style: AppTextStyles.font22Regular
+                    .copyWith(color: AppColors.black),
+              ),
+              const CustomWalletFieldData(
+                walletNumber: '8-90121234-567-3456',
+                walletImg: AssetsData.orangeWallet,
+              ),
+              const CustomWalletFieldData(
+                walletNumber: '8-90121234-567-3456',
+                walletImg: AssetsData.vodafoneWallet,
+              ),
+              const CustomWalletFieldData(
+                walletNumber: '8-90121234-567-3456',
+                walletImg: AssetsData.instapayWallet,
+              ),
+              const CustomContainerDottedUploadImage(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomContainerDottedUploadImage extends StatefulWidget {
+  const CustomContainerDottedUploadImage({
+    super.key,
+  });
+
+  @override
+  State<CustomContainerDottedUploadImage> createState() =>
+      _CustomContainerDottedUploadImageState();
+}
+
+class _CustomContainerDottedUploadImageState
+    extends State<CustomContainerDottedUploadImage> {
+  File? file;
+  int selectedWalletId = 0;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  bool _isFormValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController.addListener(_onTextChanged);
+    phoneController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    setState(() {
+      _isFormValid = nameController.text.trim().isNotEmpty &&
+          phoneController.text.trim().isNotEmpty &&
+          file != null &&
+          selectedWalletId != 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    nameController.removeListener(_onTextChanged);
+    phoneController.removeListener(_onTextChanged);
+    nameController.dispose();
+    phoneController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<SettingCubit, SettingState>(
+      listener: (context, state) {
+        if (state is SubmetDataWalletLoaded) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) => PopUpDialogWithoutButtons(
+                    title: 'تم إرسال طلبك بنجاح',
+                    img: AssetsData.successSent,
+                    subTitle:
+                        'جارٍ مراجعته الآن، وسيتم تزويد محفظتك بالرصيد قريبًا.',
+                    context: context,
+                  )).then((_) {
+            Navigator.pop(context); // Pop current screen after dialog is closed
+          });
+        } else if (state is SubmetDataWalletError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: AppColors.error100,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Column(
           spacing: 24.h,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'أختار الطريقة المناسبة اليك',
-              style:
-                  AppTextStyles.font22Regular.copyWith(color: AppColors.black),
+            Stack(
+              alignment: file != null
+                  ? AlignmentDirectional.topStart
+                  : AlignmentDirectional.bottomEnd,
+              children: [
+                InkWell(
+                  onTap: () {
+                    SettingCubit.get(context).pickCameraImage().then((_) {
+                      setState(() {
+                        file = SettingCubit.get(context).file;
+                        _isFormValid = nameController.text.trim().isNotEmpty &&
+                            phoneController.text.trim().isNotEmpty &&
+                            file != null &&
+                            selectedWalletId != 0;
+                      });
+                    });
+                  },
+                  child: DottedBorder(
+                    options: const RectDottedBorderOptions(
+                      color: AppColors.blueLight,
+                      strokeWidth: 1,
+                      dashPattern: [20, 15],
+                    ),
+                    child: Container(
+                      height: 130.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: file != null
+                          ? Image.file(
+                              file!,
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                              height: double.infinity,
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.upload_sharp,
+                                  size: 50.h,
+                                  color: AppColors.primaryColor,
+                                ),
+                                SizedBox(height: 10.h),
+                                Text('ارفع صورة إيصال التحويل',
+                                    style: AppTextStyles.font16Regular.copyWith(
+                                      color: AppColors.black,
+                                    )),
+                              ],
+                            ),
+                    ),
+                  ),
+                ),
+                file != null
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            file = null;
+                          });
+                        },
+                        icon: CircleAvatar(
+                          radius: 13.h,
+                          backgroundColor: AppColors.error100,
+                          child: Icon(
+                            color: AppColors.white,
+                            Icons.close,
+                            size: 15.h,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+              ],
             ),
-            Container(
-              height: 60.h,
-              padding: EdgeInsets.all(20.r),
-              decoration: BoxDecoration(
-                color: AppColors.blueMoreLight,
-                borderRadius: BorderRadius.circular(5.r),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    AssetsData.orangeWallet,
-                    height: 40.h,
-                    width: 40.w,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '8-90121234-567-3456',
-                    style: AppTextStyles.font16Regular
-                        .copyWith(color: AppColors.black),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Clipboard.setData(
-                          const ClipboardData(text: '8-90121234-567-3456'));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Copied')),
-                      );
-                    },
-                    child: Icon(Icons.copy,
-                        color: AppColors.primaryColor, size: 25.h),
-                  ),
-                ],
-              ),
-            )
+            const CustomNormalRichText(
+              ischoosen: false,
+              firstText: 'المبلغ',
+            ),
+            CustomFormField(
+                controller: nameController,
+                // validate: conditionOfValidationName,
+
+                hintText: 'المبلغ الذي تم اضافته',
+                textInputType: TextInputType.number),
+            const CustomNormalRichText(
+              ischoosen: false,
+              firstText: 'نوع المحفظة',
+            ),
+            CustomDropDownMenu(
+              //  isLoading: state.citiesStatus == LookupStatus.loading,
+              items: const [
+                'اورنج كاش',
+                'فودافون كاش',
+                'انستا باي',
+              ],
+              onChange: (newValue) {
+                setState(() {
+                  selectedWalletId = newValue == 'اورنج كاش'
+                      ? 1
+                      : newValue == 'فودافون كاش'
+                          ? 2
+                          : 3;
+
+                  _isFormValid = nameController.text.trim().isNotEmpty &&
+                      phoneController.text.trim().isNotEmpty &&
+                      file != null &&
+                      selectedWalletId != 0;
+                });
+              },
+            ),
+            const CustomNormalRichText(
+              ischoosen: false,
+              firstText: 'الرقم',
+            ),
+            CustomFormField(
+                controller: phoneController,
+                //  validate: conditionOfValidationPhone,
+                hintText: '01000000000',
+                textInputType: TextInputType.phone),
+            _buildLoginButton(state),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLoginButton(SettingState state) {
+    if (state is SubmetDataWalletLoading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: AppColors.primaryColor,
         ),
-      ),
+      );
+    }
+    if (_isFormValid) {
+      return CustomButtonLarge(
+        text: 'إرسال الطلب',
+        textColor: Colors.white,
+        function: () async {
+          context.read<SettingCubit>().submitDoctorWalletRequest(
+                amount: int.parse(nameController.text),
+                walletType: selectedWalletId,
+                mobileNumber: phoneController.text,
+                transferFromNumber: phoneController.text,
+                type: 1,
+              );
+        },
+        color: AppColors.primaryColor,
+      );
+    }
+
+    return const CustomButtonLargeDimmed(
+      text: 'إرسال الطلب',
     );
   }
 }

@@ -28,3 +28,27 @@ final class DataWalletError extends SettingState {
   @override
   List<Object> get props => [error];
 }
+
+final class SubmetDataWalletLoading extends SettingState {}
+
+final class SubmetDataWalletLoaded extends SettingState {
+  final String data;
+
+  const SubmetDataWalletLoaded(this.data);
+
+  @override
+  List<Object> get props => [data];
+}
+
+final class SubmetDataWalletError extends SettingState {
+  final String error;
+
+  const SubmetDataWalletError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+final class SuccessfulPickImage extends SettingState {}
+
+final class FailPickImage extends SettingState {}

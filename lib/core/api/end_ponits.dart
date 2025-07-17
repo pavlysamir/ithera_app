@@ -30,6 +30,9 @@ class EndPoint {
 
   static String getDoctorWalletData = "api/Doctor/GetDoctorWalletOverview";
 
+  static String submitDoctorWalletRequest =
+      "api/Doctor/SubmitWalletRequestAsync";
+
   static String getDoctorDataEndPoint(id) {
     return "api/Doctor/$id";
   }

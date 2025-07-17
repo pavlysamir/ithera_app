@@ -46,11 +46,8 @@ class CustomDropDownMenu extends StatelessWidget {
                 focusedBorder: outlineInputBorder(context),
                 errorBorder: outlineInputBorderError(),
               ),
-              hint: Text(
-                initialValue ?? 'اختار من القائمة',
-                style: AppTextStyles.font10Regular
-                    .copyWith(color: AppColors.grey400),
-              ),
+              hint: Text(initialValue ?? 'اختار من القائمة',
+                  style: AppTextStyles.font12Regular),
               items: items
                   .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                   .toList(),

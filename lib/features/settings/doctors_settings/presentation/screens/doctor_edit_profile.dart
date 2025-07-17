@@ -54,6 +54,11 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
     nameController.dispose();
     phoneController.dispose();
     emailController.dispose();
+    anotherPhoneController.dispose();
+    // Dispose of the profile image and karneh image if they are not null
+    if (profileImagePath != null) {
+      profileImagePath!.deleteSync();
+    }
     super.dispose();
   }
 

@@ -86,6 +86,58 @@ class PopUpDialog extends StatelessWidget {
   }
 }
 
+class PopUpDialogWithoutButtons extends StatelessWidget {
+  const PopUpDialogWithoutButtons(
+      {super.key,
+      required this.context,
+      required this.title,
+      required this.subTitle,
+      required this.img});
+  final BuildContext context;
+  final String title;
+  final String subTitle;
+  final String img;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Theme.of(context).cardColor,
+      alignment: Alignment.center,
+      actionsAlignment: MainAxisAlignment.center,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CustomSvgimage(
+            hight: 150.h,
+            path: img,
+          ),
+          SizedBox(
+            height: 30.h,
+          ),
+          Text(
+            title,
+            style: AppTextStyles.font20Regular.copyWith(
+              color: AppColors.primaryColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 30.h,
+          ),
+          Text(
+            subTitle,
+            style: AppTextStyles.font14Regular.copyWith(
+              color: AppColors.blackLight,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class PopUpDialogOneButton extends StatelessWidget {
   const PopUpDialogOneButton(
       {super.key,

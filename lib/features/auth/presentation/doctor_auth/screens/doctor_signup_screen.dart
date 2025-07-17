@@ -330,7 +330,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                     },
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.sizeOf(context).height * 0.1,
                   ),
                   nameController.text.isEmpty ||
                           phoneController.text.isEmpty ||
