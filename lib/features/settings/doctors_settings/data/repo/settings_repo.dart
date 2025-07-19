@@ -5,6 +5,7 @@ import 'package:ithera_app/core/api/general_response_model.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/errors/exceptions.dart';
+import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
 import 'package:ithera_app/features/settings/doctors_settings/data/models/doctor_walled_data_model.dart';
 
 class SettingsRepo {
@@ -56,6 +57,27 @@ class SettingsRepo {
       } else {
         return Left(parsed.message);
       }
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
+
+  Future<Either<String, DoctorScheduleResponse>> getDoctorData() async {
+    try {
+      var response = await _dioConsumer.get(
+        EndPoint.getDoctorDataEndPoint(
+          CacheHelper.getInt(key: CacheConstants.userId),
+        ),
+      );
+
+      DoctorScheduleResponse model = DoctorScheduleResponse.fromJson(response);
+      return Right(model);
+
+      // if (parsed.success && parsed.data != null) {
+      //   return Right(parsed.data!);
+      // } else {
+      //   return Left(parsed.message);
+      // }
     } on ServerException catch (e) {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }

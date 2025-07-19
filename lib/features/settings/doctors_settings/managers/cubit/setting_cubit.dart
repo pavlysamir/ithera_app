@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
 import 'package:ithera_app/features/settings/doctors_settings/data/models/doctor_walled_data_model.dart';
 import 'package:ithera_app/features/settings/doctors_settings/data/repo/settings_repo.dart';
 import 'package:image/image.dart' as img;
@@ -85,5 +86,14 @@ class SettingCubit extends Cubit<SettingState> {
     } else {
       emit(FailPickImage());
     }
+  }
+
+  Future<void> getDoctorData() async {
+    emit(DoctorDataLoading());
+    final result = await _settingsRepo.getDoctorData();
+    result.fold(
+      (error) => emit(DoctorDataError(error)),
+      (doctorData) => emit(DoctorDataLoaded(doctorData.responseData)),
+    );
   }
 }

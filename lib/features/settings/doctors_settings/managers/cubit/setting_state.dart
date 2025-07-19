@@ -52,3 +52,23 @@ final class SubmetDataWalletError extends SettingState {
 final class SuccessfulPickImage extends SettingState {}
 
 final class FailPickImage extends SettingState {}
+
+final class DoctorDataLoading extends SettingState {}
+
+final class DoctorDataLoaded extends SettingState {
+  final DoctorResponseData doctorData;
+
+  const DoctorDataLoaded(this.doctorData);
+
+  @override
+  List<Object> get props => [doctorData];
+}
+
+final class DoctorDataError extends SettingState {
+  final String error;
+
+  const DoctorDataError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
