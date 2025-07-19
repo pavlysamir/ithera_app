@@ -33,14 +33,16 @@ class SettingCubit extends Cubit<SettingState> {
     required String mobileNumber,
     required String transferFromNumber,
     required int type,
+    String? withdrawalReason,
   }) async {
     emit(SubmetDataWalletLoading());
     final result = await _settingsRepo.submitDoctorWalletRequest(
       amount: amount,
+      type: type,
       walletType: walletType,
       mobileNumber: mobileNumber,
       transferFromNumber: transferFromNumber,
-      type: type,
+      withdrawalReason: withdrawalReason,
     );
     result.fold((error) => emit(SubmetDataWalletError(error)),
         (walletData) => emit(SubmetDataWalletLoaded(walletData)));

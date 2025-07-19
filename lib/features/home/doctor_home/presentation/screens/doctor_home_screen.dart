@@ -133,9 +133,9 @@ class _SchedulesList extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                Text(
-                  'حدث خطأ: ${state.errorMessage}',
-                  style: const TextStyle(color: Colors.red),
+                const Text(
+                  'حدث خطأ',
+                  style: TextStyle(color: Colors.red),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),

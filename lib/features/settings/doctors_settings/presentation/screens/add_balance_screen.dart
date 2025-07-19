@@ -239,8 +239,8 @@ class _CustomContainerDottedUploadImageState
                   selectedWalletId = newValue == 'اورنج كاش'
                       ? 1
                       : newValue == 'فودافون كاش'
-                          ? 2
-                          : 3;
+                          ? 0
+                          : 2;
 
                   _isFormValid = nameController.text.trim().isNotEmpty &&
                       phoneController.text.trim().isNotEmpty &&
@@ -283,7 +283,7 @@ class _CustomContainerDottedUploadImageState
                 walletType: selectedWalletId,
                 mobileNumber: phoneController.text,
                 transferFromNumber: phoneController.text,
-                type: 1,
+                type: 0,
               );
         },
         color: AppColors.primaryColor,

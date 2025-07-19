@@ -31,6 +31,7 @@ class SettingsRepo {
     required String mobileNumber,
     required String transferFromNumber,
     required int type,
+    String? withdrawalReason,
   }) async {
     try {
       final response = await _dioConsumer.post(
@@ -42,6 +43,7 @@ class SettingsRepo {
           "mobileNumber": mobileNumber,
           "walletProvider": walletType,
           "transferFromNumber": transferFromNumber,
+          if (withdrawalReason != null) "withdrawalReason": withdrawalReason,
         },
       );
 

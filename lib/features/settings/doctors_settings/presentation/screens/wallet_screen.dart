@@ -105,7 +105,10 @@ class WalletScreen extends StatelessWidget {
                           firstText: '',
                           secondText: 'سحب الرصيد',
                           onSecondText: AppColors.primaryColor,
-                          onSecondTextTap: () {}),
+                          onSecondTextTap: () {
+                            Navigator.pushNamed(
+                                context, Routes.refundBalanceScreen);
+                          }),
                     ],
                   );
                 }

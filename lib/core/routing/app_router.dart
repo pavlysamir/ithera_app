@@ -31,6 +31,7 @@ import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.d
 import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/add_balance_screen.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/doctor_edit_profile.dart';
+import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/refund_balance_screen.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/wallet_screen.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/contant_us_screen.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/patient_edit_profile.dart';
@@ -259,6 +260,15 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => getIt<SettingCubit>(),
             child: const AddBalanceScreen(),
+          ),
+          settings: settings,
+        );
+
+      case Routes.refundBalanceScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<SettingCubit>(),
+            child: const RefundBalanceScreen(),
           ),
           settings: settings,
         );
