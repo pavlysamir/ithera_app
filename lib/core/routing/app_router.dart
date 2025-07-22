@@ -243,6 +243,9 @@ class AppRouter {
                 ..getAllCities()
                 ..getAllSpecialties(),
             ),
+            BlocProvider<SettingCubit>(
+              create: (context) => getIt<SettingCubit>(),
+            ),
           ], child: const DoctorEditProfile()),
           settings: settings,
         );

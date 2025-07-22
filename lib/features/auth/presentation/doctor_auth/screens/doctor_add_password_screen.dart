@@ -170,6 +170,17 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                                                     arguments: false,
                                                     Routes.signInScreen);
                                           }
+
+                                          if (state is AddFileFaluir) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                backgroundColor: Colors.red,
+                                                content:
+                                                    Text(state.errorMessage),
+                                              ),
+                                            );
+                                          }
                                         },
                                         builder: (context, state) {
                                           return CustomButtonLarge(
