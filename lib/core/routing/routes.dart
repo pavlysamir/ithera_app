@@ -45,4 +45,7 @@ class Routes {
 
   //patients booking screens
   static const String bookPatientDetailsScreen = '/bookPatientDetailsScreen';
+
+  //notifications screens
+  static const String notificationsScreen = '/notificationsScreen';
 }

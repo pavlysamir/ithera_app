@@ -5,6 +5,8 @@ import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
+import 'package:ithera_app/core/routing/navigation_services.dart';
+import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
@@ -44,7 +46,9 @@ class DoctorHomeScreen extends StatelessWidget {
               color: AppColors.blackLight,
               path: AssetsData.notification,
             ),
-            onPressed: () {},
+            onPressed: () {
+              NavigationService().navigateTo(Routes.notificationsScreen);
+            },
           ),
         ],
       ),

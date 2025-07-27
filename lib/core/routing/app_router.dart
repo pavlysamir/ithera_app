@@ -27,6 +27,7 @@ import 'package:ithera_app/features/home/patient_home/presentation/screens/book_
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_results_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/doctor_screen.dart';
+import 'package:ithera_app/features/notification/presentation/screens/notification_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/add_balance_screen.dart';
@@ -287,6 +288,12 @@ class AppRouter {
           builder: (_) => BookPatientDetailsScreen(
             activeBookings: settings.arguments as PatientBookingModel,
           ),
+          settings: settings,
+        );
+
+      case Routes.notificationsScreen:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationScreen(),
           settings: settings,
         );
       default:
