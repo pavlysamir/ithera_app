@@ -42,20 +42,27 @@ class DoctorResponseData extends Equatable {
   final List<RegionSchedule> regionSchedules;
   final List<int> doctorSessionsIds;
   final String? description;
+  final String? phoneNumber;
+  final String? anotherMobileNumber;
+  final String? email;
+  final String? idImageURL;
 
-  const DoctorResponseData({
-    required this.doctorName,
-    required this.doctorId,
-    required this.cityId,
-    required this.gender,
-    required this.specializationFields,
-    required this.sessionPrice,
-    required this.averageRating,
-    required this.profilePicture,
-    required this.regionSchedules,
-    required this.doctorSessionsIds,
-    this.description,
-  });
+  const DoctorResponseData(
+      {required this.doctorName,
+      required this.doctorId,
+      required this.cityId,
+      required this.gender,
+      required this.specializationFields,
+      required this.sessionPrice,
+      required this.averageRating,
+      required this.profilePicture,
+      required this.regionSchedules,
+      required this.doctorSessionsIds,
+      this.description,
+      this.phoneNumber,
+      this.anotherMobileNumber,
+      this.email,
+      this.idImageURL});
 
   factory DoctorResponseData.fromJson(Map<String, dynamic> json) {
     return DoctorResponseData(
@@ -74,6 +81,10 @@ class DoctorResponseData extends Equatable {
           .toList(),
       doctorSessionsIds: List<int>.from(json['doctorSessionsIds']),
       description: json['description'],
+      phoneNumber: json['phoneNumber'],
+      anotherMobileNumber: json['anotherMobileNumber'],
+      email: json['email'],
+      idImageURL: json['idImageURL'],
     );
   }
 
@@ -90,6 +101,10 @@ class DoctorResponseData extends Equatable {
         regionSchedules,
         doctorSessionsIds,
         description,
+        phoneNumber,
+        anotherMobileNumber,
+        email,
+        idImageURL
       ];
 }
 

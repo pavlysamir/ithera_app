@@ -54,6 +54,14 @@ class SettingCubit extends Cubit<SettingState> {
   File? file;
   String? fileName;
 
+
+    void clearProfileImage() {
+    file = null;
+    base64BackImage = null;
+    fileName = null;
+    emit(ImageCleared()); // state جديد
+  }
+
   Future<void> pickCameraImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -79,7 +87,9 @@ class SettingCubit extends Cubit<SettingState> {
         }
 
         // Emit success state
-        emit(SuccessfulPickImage());
+        emit(SuccessfulPickImage(
+          file!,
+        ));
       } else {
         emit(FailPickImage());
       }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_shadows.dart';
+import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -31,9 +32,12 @@ class NotificationScreen extends StatelessWidget {
                 AppShadows.shadow1,
               ],
             ),
-            child: Column(
+            child: const Row(
               children: [
-                Row(
+                CustomSvgimage(
+                  path: 'assets/icons/location.svg',
+                ),
+                Column(
                   children: [],
                 )
               ],

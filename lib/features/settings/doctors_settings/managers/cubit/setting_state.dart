@@ -49,7 +49,13 @@ final class SubmetDataWalletError extends SettingState {
   List<Object> get props => [error];
 }
 
-final class SuccessfulPickImage extends SettingState {}
+final class SuccessfulPickImage extends SettingState {
+  final File imageFile;
+
+  const SuccessfulPickImage(this.imageFile);
+}
+
+final class ImageCleared extends SettingState {}
 
 final class FailPickImage extends SettingState {}
 

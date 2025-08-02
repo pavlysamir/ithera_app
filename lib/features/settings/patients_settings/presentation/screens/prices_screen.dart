@@ -28,8 +28,16 @@ class PricesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        //backgroundColor: Colors.white,
         forceMaterialTransparency: true,
-        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: AppColors.primaryColor,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        elevation: 0,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0.w),

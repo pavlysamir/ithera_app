@@ -77,7 +77,7 @@ class _DoctorHomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<DoctorManageSchedulesCubit, DoctorManageSchedulesState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is DeleteDoctorSchedulesSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -106,6 +106,9 @@ class _DoctorHomeBody extends StatelessWidget {
               content: Text(state.errorMessage),
             ),
           );
+          await context
+              .read<DoctorManageSchedulesCubit>()
+              .getManageSchedules(forceRefresh: true);
         }
       },
       child: const SingleChildScrollView(

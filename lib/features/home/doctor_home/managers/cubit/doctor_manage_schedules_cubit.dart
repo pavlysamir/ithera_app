@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
@@ -67,9 +68,15 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
       final response = await _manageSchedulesBookingRepo.manageSchedulesBooking(
           model: model.toJson());
 
-      print('-------------------------------------------------');
-      print(jsonEncode(model.toJson()));
-      print('-------------------------------------------------');
+      if (kDebugMode) {
+        print('-------------------------------------------------');
+      }
+      if (kDebugMode) {
+        print(jsonEncode(model.toJson()));
+      }
+      if (kDebugMode) {
+        print('-------------------------------------------------');
+      }
 
       if (isClosed) return;
 

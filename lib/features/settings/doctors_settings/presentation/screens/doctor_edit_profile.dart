@@ -35,7 +35,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
 
   TextEditingController emailController = TextEditingController();
 
-  var formDoctorSignUpScreenKey = GlobalKey<FormState>();
+  var formDoctorEditProfileScreenKey = GlobalKey<FormState>();
 
   String? selectSpicification;
   String? selectedValueRegion;
@@ -72,9 +72,9 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
       final data = settingState.doctorData;
 
       nameController.text = data.doctorName;
-      phoneController.text = ''; // عدل حسب المتاح
-      anotherPhoneController.text = '';
-      emailController.text = '';
+      phoneController.text = data.phoneNumber ?? ''; // عدل حسب المتاح
+      anotherPhoneController.text = data.anotherMobileNumber ?? '';
+      emailController.text = data.email ?? '';
       cityId = data.cityId;
       isMale = data.gender;
       selectedItemsList =
@@ -104,8 +104,44 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        //backgroundColor: Colors.white,
+        forceMaterialTransparency: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: AppColors.primaryColor,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        elevation: 0,
+      ),
       body: SafeArea(
-        child: BlocBuilder<SettingCubit, SettingState>(
+        child: BlocConsumer<SettingCubit, SettingState>(
+          listener: (context, state) {
+            if (state is DoctorDataLoaded) {
+              final data = state.doctorData;
+
+              nameController.text = data.doctorName;
+              phoneController.text = data.phoneNumber ?? '';
+              emailController.text = data.email ?? '';
+              anotherPhoneController.text = data.anotherMobileNumber ?? '';
+              cityId = data.cityId;
+              isMale = data.gender;
+              selectedItemsList =
+                  data.specializationFields.map((e) => e.nameAr).toList();
+              selectedItemsListIds =
+                  data.specializationFields.map((e) => e.id).toList();
+            }
+
+            if (state is SuccessfulPickImage) {
+              profileImagePath = state.imageFile;
+            }
+
+            if (state is ImageCleared) {
+              profileImagePath = null;
+            }
+          },
           builder: (context, state) {
             if (state is DoctorDataLoading) {
               return const Center(
@@ -115,24 +151,11 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
               );
             }
 
-            if (state is DoctorDataLoaded) {
-              final data = state.doctorData;
-
-              nameController.text = data.doctorName;
-              phoneController.text = '';
-              emailController.text = '';
-              anotherPhoneController.text = '';
-              cityId = data.cityId;
-              isMale = data.gender;
-              selectedItemsList =
-                  data.specializationFields.map((e) => e.nameAr).toList();
-              selectedItemsListIds =
-                  data.specializationFields.map((e) => e.id).toList();
-
-              return buildFormBody(context);
+            if (state is DoctorDataError) {
+              return const Center(child: Text("فشل في تحميل البيانات"));
             }
 
-            return const Center(child: Text("فشل في تحميل البيانات"));
+            return buildFormBody(context);
           },
         ),
       ),
@@ -142,7 +165,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
   Widget buildFormBody(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
-        key: formDoctorSignUpScreenKey,
+        key: formDoctorEditProfileScreenKey,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
@@ -165,12 +188,11 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
               CircularProfileImage(
                 file: profileImagePath,
                 closeFunction: () {
-                  setState(() {
-                    profileImagePath = null;
-                  });
+                  context.read<SettingCubit>().clearProfileImage();
                 },
                 function: () {
                   // Pick image
+                  context.read<SettingCubit>().pickCameraImage();
                 },
               ),
               SizedBox(height: 12.h),
@@ -303,7 +325,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                       textColor: AppColors.white,
                       color: AppColors.primaryColor,
                       function: () {
-                        if (formDoctorSignUpScreenKey.currentState!
+                        if (formDoctorEditProfileScreenKey.currentState!
                             .validate()) {
                           final body = {
                             "email": emailController.text,
