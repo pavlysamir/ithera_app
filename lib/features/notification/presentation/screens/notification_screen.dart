@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
-import 'package:ithera_app/core/theme/app_shadows.dart';
-import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/notification/presentation/widgets/notification_item.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -22,27 +21,7 @@ class NotificationScreen extends StatelessWidget {
           elevation: 0,
         ),
         body: ListView.builder(
-          itemBuilder: (context, index) => Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                AppShadows.shadow1,
-              ],
-            ),
-            child: const Row(
-              children: [
-                CustomSvgimage(
-                  path: 'assets/icons/location.svg',
-                ),
-                Column(
-                  children: [],
-                )
-              ],
-            ),
-          ),
+          itemBuilder: (context, index) => const NotificationItem(),
           itemCount: 10,
         ));
   }
