@@ -81,8 +81,7 @@ class DoctorScreen extends StatelessWidget {
                         ),
                       ),
                       StarRating(
-                        rating:
-                            doctorModel.averageRating, // خليها القيمه اللي عندك
+                        rating: doctorModel.averageRating,
                         size: 20,
                         color: Colors.amber,
                       ),

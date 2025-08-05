@@ -78,7 +78,9 @@ void setUpServiceLocator() {
       )));
 
   getIt.registerLazySingleton<BookingCubit>((() => BookingCubit(getIt())));
-  getIt.registerFactory<SettingsCubit>((() => SettingsCubit()));
+  getIt.registerFactory<SettingsCubit>((() => SettingsCubit(
+        getIt(),
+      )));
   getIt.registerFactory<AddFilesCubit>((() => AddFilesCubit(getIt())));
   getIt.registerFactory<DoctorManageSchedulesCubit>(
       (() => DoctorManageSchedulesCubit(getIt())));

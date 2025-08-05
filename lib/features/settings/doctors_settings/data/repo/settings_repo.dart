@@ -7,6 +7,7 @@ import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/errors/exceptions.dart';
 import 'package:ithera_app/features/home/doctor_home/data/models/doctor_schadules_model.dart';
 import 'package:ithera_app/features/settings/doctors_settings/data/models/doctor_walled_data_model.dart';
+import 'package:ithera_app/features/settings/doctors_settings/data/models/patient_data_model.dart';
 
 class SettingsRepo {
   final DioConsumer _dioConsumer;
@@ -78,6 +79,17 @@ class SettingsRepo {
       // } else {
       //   return Left(parsed.message);
       // }
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
+
+  Future<Either<String, PatientData>> getPatientrData() async {
+    try {
+      var response = await _dioConsumer.get(EndPoint.getPatientData);
+
+      PatientDataResponse model = PatientDataResponse.fromJson(response);
+      return Right(model.responseData!);
     } on ServerException catch (e) {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }

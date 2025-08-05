@@ -34,6 +34,7 @@ import 'package:ithera_app/features/settings/doctors_settings/presentation/scree
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/doctor_edit_profile.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/refund_balance_screen.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/wallet_screen.dart';
+import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/contant_us_screen.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/patient_edit_profile.dart';
 import 'package:ithera_app/features/settings/patients_settings/presentation/screens/prices_screen.dart';
@@ -181,7 +182,13 @@ class AppRouter {
         );
       case Routes.patientEditProfileScreen:
         return MaterialPageRoute(
-          builder: (_) => const PatientEditProfile(),
+          builder: (_) => MultiBlocProvider(providers: [
+            BlocProvider<BadeLookUpCubit>(
+                create: (context) => getIt<BadeLookUpCubit>()..getAllCities()),
+            BlocProvider<SettingsCubit>(
+              create: (context) => getIt<SettingsCubit>(),
+            ),
+          ], child: const PatientEditProfile()),
           settings: settings,
         );
       case Routes.patientContentUsScreen:

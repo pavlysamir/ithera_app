@@ -242,6 +242,12 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                   return CustomDropDownMenu(
                     isLoading: state.citiesStatus == LookupStatus.loading,
                     items: state.cities?.map((e) => e.nameAr).toList() ?? [],
+                    initialValue: state.cities
+                        ?.firstWhere(
+                          (e) => e.id == cityId,
+                          orElse: () => state.cities!.first,
+                        )
+                        .nameAr,
                     onChange: (newValue) {
                       setState(() {
                         selectedValueRegion = newValue;
