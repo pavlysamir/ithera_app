@@ -1,0 +1,2 @@
+D:/AndroidStudioProjects/ithera_app/android/app/.cxx/RelWithDebInfo/722f202t/x86_64/CMakeFiles/edit_cache.dir
+D:/AndroidStudioProjects/ithera_app/android/app/.cxx/RelWithDebInfo/722f202t/x86_64/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,2 @@
+D:/ithera_app/ithera_app/android/app/.cxx/Debug/291j6ft2/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/ithera_app/ithera_app/android/app/.cxx/Debug/291j6ft2/armeabi-v7a/CMakeFiles/rebuild_cache.dir
