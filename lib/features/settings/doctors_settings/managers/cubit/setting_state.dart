@@ -78,3 +78,23 @@ final class DoctorDataError extends SettingState {
   @override
   List<Object> get props => [error];
 }
+
+final class UpdateDoctorDataLoading extends SettingState {}
+
+final class UpdateDoctorDataLoaded extends SettingState {
+  final String message;
+
+  const UpdateDoctorDataLoaded(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+final class UpdateDoctorDataError extends SettingState {
+  final String error;
+
+  const UpdateDoctorDataError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

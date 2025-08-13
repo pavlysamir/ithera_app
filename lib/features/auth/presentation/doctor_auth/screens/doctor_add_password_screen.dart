@@ -128,7 +128,7 @@ class _DoctorAddPasswordScreenState extends State<DoctorAddPasswordScreen> {
                                 if (state is DoctorAuthSuccess) {
                                   AddFilesCubit.get(context).addFile(
                                     rileId: 1,
-                                    fileType: [3],
+                                    fileType: ['3', '4'],
                                     files: [
                                       File(CacheHelper.getString(
                                           key: CacheConstants.doctorImage)!),

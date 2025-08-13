@@ -13,6 +13,7 @@ import 'package:ithera_app/core/widgets/custom_multi_select_dropdown.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/circular_profile_img.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/custom_import_image_field.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
@@ -140,6 +141,15 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
 
             if (state is ImageCleared) {
               profileImagePath = null;
+            }
+
+            if (state is UpdateDoctorDataLoaded) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text(state.message),
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -318,38 +328,65 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 },
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              nameController.text.isEmpty ||
-                      phoneController.text.isEmpty ||
-                      selectedItemsList.isEmpty ||
-                      selectedValueRegion == null ||
-                      isMale == null ||
-                      profileImagePath == null ||
-                      karnehImagePath == null
+              nameController.text.isNotEmpty &&
+                      phoneController.text.isNotEmpty &&
+                      selectedItemsList.isNotEmpty &&
+                      selectedValueRegion != null &&
+                      isMale != null
+                  //||profileImagePath == null
+                  //|| karnehImagePath == null
                   ? const CustomButtonLargeDimmed(text: 'حفظ')
-                  : CustomButtonLarge(
-                      text: 'حفظ',
-                      textColor: AppColors.white,
-                      color: AppColors.primaryColor,
-                      function: () {
-                        if (formDoctorEditProfileScreenKey.currentState!
-                            .validate()) {
-                          final body = {
-                            "email": emailController.text,
-                            "userName": nameController.text,
-                            "phoneNumber": phoneController.text,
-                            "anotherMobileNumber": anotherPhoneController.text,
-                            "cityId": cityId!,
-                            "regionId": 0,
-                            "specializationFieldId":
-                                selectedItemsListIds.isNotEmpty
-                                    ? selectedItemsListIds.first
-                                    : 0,
-                            "gender": isMale! ? 1 : 2,
-                            "description": "",
-                          };
-
-                          // Call update API
+                  : BlocConsumer<AddFilesCubit, AddFilesState>(
+                      listener: (context, state) {
+                        if (state is AddFileFaluir) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                  'حدث خطأ اتناء تجميل صوره البروفايل او الكانيه'),
+                            ),
+                          );
                         }
+                      },
+                      builder: (context, state) {
+                        return CustomButtonLarge(
+                          text: 'حفظ',
+                          textColor: AppColors.white,
+                          color: AppColors.primaryColor,
+                          function: () {
+                            if (formDoctorEditProfileScreenKey.currentState!
+                                .validate()) {
+                              final body = {
+                                "email": emailController.text,
+                                "userName": nameController.text,
+                                "phoneNumber": phoneController.text,
+                                "anotherMobileNumber":
+                                    anotherPhoneController.text,
+                                "cityId": cityId!,
+                                "regionId": 0,
+                                "specializationFieldId":
+                                    selectedItemsListIds.isNotEmpty
+                                        ? selectedItemsListIds.first
+                                        : 0,
+                                "gender": isMale! ? 1 : 2,
+                                "description": "",
+                              };
+
+                              // Call update API
+                              // context
+                              //     .read<SettingCubit>()
+                              //     .updateDoctorData(body: body);
+
+                              if (profileImagePath != null) {
+                                context.read<AddFilesCubit>().addFile(
+                                  rileId: 1,
+                                  files: [profileImagePath!],
+                                  fileType: ['9'],
+                                );
+                              }
+                            }
+                          },
+                        );
                       },
                     ),
               SizedBox(height: 50.h),

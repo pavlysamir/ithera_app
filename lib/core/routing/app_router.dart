@@ -257,6 +257,9 @@ class AppRouter {
             BlocProvider<SettingCubit>(
               create: (context) => getIt<SettingCubit>(),
             ),
+            BlocProvider<AddFilesCubit>(
+              create: (context) => getIt<AddFilesCubit>(),
+            )
           ], child: const DoctorEditProfile()),
           settings: settings,
         );

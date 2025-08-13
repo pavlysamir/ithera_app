@@ -94,4 +94,20 @@ class SettingsRepo {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }
   }
+
+  Future<Either<String, String>> updateDoctorData(
+      {required Map<String, dynamic> body}) async {
+    try {
+      var response =
+          await _dioConsumer.put(EndPoint.updateDoctorData, data: body);
+
+      if (response['isSuccess'] == false) {
+        return Left(response['message'] ?? 'حدث خطاء ما');
+      } else {
+        return const Right('تم التعديل بنجاح');
+      }
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
 }

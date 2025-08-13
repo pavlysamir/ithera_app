@@ -54,8 +54,7 @@ class SettingCubit extends Cubit<SettingState> {
   File? file;
   String? fileName;
 
-
-    void clearProfileImage() {
+  void clearProfileImage() {
     file = null;
     base64BackImage = null;
     fileName = null;
@@ -104,6 +103,15 @@ class SettingCubit extends Cubit<SettingState> {
     result.fold(
       (error) => emit(DoctorDataError(error)),
       (doctorData) => emit(DoctorDataLoaded(doctorData.responseData)),
+    );
+  }
+
+  Future<void> updateDoctorData({required Map<String, dynamic> body}) async {
+    emit(UpdateDoctorDataLoading());
+    final result = await _settingsRepo.updateDoctorData(body: body);
+    result.fold(
+      (error) => emit(UpdateDoctorDataError(error)),
+      (message) => emit(UpdateDoctorDataLoaded(message)),
     );
   }
 }
