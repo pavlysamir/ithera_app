@@ -139,4 +139,21 @@ class DoctorBookingCubit extends Cubit<DoctorBookingState> {
       },
     );
   }
+
+  Future<void> manageBookingStatus(
+      {required int bookingId,
+      required int status,
+      String? reason,
+      int? sessionId}) async {
+    emit(ManageBookingDoctorLoading());
+    final result = await _doctorsBookingRepo.manageBooking(
+        bookingId: bookingId,
+        status: status,
+        reason: reason,
+        sessionId: sessionId);
+    result.fold(
+      (error) => emit(ManageBookingDoctorError(error)),
+      (bookings) => emit(ManageBookingDoctorLoaded(bookings)),
+    );
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/Layouts/patient_home_layout.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/di/service_locator.dart';
 import 'package:ithera_app/core/routing/routes.dart';
 import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
@@ -27,6 +29,7 @@ import 'package:ithera_app/features/home/patient_home/presentation/screens/book_
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_results_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/filter_screen.dart';
 import 'package:ithera_app/features/home/patient_home/presentation/screens/doctor_screen.dart';
+import 'package:ithera_app/features/notification/managers/cubit/notifications_cubit.dart';
 import 'package:ithera_app/features/notification/presentation/screens/notification_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
@@ -300,7 +303,13 @@ class AppRouter {
 
       case Routes.notificationsScreen:
         return MaterialPageRoute(
-          builder: (_) => const NotificationScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<NotificationsCubit>()
+              ..getNotificatios(
+                  role: CacheHelper.getInt(key: CacheConstants.role) ?? 0,
+                  userId: CacheHelper.getInt(key: CacheConstants.userId) ?? 0),
+            child: const NotificationScreen(),
+          ),
           settings: settings,
         );
       default:

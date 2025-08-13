@@ -4,7 +4,6 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
-import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/book_item_details.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/seesions_listview.dart';
 import 'package:ithera_app/features/booking/patient_booking/data/models/patient_booking_model.dart';
 
@@ -45,7 +44,7 @@ class BookPatientDetailsScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Expanded(
                 child: SeesionsList(
-              activeBookings: [],
+              activeBookings: activeBookings.sessions,
             )),
             const SizedBox(height: 10),
             CustomButtonLarge(

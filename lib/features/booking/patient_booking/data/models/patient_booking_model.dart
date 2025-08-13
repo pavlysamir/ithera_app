@@ -86,7 +86,7 @@ class PatientSessionModel extends Equatable {
     return PatientSessionModel(
       sessionId: json['sessionId'],
       status: json['status'],
-      cancelledBy: json['cancelledBy'],
+      cancelledBy: json['cancelledBy']?.toString(),
       date: json['date'],
       scheduleId: json['scheduleId'],
       startTime: json['startTime'],

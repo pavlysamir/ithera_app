@@ -46,3 +46,15 @@ class DoctorBookingError extends DoctorBookingState {
   List<Object> get props =>
       [message, activeBookings, lastBookings, unCompletedBookings];
 }
+
+class ManageBookingDoctorLoading extends DoctorBookingState {}
+
+class ManageBookingDoctorLoaded extends DoctorBookingState {
+  final String message;
+  const ManageBookingDoctorLoaded(this.message);
+}
+
+class ManageBookingDoctorError extends DoctorBookingState {
+  final String message;
+  const ManageBookingDoctorError(this.message);
+}

@@ -18,6 +18,8 @@ import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_re
 import 'package:ithera_app/features/home/patient_home/managers/booking_cubit/cubit/booking_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/filter_cubit/filter_pagination_cubit.dart';
 import 'package:ithera_app/features/home/patient_home/managers/pagination_cubit/pagination_cubit.dart';
+import 'package:ithera_app/features/notification/data/repo/notification_repo.dart';
+import 'package:ithera_app/features/notification/managers/cubit/notifications_cubit.dart';
 import 'package:ithera_app/features/settings/doctors_settings/data/repo/settings_repo.dart';
 import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/patients_settings/managers/cubit/seetings_cubit.dart';
@@ -60,6 +62,14 @@ void setUpServiceLocator() {
   getIt.registerSingleton<SettingsRepo>(SettingsRepo(
     getIt.get<DioConsumer>(),
   ));
+
+  getIt.registerSingleton<NotificationRepo>(NotificationRepo(
+    getIt.get<DioConsumer>(),
+  ));
+
+  getIt.registerFactory<NotificationsCubit>((() => NotificationsCubit(
+        getIt(),
+      )));
 
   getIt.registerFactory<SettingCubit>((() => SettingCubit(
         getIt(),

@@ -4,6 +4,7 @@ class CacheConstants {
 
   //data
   static const String token = 'token';
+  static const String fcmToken = 'fcmToken';
 
   static const String userName = 'userName';
   static const String userId = 'userId';
@@ -11,6 +12,8 @@ class CacheConstants {
   static const String userPhone = 'userPhone';
   static const String userPassword = 'userPassword';
   static const String cityId = 'cityId';
+  static const String role = 'role';
+
   static const String regionId = 'regionId';
   static const String gender = 'gender';
   static const String password = 'password';

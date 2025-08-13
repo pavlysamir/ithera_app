@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "696805224619",
-    "project_id": "ithera-4bb28",
-    "storage_bucket": "ithera-4bb28.firebasestorage.app"
+    "project_number": "155842438179",
+    "project_id": "ithera-f62c6",
+    "storage_bucket": "ithera-f62c6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:696805224619:android:701067277677441af147ee",
+        "mobilesdk_app_id": "1:155842438179:android:d52d67b8825e8c76bc3d96",
         "android_client_info": {
           "package_name": "com.ithera.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAbZBbKUHTVSCBYwXDPF3hcI3qgxx767nk"
+          "current_key": "AIzaSyApciGTWkNa4uVTbwZof-XtERb15A0ZSRU"
         }
       ],
       "services": {

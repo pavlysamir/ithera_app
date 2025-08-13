@@ -51,19 +51,19 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAbZBbKUHTVSCBYwXDPF3hcI3qgxx767nk',
-    appId: '1:696805224619:android:701067277677441af147ee',
-    messagingSenderId: '696805224619',
-    projectId: 'ithera-4bb28',
-    storageBucket: 'ithera-4bb28.firebasestorage.app',
+    apiKey: 'AIzaSyApciGTWkNa4uVTbwZof-XtERb15A0ZSRU',
+    appId: '1:155842438179:android:d52d67b8825e8c76bc3d96',
+    messagingSenderId: '155842438179',
+    projectId: 'ithera-f62c6',
+    storageBucket: 'ithera-f62c6.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBcDloGJGTOy6j32tgwH3p8c5__wYMDn70',
-    appId: '1:696805224619:ios:37b9a38d1f825ee1f147ee',
-    messagingSenderId: '696805224619',
-    projectId: 'ithera-4bb28',
-    storageBucket: 'ithera-4bb28.firebasestorage.app',
+    apiKey: 'AIzaSyAkzIsJfFsPNmUIuSWXjAfkpJp9eVB8Mzs',
+    appId: '1:155842438179:ios:725b1358b78f9412bc3d96',
+    messagingSenderId: '155842438179',
+    projectId: 'ithera-f62c6',
+    storageBucket: 'ithera-f62c6.firebasestorage.app',
     iosBundleId: 'com.ithera.app',
   );
 

@@ -2,25 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:ithera_app/core/notification/firebase_messaging_navigation.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
+import 'package:ithera_app/core/notification_srvices/firebase_messaging_navigation.dart';
+import 'package:ithera_app/core/notification_srvices/local_notification_services.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (kDebugMode) {
     print("Handling a background message: ${message.notification!.title}");
   }
+  LocalNotificationService.showSimpleNotification(message);
 }
 
 class FirebaseApi {
+  FirebaseApi();
+
   static final _firebaseMessaging = FirebaseMessaging.instance;
 
   static Future<void> initNotification() async {
-    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    _firebaseMessaging.onTokenRefresh.listen((fcmToken) async {
+      storeToken(tokenRefresh: fcmToken);
+    });
     await _firebaseMessaging.requestPermission(
       alert: true,
       announcement: false,
@@ -36,13 +40,13 @@ class FirebaseApi {
 
   static Future initPushNotification() async {
     await _firebaseMessaging.setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
+      alert: false,
+      badge: false,
+      sound: false,
     );
 
     //FirebaseMessaging.instance.getInitialMessage();
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onMessage
         .listen(FirebaseMessagingNavigate.forGroundHandler);
@@ -57,40 +61,34 @@ class FirebaseApi {
         .listen(FirebaseMessagingNavigate.backGroundHandler);
   }
 
-  static void handleOpenAppMessage(BuildContext context) {
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? message) {
-      if (message!.data['type'] == 'any thing') {
-        //navigate to any thing
-      }
-    });
-  }
-
-  static void handleGetInitialMessage(BuildContext context) {
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? message) {
-      if (message != null && message.data['type'] == 'anyThing') {
-        //navigateto any screen
-      }
-    });
-  }
-
-  static Future<void> storeToken(
-      {required String userId, required String? token}) async {
+  static Future<void> storeToken({String? tokenRefresh}) async {
     try {
-      // String? token = await FirebaseMessaging.instance.getToken();
-      // kTokenMssage = token!;
-      // if (kDebugMode) {
-      //   print('fcmToken :  $token');
-      // }
-      //
+      if (kDebugMode) {
+        print('fcmToken :  eh alklaaam');
+      }
+      final token =
+          await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
+      if (tokenRefresh != null) {
+        await CacheHelper.setSecureData(
+            key: CacheConstants.fcmToken, value: tokenRefresh);
 
-      if (token == null) return;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .set({'fcmToken': tokenRefresh});
+      } else {
+        String? fcmToken = await FirebaseMessaging.instance.getToken();
+        await CacheHelper.setSecureData(
+            key: CacheConstants.fcmToken, value: fcmToken ?? '');
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .update({'fcmToken': token});
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .set({'fcmToken': fcmToken});
+        if (kDebugMode) {
+          print('fcmToken :  $fcmToken');
+        }
+      }
     } catch (e) {
       if (kDebugMode) {
         print('error is $e');
@@ -102,24 +100,24 @@ class FirebaseApi {
     try {
       final serviceAccountJson = {
         "type": "service_account",
-        "project_id": "manasa-a5d28",
-        "private_key_id": "6ecaf24a951f13c5c415da182879dc6d72349b1d",
+        "project_id": "ithera-f62c6",
+        "private_key_id": "f667a607f20a52f1395519d24b95c0b90901e9a2",
         "private_key":
-            "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCxWE/5oLtZ7cpj\n7+4Tzzfo3Sny0lQNOpawzfz+jjdaZWn8nMdE/hvP/GoUxHQDaL4c+2blaOflZKNC\nSi8E73RyGeL2B/r5PjYr7St0NqUpiKW8+Sf9thXHg9Iym+svxvF72a53V5jzGOds\naWYMTCETubimC2c/FibExMHOEzf1R1hQ3NLv76iegbO9KK64fzH4Dg7q7aADdtfx\n9lHzsDQtz0FJVZA7gT/jz6X45tAtM1EWlyLM7n3Ecx4e0479Sqkiw6b2l0NmkVgp\n86jd66LF7kqa/fxB8wEKG1xAThpTZrnUqZbIF4E4/OjMinTObWnyhwFvyBmnopny\ngyKqdlQzAgMBAAECggEADt9upECNZcR89DZOG5LbHVLVmUZ4A7yq9ZHuNTTybHN+\ng3psdcXvyYNhgXNbnWDpN19YE5uMKHSbrSFb4ciT1fEuKQml9nAitTqzKbsJd+W8\nrI/4AXLbTxD9jalTfH1tNBX0ko/3RO/iPKPMNJzP1f/TKKMNL2u+qELYqV0llL1u\nbZHCXuc8l6A7k9fDgbkEfgqhTPmOeqQbN4LNCt9v7uG37gwCLbk/38SuXMa1peN7\nXIZ4TUVfsNO2eYw5tSGe5X3jd7nG6zZP43M3EKy5aTMf0K3xY5AVT+axW3CCNp1p\nmVlUTEJsswxui/Mdf0H4koG25TNFX2GAyxbthlTCeQKBgQDz7hZztkHcLk8q6Kgh\n+UWki/MeV8e2oXdB/pV3SEF/bR0F+nwE/LQ2OytoXJKoSevqLQV4uHRmfarUzePw\najoRG1kbAS0XXW/jB9a6IXP1rFYzNvHzjReF+moiG2iRJ6iNUbiSxqG4gpU2xjaf\nYIV5wsFo5LWDXZwiTZF2yOi1iQKBgQC6HscmrBG7UcxFXcBaX6NWHbN9Yfnpxvus\nC+Sc5Dg6CT31a8cMvJSGwinnyvckq1snqMOAxwZyj1L/NNEhS1fDfRr2ZEI/fX6v\ns1aQc7z08zBgju7pb9h/br34POvq6qjuoNkLYljqV9CRpJ9spIciSjr0GJt94BD4\nZ5cyPRDI2wKBgQDXoaq7U2xZBZ76YXzvu3mzAfxC4HotmgLglfru3TL5QC2d8VXc\n2r88CYZP1TXYCrC/7Fif5P8Q8xom0HMlPeJi6PgWBS4lL3YPDgjltVja3iO9Vl8A\nW8Nlrn5P9Ea1uocnlgxBw9GGV/kr2IDE1wBnKKDs5vEGVaQGNufWR7hfcQKBgQCK\nakdLcF5Dg+K5l65sx4FukuogjhPRE0WpvrKHJ4bVSnhEo6HFzB1dVtrZYm2IXNOO\n3AiBJgKaghKEb2A0NZcQcGLz6L4H/6mOu33eMeTN+mn49XOiMaa9prsq+QuuilOW\nHBMuTza3GRWoqthRcM565t+PFxnUdCXKxyd/mkB4TwKBgQC+2Y88pbZ1iYSuAC7y\nvbn+pCIBbsq8gUoJa7juN1LxxbV7YtiGR2SWLheyD+EjoBjwUSb/mNB1zIVwPtC1\nicjXzL38TU+5a1ObmccBhOTnRMevzU+Dx68ThGxCW6zWTBAjxlit+mv1B1ULcMui\n0sy+dHrJExKKGq/xUxWzlkXU/Q==\n-----END PRIVATE KEY-----\n",
-        "client_email":
-            "firebase-adminsdk-wy7fm@manasa-a5d28.iam.gserviceaccount.com",
-        "client_id": "114742733742206403505",
+            "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDKuvyyypj4DJ/Y\nLpYSIhAAKn9+rp6Lup63inzissqQIXWSJTs6xKn/ZYUYq7LeguLsGTR3JzY6DfLt\ne6gMp8qfvzz3SdbzrPN+vFZguUfvPHfA+NKC9opsjcLcSdT1B6V1A6Lmo7VaAjar\nlSwbvGnR2Su00ThS94qAK/5rI+Lr7iCi33SW1ZYca2frfQGym8sTViQbcq184JFp\n18IPbfAur6HvkC4nbxElIQIEyAE9gNzp7QQ26B4Zh7JVixHGTCt41S9G/pV+LxCa\nwvByyRQumAufWlvqUosORDj5edKl9ps/u2nkkvqllCB4iYfY0Jc8I2x2f7s2M6oi\ny0/bhRlnAgMBAAECggEAG8tBA94k1LUeYQwaBQhoey1YZ2zXTb7bLbyt3IK4pMQB\nk3TJRwhZaitn8PbxQfJd3BKkj8VveMwaxxZR9tI2RGp6mEimUKgghfqaOQ6N3y3C\nGVHDwrK8TZ+t3He+240d0QobllVRcrKk/icocfEF7QBCLrsUZsOLWIEvk07LOJ8h\nh5q16I8Ed+RFU2BrxUDlvRAFaysp8a4gjPsnzQM8t6Whc+WyNKMqTDu0/S7Ugh/r\nrXbZvULAbCPaOnESSR84dTTQW++kpd0e/BnOhnGGa/PwpbX/UouFf/1OpinyDWo8\nzCSuqDCnSwRuyPQVMQ91dlLUA/zzyJEe6k+nNvwViQKBgQDw/Q2TzgvLN9sSnWYA\nOUJtZaaeY5XbOW11V2IAxFDtBGNgP3pv5HrHnrEvKQfToyfRvKAHuoUYXY7m1Ao5\nC2xqO4jA9s9qhvaA0PvoeSl/XQylmDowdQaN1385LYX0z4skh6oR/9nDRxQkuekR\n87Gw6+mSO7sTzeP/cQI4qppaiwKBgQDXW9kSaNun/igwY7jzH5SZ03kINLKX1Lpc\nhIzPrVLtQhtyc3MqUmowTGYLawNmPwTbCwnTMqoIh5E+qXDBpWBvtj0zOmNKmxWp\n0tC6pA+Hq43yGqcbSa4dMiF+izsBNttRJ+KJaoNEbYXjB/gDGNClW6SaIMGGvaz+\nG0ZiFASEFQKBgBA5OPzGVkzsCbeLGR7SvAIZYcov8hq8Fv5bT6G1la0fKoGERH3b\n59ggetUt8fTxevDHvg5HJEarpb8sbzO/7SCJuX8kHnqRc27gotTXs097uCo9wU0Z\n08MgytPSmL4OatOevnhPvR1EX7rJOUOYIFJEz4iktMd0iPDdbsTZ12JZAoGBAIlN\nNqUlEz4UrRzEx2rB7KTyDY0sw9xHNRW9MGVLlL5NUmByuK734lmuq7SF4qHyda8N\nZ5MuDvfnLrPrpUbgoA44+uXJSPqMy4/9JzSHWptdxd7gHUAphod4qaAbNmA80DD6\no9SGgvBCf4TSVM3sqUFznwrg7WFxVnSfgQ0QxBxNAoGBAObnAqEK70JSsII9UelV\nfCW0iCdb/XYzwMO7TpzKVaAKjAYcfEaXxsBJKgaZfV8E8kYE6CI4KcvsBX+x85rh\nkKR/uV3FtVpbUrsPgS62WBaElxwQjlcCGJFnDNk+srEJitl66gCMu+8FRPXMqGBf\n1oK+q6Fj6y5QTBPQ/ZvE6t4p\n-----END PRIVATE KEY-----\n",
+        "client_email": "ithera@ithera-f62c6.iam.gserviceaccount.com",
+        "client_id": "101211803418428687347",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url":
             "https://www.googleapis.com/oauth2/v1/certs",
         "client_x509_cert_url":
-            "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-wy7fm%40manasa-a5d28.iam.gserviceaccount.com",
+            "https://www.googleapis.com/robot/v1/metadata/x509/ithera%40ithera-f62c6.iam.gserviceaccount.com",
         "universe_domain": "googleapis.com"
       };
 
       // Updated scopes - only include FCM scope
       List<String> scopes = [
+        "https://www.googleapis.com/auth/firebase.database",
         "https://www.googleapis.com/auth/firebase.messaging",
       ];
 
@@ -137,12 +135,18 @@ class FirebaseApi {
       client.close();
 
       // Debug print
-      print("Access Token obtained: ${accessToken.data}");
+      if (kDebugMode) {
+        print("Access Token obtained: ${accessToken.data}");
+      }
 
       return accessToken.data;
     } catch (e, stackTrace) {
-      print("Error getting access token: $e");
-      print("Stack trace: $stackTrace");
+      if (kDebugMode) {
+        print("Error getting access token: $e");
+      }
+      if (kDebugMode) {
+        print("Stack trace: $stackTrace");
+      }
       return null;
     }
   }
@@ -182,7 +186,7 @@ class FirebaseApi {
       }
 
       const String urlEndPoint =
-          "https://fcm.googleapis.com/v1/projects/manasa-a5d28/messages:send";
+          "https://fcm.googleapis.com/v1/projects/ithera-f62c6/messages:send";
 
       final dio = Dio();
 
@@ -231,12 +235,4 @@ class FirebaseApi {
       rethrow;
     }
   }
-
-// هندها في ال main
-
-// void setupFCMTokenRefresh(String userId) {
-//   FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-//     await FirebaseMessagingService.storeToken(userId, newToken);
-//   });
-// }
 }

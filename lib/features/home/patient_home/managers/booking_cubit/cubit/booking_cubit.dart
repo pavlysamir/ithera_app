@@ -44,17 +44,17 @@ class BookingCubit extends Cubit<BookingState> {
         }
 
         // Emit success state
-        emit(SuccessfulPickImage());
+        emit(const SuccessfulPickImage());
       } else {
-        emit(FailPickImage());
+        emit(const FailPickImage());
       }
     } else {
-      emit(FailPickImage());
+      emit(const FailPickImage());
     }
   }
 
   Future<void> bookSession({required BookingRequest request}) async {
-    emit(BookingLoading());
+    emit(const BookingLoading());
 
     final result = await _patientHomeRepo.bookSession(request);
     result.fold(

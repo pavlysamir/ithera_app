@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
@@ -71,7 +74,40 @@ class PatientAuthCubit extends Cubit<PatientAuthState> {
       (failure) => emit(PatientLoginError(failure)),
       (success) async {
         emit(PatientLoginSuccess('success'));
+        await storeToken(tokenRefresh: success.token);
       },
     );
+  }
+
+  static Future<void> storeToken({String? tokenRefresh}) async {
+    try {
+      final token =
+          await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
+      if (tokenRefresh != null) {
+        await CacheHelper.setSecureData(
+            key: CacheConstants.fcmToken, value: tokenRefresh);
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .set({'fcmToken': tokenRefresh});
+      } else {
+        String? fcmToken = await FirebaseMessaging.instance.getToken();
+        await CacheHelper.setSecureData(
+            key: CacheConstants.fcmToken, value: fcmToken ?? '');
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(token)
+            .set({'fcmToken': fcmToken});
+        if (kDebugMode) {
+          print('fcmToken :  $fcmToken');
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('error is $e');
+      }
+    }
   }
 }

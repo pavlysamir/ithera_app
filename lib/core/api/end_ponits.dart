@@ -39,6 +39,8 @@ class EndPoint {
 
   static String updatePatientData = "api/Auth/UpdatePatientProfile";
 
+  static String getNotification = "api/Notification/GetNotifications";
+
   static String getDoctorDataEndPoint(id) {
     return "api/Doctor/$id";
   }
@@ -62,7 +64,7 @@ class ApiKey {
   static String gender = "gender";
   static String dateOfBirth = "dateOfBirth";
 
-  static String userId = "UserId";
+  static String userId = "userId";
 
   static String specializationFieldIds = "specializationFieldIds";
 

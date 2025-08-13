@@ -3,10 +3,11 @@ import 'package:ithera_app/core/assets/assets.dart';
 import 'package:ithera_app/core/theme/app_shadows.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
+import 'package:ithera_app/features/notification/data/models/notifications_model.dart';
 
-class NotificationItem extends StatelessWidget {
-  const NotificationItem({super.key});
-
+class NotificationWidgetItem extends StatelessWidget {
+  const NotificationWidgetItem({super.key, required this.notificationItem});
+  final NotificationItem notificationItem;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,21 +34,21 @@ class NotificationItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'تم استلام حجز جديد من محمد علي.',
+                  notificationItem.value ?? '',
                   style: AppTextStyles.font16Regular,
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text(
-                  'You have a new notification',
-                  style: AppTextStyles.font12Regular,
-                ),
+                // Text(
+                //   'You have a new notification',
+                //   style: AppTextStyles.font12Regular,
+                // ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  ' 4.2.2025 الساعة 12:30 مساءً',
+                  ' ${notificationItem.createdOn!.day}-${notificationItem.createdOn!.month}-${notificationItem.createdOn!.year}, الساعة: ${notificationItem.createdOn!.hour}:${notificationItem.createdOn!.minute}',
                   style: AppTextStyles.font10Regular,
                 ),
               ],
