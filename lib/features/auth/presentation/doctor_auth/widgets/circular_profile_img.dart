@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ithera_app/core/cashe/cache_helper.dart';
+import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 
 class CircularProfileImage extends StatelessWidget {
@@ -31,36 +34,35 @@ class CircularProfileImage extends StatelessWidget {
               backgroundColor: AppColors.black,
               child: ClipOval(
                 child: CircleAvatar(
-                    radius: 40.h,
-                    backgroundColor: AppColors.white,
-                    child: file != null
-                        ? Image.file(
-                            file!,
-                            fit: BoxFit.fill,
-                            width: double.infinity,
-                            height: double.infinity,
-                          )
-                        :
-                        // getIt
-                        //             .get<CashHelperSharedPreferences>()
-                        //             .getData(key: ApiKey.profilePic) !=
-                        //         null
-                        //     ?
-                        // ClipOval(
-                        //     child: CachedNetworkImage(
-                        //         fit: BoxFit.fill,
-                        //         width: double.infinity,
-                        //         height: double.infinity,
-                        //         imageUrl: getIt
-                        //             .get<CashHelperSharedPreferences>()
-                        //             .getData(key: ApiKey.profilePic)),
-                        //   )
-                        // :
-                        Icon(
-                            Icons.person,
-                            size: 40.h,
-                            color: Colors.black,
-                          )),
+                  radius: 40.h,
+                  backgroundColor: AppColors.white,
+                  child: file != null
+                      ? Image.file(
+                          file!,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: double.infinity,
+                        )
+                      : CacheHelper.getString(key: CacheConstants.userImage) ==
+                              null
+                          ? const Icon(
+                              Icons.person,
+                              color: AppColors.primaryColor,
+                            )
+                          : CachedNetworkImage(
+                              placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.primaryColor,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                              fit: BoxFit.fill,
+                              width: double.infinity,
+                              height: double.infinity,
+                              imageUrl: CacheHelper.getString(
+                                      key: CacheConstants.userImage) ??
+                                  ''),
+                ),
               ),
             ),
           ),

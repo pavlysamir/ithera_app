@@ -4,8 +4,8 @@ import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/widgets/custom_listview_shimmer.dart';
 import 'package:ithera_app/features/booking/doctor_booking/data/models/doctor_booking_model.dart';
 import 'package:ithera_app/features/booking/doctor_booking/managers/cubit/doctor_booking_cubit.dart';
+import 'package:ithera_app/features/booking/doctor_booking/presentation/screens/no_requestes_screen.dart';
 import 'package:ithera_app/features/booking/doctor_booking/presentation/widgets/custom_booking_listview.dart';
-import 'package:ithera_app/features/booking/patient_booking/presentation/screens/no_booking_screen.dart';
 
 class DoctorBookingScreen extends StatefulWidget {
   const DoctorBookingScreen({super.key});
@@ -87,7 +87,7 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
                 state is DoctorBookingLoaded || state is DoctorBookingError;
 
             if (isDataFinal && hasNoData) {
-              return const NoBookingScreen();
+              return const NoRequestesScreen();
             }
 
             // عرض loading indicator فقط في البداية

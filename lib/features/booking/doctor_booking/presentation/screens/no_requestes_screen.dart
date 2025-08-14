@@ -24,7 +24,7 @@ class NoRequestesScreen extends StatelessWidget {
           Text(
             'لا توجد حالات حالياً. سيتم إرسال إشعار لك فور توفر حالة تم طلبك لها.',
             style: AppTextStyles.font20Regular.copyWith(
-              color: AppColors.blackLight,
+              color: AppColors.black,
             ),
             textAlign: TextAlign.center,
           ),

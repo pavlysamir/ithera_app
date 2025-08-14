@@ -14,3 +14,11 @@ final class AddFileFaluir extends AddFilesState {
 }
 
 final class AddFileSuccess extends AddFilesState {}
+
+final class GetFileSuccess extends AddFilesState {}
+
+final class GetFileFaluir extends AddFilesState {
+  final String errorMessage;
+
+  GetFileFaluir(this.errorMessage);
+}

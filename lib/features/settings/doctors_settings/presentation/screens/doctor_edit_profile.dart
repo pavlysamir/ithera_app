@@ -344,6 +344,11 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                         )
                       : BlocConsumer<AddFilesCubit, AddFilesState>(
                           listener: (context, state) {
+                            if (state is AddFileSuccess) {
+                              context
+                                  .read<AddFilesCubit>()
+                                  .getFile(fileId: 3, roleId: 1);
+                            }
                             if (state is AddFileFaluir) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

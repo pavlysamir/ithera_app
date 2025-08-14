@@ -38,9 +38,9 @@ class AddFilesCubit extends Cubit<AddFilesState> {
     final response = await _addFileRepo.getFile(fileId: fileId, role: roleId);
 
     response.fold(
-      (errMessage) => emit(AddFileFaluir(errMessage)),
+      (errMessage) => emit(GetFileFaluir(errMessage)),
       (message) {
-        emit(AddFileSuccess());
+        emit(GetFileSuccess());
       },
     );
   }
