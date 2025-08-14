@@ -132,8 +132,14 @@ class AppRouter {
         );
       case Routes.signInScreen:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => getIt<PatientAuthCubit>(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<PatientAuthCubit>(
+                  create: (context) => getIt<PatientAuthCubit>()),
+              BlocProvider<AddFilesCubit>(
+                create: (context) => getIt<AddFilesCubit>(),
+              ),
+            ],
             child: SigninScreen(
               isFromPatient: settings.arguments as bool,
             ),

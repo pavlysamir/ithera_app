@@ -165,14 +165,14 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
               return const Center(child: Text("فشل في تحميل البيانات"));
             }
 
-            return buildFormBody(context);
+            return buildFormBody(context, state);
           },
         ),
       ),
     );
   }
 
-  Widget buildFormBody(BuildContext context) {
+  Widget buildFormBody(BuildContext context, SettingState state) {
     return SingleChildScrollView(
       child: Form(
         key: formDoctorEditProfileScreenKey,
@@ -336,59 +336,65 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                   //||profileImagePath == null
                   //|| karnehImagePath == null
                   ? const CustomButtonLargeDimmed(text: 'حفظ')
-                  : BlocConsumer<AddFilesCubit, AddFilesState>(
-                      listener: (context, state) {
-                        if (state is AddFileFaluir) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(
-                                  'حدث خطأ اتناء تجميل صوره البروفايل او الكانيه'),
-                            ),
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        return CustomButtonLarge(
-                          text: 'حفظ',
-                          textColor: AppColors.white,
-                          color: AppColors.primaryColor,
-                          function: () {
-                            if (formDoctorEditProfileScreenKey.currentState!
-                                .validate()) {
-                              final body = {
-                                "email": emailController.text,
-                                "userName": nameController.text,
-                                "phoneNumber": phoneController.text,
-                                "anotherMobileNumber":
-                                    anotherPhoneController.text,
-                                "cityId": cityId!,
-                                "regionId": 0,
-                                "specializationFieldId":
-                                    selectedItemsListIds.isNotEmpty
-                                        ? selectedItemsListIds.first
-                                        : 0,
-                                "gender": isMale! ? 1 : 2,
-                                "description": "",
-                              };
-
-                              // Call update API
-                              // context
-                              //     .read<SettingCubit>()
-                              //     .updateDoctorData(body: body);
-
-                              if (profileImagePath != null) {
-                                context.read<AddFilesCubit>().addFile(
-                                  rileId: 1,
-                                  files: [profileImagePath!],
-                                  fileType: ['9'],
-                                );
-                              }
+                  : state is UpdateDoctorDataLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryColor,
+                          ),
+                        )
+                      : BlocConsumer<AddFilesCubit, AddFilesState>(
+                          listener: (context, state) {
+                            if (state is AddFileFaluir) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                      'حدث خطأ اتناء تجميل صوره البروفايل او الكانيه'),
+                                ),
+                              );
                             }
                           },
-                        );
-                      },
-                    ),
+                          builder: (context, state) {
+                            return CustomButtonLarge(
+                              text: 'حفظ',
+                              textColor: AppColors.white,
+                              color: AppColors.primaryColor,
+                              function: () {
+                                if (formDoctorEditProfileScreenKey.currentState!
+                                    .validate()) {
+                                  final body = {
+                                    "email": emailController.text,
+                                    "userName": nameController.text,
+                                    "phoneNumber": phoneController.text,
+                                    "anotherMobileNumber":
+                                        anotherPhoneController.text,
+                                    "cityId": cityId!,
+                                    "regionId": 0,
+                                    "specializationFieldId":
+                                        selectedItemsListIds.isNotEmpty
+                                            ? selectedItemsListIds.first
+                                            : 0,
+                                    "gender": isMale! ? 1 : 2,
+                                    "description": "",
+                                  };
+
+                                  // Call update API
+                                  context
+                                      .read<SettingCubit>()
+                                      .updateDoctorData(body: body);
+
+                                  if (profileImagePath != null) {
+                                    context.read<AddFilesCubit>().addFile(
+                                      rileId: 1,
+                                      files: [profileImagePath!],
+                                      fileType: ['3'],
+                                    );
+                                  }
+                                }
+                              },
+                            );
+                          },
+                        ),
               SizedBox(height: 50.h),
             ],
           ),

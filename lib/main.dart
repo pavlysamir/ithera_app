@@ -15,11 +15,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await CacheHelper.init();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await FirebaseApi.initNotification();
   LocalNotificationService.initialize();
   await FirebaseApi.storeToken();
-  await CacheHelper.init();
   setUpServiceLocator();
   Bloc.observer = SimpleBlocObserver();
 

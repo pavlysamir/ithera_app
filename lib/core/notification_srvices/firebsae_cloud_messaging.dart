@@ -68,15 +68,14 @@ class FirebaseApi {
       if (kDebugMode) {
         print('fcmToken :  eh alklaaam');
       }
-      final token =
-          await CacheHelper.getSecureData(key: CacheConstants.token) ?? '';
+      final userId = CacheHelper.getInt(key: CacheConstants.userId).toString();
       if (tokenRefresh != null) {
         await CacheHelper.setSecureData(
             key: CacheConstants.fcmToken, value: tokenRefresh);
 
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(token)
+            .doc(userId)
             .set({'fcmToken': tokenRefresh});
       } else {
         String? fcmToken = await FirebaseMessaging.instance.getToken();
@@ -85,7 +84,7 @@ class FirebaseApi {
 
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(token)
+            .doc(userId)
             .set({'fcmToken': fcmToken});
         if (kDebugMode) {
           print('fcmToken :  $fcmToken');

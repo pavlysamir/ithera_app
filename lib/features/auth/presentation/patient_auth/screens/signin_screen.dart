@@ -14,6 +14,7 @@ import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_svgImage.dart';
 import 'package:ithera_app/core/widgets/custom_text_rich.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
 import 'package:ithera_app/features/auth/managers/patients_auth_cubit/patient_auth_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 
@@ -79,13 +80,18 @@ class _SigninScreenState extends State<SigninScreen> {
           listener: (context, state) {
             if (state is PatientLoginSuccess) {
               // Use post frame callback for navigation to avoid build conflicts
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.green,
                     content: Text('تم تسجيل الدخول بنجاح'),
                   ),
                 );
+
+                await context.read<AddFilesCubit>().getFile(
+                      fileId: 3,
+                      roleId: widget.isFromPatient ? 2 : 1,
+                    );
                 NavigationService().navigateAndRemoveUntil(
                   Routes.patientHomeLayout,
                 );
@@ -221,18 +227,22 @@ class _SigninScreenState extends State<SigninScreen> {
     }
 
     if (_isFormValid) {
-      return CustomButtonLarge(
-        text: 'تسجيل الدخول',
-        textColor: Colors.white,
-        color: AppColors.primaryColor,
-        function: () {
-          if (formSignInScreenKey.currentState!.validate()) {
-            PatientAuthCubit.get(context).login(
-              phoneNumber: phoneController.text,
-              password: passwordController.text,
-              isFromPatient: widget.isFromPatient,
-            );
-          }
+      return BlocBuilder<AddFilesCubit, AddFilesState>(
+        builder: (context, state) {
+          return CustomButtonLarge(
+            text: 'تسجيل الدخول',
+            textColor: Colors.white,
+            color: AppColors.primaryColor,
+            function: () {
+              if (formSignInScreenKey.currentState!.validate()) {
+                PatientAuthCubit.get(context).login(
+                  phoneNumber: phoneController.text,
+                  password: passwordController.text,
+                  isFromPatient: widget.isFromPatient,
+                );
+              }
+            },
+          );
         },
       );
     }

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:ithera_app/core/api/api_consumer.dart';
+import 'package:ithera_app/core/api/end_ponits.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/errors/exceptions.dart';
+import 'package:ithera_app/features/add_files/data/models/get_file_model.dart';
 
 class AddFileRepo {
   final ApiConsumer api;
@@ -55,6 +57,32 @@ class AddFileRepo {
       return Left(e.errModel?.errorMessage ?? '');
     } catch (e) {
       return const Left('An unexpected error occurred');
+    }
+  }
+
+  Future<Either<String, FilesResponse>> getFile(
+      {required int fileId, required int role}) async {
+    try {
+      final response = await api.post(
+        EndPoint.getFile,
+        queryParameters: {
+          'filetypeId': fileId,
+          'userId': CacheHelper.getInt(key: CacheConstants.userId),
+          'role': role
+        },
+      );
+
+      FilesResponse filesResponse = FilesResponse.fromJson(response);
+
+      if (fileId == 3 && filesResponse.responseData.isNotEmpty) {
+        CacheHelper.set(
+            key: CacheConstants.userImage,
+            value: filesResponse.responseData.last.url);
+      }
+
+      return Right(filesResponse);
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? '');
     }
   }
 }

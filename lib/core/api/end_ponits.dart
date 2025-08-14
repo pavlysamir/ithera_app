@@ -16,6 +16,8 @@ class EndPoint {
 
   static String addFile = "File/AddFile";
 
+  static String getFile = "File/GetUserFiles";
+
   static String manageSchedules = "api/Doctor/manageSchedules";
 
   static String getAllDoctors = "api/Patient/GetAllDoctors";

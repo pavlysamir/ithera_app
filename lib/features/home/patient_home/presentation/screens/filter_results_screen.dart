@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
@@ -48,35 +47,38 @@ class _FilterResultsScreenState extends State<FilterResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          const SliverAppBar(
-            backgroundColor: Colors.transparent,
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 20, bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'نتائج البحث',
-                    style: AppTextStyles.font14Regular
-                        .copyWith(color: AppColors.blackLight),
-                  ),
-                  SizedBox(height: 2.h),
-                  const Divider(
-                    color: AppColors.grey100,
-                    thickness: 1,
-                  ),
-                ],
+      body: SafeArea(
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            const SliverAppBar(
+              backgroundColor: AppColors.appBackgroundColor,
+              pinned: true,
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 20, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'نتائج البحث',
+                      style: AppTextStyles.font14Regular
+                          .copyWith(color: AppColors.blackLight),
+                    ),
+                    SizedBox(height: 2.h),
+                    const Divider(
+                      color: AppColors.grey100,
+                      thickness: 1,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const CustomFilterDoctorsListView()
-        ],
+            const CustomFilterDoctorsListView()
+          ],
+        ),
       ),
     );
   }

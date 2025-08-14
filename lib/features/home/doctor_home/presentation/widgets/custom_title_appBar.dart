@@ -19,15 +19,25 @@ class CustomTitleAppBar extends StatelessWidget {
             radius: 20.r,
             child: ClipOval(
               clipBehavior: Clip.antiAlias,
-              child: CachedNetworkImage(
-                  placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                  fit: BoxFit.fill,
-                  width: double.infinity,
-                  height: double.infinity,
-                  imageUrl:
-                      'https://thumbs.dreamstime.com/b/young-male-doctor-close-up-happy-looking-camera-56751540.jpg'),
+              child:
+                  CacheHelper.getString(key: CacheConstants.userImage) == null
+                      ? const Icon(
+                          Icons.person,
+                          color: AppColors.primaryColor,
+                        )
+                      : CachedNetworkImage(
+                          placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                          fit: BoxFit.fill,
+                          width: double.infinity,
+                          height: double.infinity,
+                          imageUrl: CacheHelper.getString(
+                                  key: CacheConstants.userImage) ??
+                              ''),
             )),
         SizedBox(width: 12.w),
         Expanded(
