@@ -34,7 +34,7 @@ class DoctorResponseData extends Equatable {
   final String doctorName;
   final int doctorId;
   final int cityId;
-  final bool gender;
+  final int gender;
   final List<SpecializationField> specializationFields;
   final num? sessionPrice;
   final double averageRating;

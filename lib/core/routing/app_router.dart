@@ -280,8 +280,15 @@ class AppRouter {
         );
       case Routes.addBalanceScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<SettingCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<SettingCubit>(
+                create: (context) => getIt<SettingCubit>(),
+              ),
+              BlocProvider<AddFilesCubit>(
+                create: (context) => getIt<AddFilesCubit>(),
+              )
+            ],
             child: const AddBalanceScreen(),
           ),
           settings: settings,

@@ -43,6 +43,8 @@ class EndPoint {
 
   static String getNotification = "api/Notification/GetNotifications";
 
+  static String deleteUser = "api/Auth/DeleteUserById";
+
   static String getDoctorDataEndPoint(id) {
     return "api/Doctor/$id";
   }

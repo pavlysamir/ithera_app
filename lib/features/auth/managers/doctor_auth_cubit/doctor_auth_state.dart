@@ -7,6 +7,8 @@ final class DoctorAuthInitial extends DoctorAuthState {}
 
 final class SuccessfulPickImage extends DoctorAuthState {}
 
+final class SuccessfulPickCv extends DoctorAuthState {}
+
 final class FailPickImage extends DoctorAuthState {}
 
 final class DoctorAuthLoading extends DoctorAuthState {}

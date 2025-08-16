@@ -110,4 +110,24 @@ class SettingsRepo {
       return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
     }
   }
+
+  Future<Either<String, String>> deleteUser() async {
+    try {
+      var response =
+          await _dioConsumer.delete(EndPoint.deleteUser, queryParameters: {
+        'userId': CacheHelper.getInt(key: CacheConstants.userId),
+      });
+      final parsed = BaseAuthResponse<int>.fromJson(
+        response,
+        (data) => data,
+      );
+      if (parsed.success) {
+        return Right(parsed.message);
+      } else {
+        return Left(parsed.message);
+      }
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
 }

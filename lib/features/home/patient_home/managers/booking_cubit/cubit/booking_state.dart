@@ -1,6 +1,5 @@
 part of 'booking_cubit.dart';
 
-
 @immutable
 sealed class BookingState extends Equatable {
   const BookingState();
@@ -14,7 +13,9 @@ final class BookingInitial extends BookingState {
 }
 
 final class SuccessfulPickImage extends BookingState {
-  const SuccessfulPickImage();
+  final File imageFile;
+
+  const SuccessfulPickImage(this.imageFile);
 }
 
 final class FailPickImage extends BookingState {

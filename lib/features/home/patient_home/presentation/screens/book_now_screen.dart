@@ -41,10 +41,10 @@ class _BookNowScreenState extends State<BookNowScreen> {
   String? patientReportName;
   String? idCardImageName;
   bool? isMale;
+  bool _isBookingInProgress = false;
 
   TextEditingController descriptionController = TextEditingController();
   TextEditingController addressDescriptionController = TextEditingController();
-
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
@@ -56,8 +56,89 @@ class _BookNowScreenState extends State<BookNowScreen> {
     addressDescriptionController.dispose();
     nameController.dispose();
     phoneController.dispose();
-
     super.dispose();
+  }
+
+  void _clearFormData() {
+    if (mounted) {
+      setState(() {
+        // Clear all form fields
+        descriptionController.clear();
+        addressDescriptionController.clear();
+        nameController.clear();
+        phoneController.clear();
+
+        // Reset selections
+        isChecked = false;
+        isMale = null;
+
+        // Clear uploaded files and names
+        xRayImage = null;
+        patientReport = null;
+        idCardImage = null;
+        xRayImageName = null;
+        patientReportName = null;
+        idCardImageName = null;
+      });
+    }
+  }
+
+  Future<void> _handleImagePick(String imageType) async {
+    final cubit = context.read<BookingCubit>();
+    await cubit.pickCameraImage();
+
+    if (mounted) {
+      setState(() {
+        switch (imageType) {
+          case 'patient_report':
+            patientReport = cubit.file;
+            patientReportName = cubit.fileName;
+            break;
+          case 'xray':
+            xRayImage = cubit.file;
+            xRayImageName = cubit.fileName;
+            break;
+          case 'id_card':
+            idCardImage = cubit.file;
+            idCardImageName = cubit.fileName;
+            break;
+        }
+      });
+    }
+  }
+
+  Future<void> _handleBookSession(bool isForAnotherPatient) async {
+    if (_isBookingInProgress) return;
+
+    setState(() {
+      _isBookingInProgress = true;
+    });
+
+    try {
+      final cubit = context.read<BookingCubit>();
+
+      final request = BookingRequest(
+        patientId: CacheHelper.getInt(key: CacheConstants.userId)!,
+        cardId: widget.schedule.cardId,
+        doctorId: widget.doctorId,
+        address: addressDescriptionController.text,
+        diagnosiss: descriptionController.text,
+        anotherPatient: isForAnotherPatient,
+        patientName: isForAnotherPatient ? nameController.text : null,
+        anotherPatientPhoneNumber:
+            isForAnotherPatient ? phoneController.text : null,
+        gender:
+            isForAnotherPatient && isMale != null ? (isMale! ? 1 : 2) : null,
+      );
+
+      await cubit.bookSession(request: request);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBookingInProgress = false;
+        });
+      }
+    }
   }
 
   @override
@@ -75,23 +156,27 @@ class _BookNowScreenState extends State<BookNowScreen> {
       body: BlocConsumer<BookingCubit, BookingState>(
         listener: (context, state) {
           if (state is SuccessfulBookSession) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: AppColors.textGreen,
-                content: Text(state.successMessage),
-              ),
-            );
+            _clearFormData();
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: AppColors.textGreen,
+                  content: Text(state.successMessage),
+                ),
+              );
+            }
           } else if (state is FailBookSession) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage),
-                backgroundColor: AppColors.error100,
-              ),
-            );
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  backgroundColor: AppColors.error100,
+                ),
+              );
+            }
           }
         },
         builder: (context, state) {
-          var cubit = BlocProvider.of<BookingCubit>(context);
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Form(
@@ -123,67 +208,49 @@ class _BookNowScreenState extends State<BookNowScreen> {
                       ischoosen: true,
                       firstText: 'تقارير الحالة أو تحويل الدكتور',
                     ),
-                    const SizedBox(
-                      height: 18,
-                    ),
+                    const SizedBox(height: 18),
                     CustomImportImageField(onTap: () {
-                      BlocProvider.of<BookingCubit>(context)
-                          .pickCameraImage()
-                          .then((value) {
-                        patientReport = cubit.file;
-                        patientReportName = cubit.fileName;
-                      });
+                      _handleImagePick('patient_report');
                     }),
-                    patientReportName != null
-                        ? Padding(
-                            padding: EdgeInsets.only(left: 8.w, top: 8.h),
-                            child: Center(
-                              child: Text(
-                                patientReportName!,
-                                style: AppTextStyles.font12Regular.copyWith(
-                                    color: AppColors.primaryColor,
-                                    decoration: TextDecoration.underline),
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
+                    if (patientReportName != null)
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                        child: Center(
+                          child: Text(
+                            patientReportName!,
+                            style: AppTextStyles.font12Regular.copyWith(
+                                color: AppColors.primaryColor,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ),
                     const SizedBox(height: 25),
                     const CustomNormalRichText(
                       ischoosen: true,
-                      firstText: 'أرفع صورة  الاشعة',
+                      firstText: 'أرفع صورة الاشعة',
                     ),
-                    const SizedBox(
-                      height: 18,
-                    ),
+                    const SizedBox(height: 18),
                     CustomImportImageField(onTap: () {
-                      BlocProvider.of<BookingCubit>(context)
-                          .pickCameraImage()
-                          .then((value) {
-                        xRayImage = cubit.file;
-                        xRayImageName = cubit.fileName;
-                      });
+                      _handleImagePick('xray');
                     }),
-                    xRayImageName != null
-                        ? Padding(
-                            padding: EdgeInsets.only(left: 8.w, top: 8.h),
-                            child: Center(
-                              child: Text(
-                                xRayImageName!,
-                                style: AppTextStyles.font12Regular.copyWith(
-                                    color: AppColors.primaryColor,
-                                    decoration: TextDecoration.underline),
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
+                    if (xRayImageName != null)
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                        child: Center(
+                          child: Text(
+                            xRayImageName!,
+                            style: AppTextStyles.font12Regular.copyWith(
+                                color: AppColors.primaryColor,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ),
                     const SizedBox(height: 25),
                     const CustomNormalRichText(
                       ischoosen: false,
                       firstText: 'وصف التاريخ المرضى والاعراض',
                     ),
-                    const SizedBox(
-                      height: 18,
-                    ),
+                    const SizedBox(height: 18),
                     CustomDescriptionFormField(
                       controller: descriptionController,
                       hintText: 'اكتب وصف الحالة',
@@ -200,9 +267,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
                       ischoosen: false,
                       firstText: 'عنوانك بالتفصيل',
                     ),
-                    const SizedBox(
-                      height: 18,
-                    ),
+                    const SizedBox(height: 18),
                     CustomDescriptionFormField(
                       controller: addressDescriptionController,
                       hintText: 'اكتب عنوانك بالتفصيل',
@@ -217,14 +282,17 @@ class _BookNowScreenState extends State<BookNowScreen> {
                     const SizedBox(height: 40),
                     ValueListenableBuilder<TextEditingValue>(
                       valueListenable: addressDescriptionController,
-                      builder: (context, addressVaue, _) {
+                      builder: (context, addressValue, _) {
                         return ValueListenableBuilder<TextEditingValue>(
                           valueListenable: descriptionController,
                           builder: (context, descriptionValue, _) {
-                            bool isEnabled = addressVaue.text.isNotEmpty &&
-                                descriptionValue.text.isNotEmpty;
+                            bool isEnabled = addressValue.text.isNotEmpty &&
+                                descriptionValue.text.isNotEmpty &&
+                                !_isBookingInProgress;
+
                             return isEnabled
-                                ? state is BookingLoading
+                                ? (state is BookingLoading ||
+                                        _isBookingInProgress)
                                     ? const Center(
                                         child: CircularProgressIndicator(
                                           color: AppColors.primaryColor,
@@ -236,95 +304,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
                                         function: () {
                                           if (bookFormKey.currentState!
                                               .validate()) {
-                                            isChecked == false
-                                                ?
-
-                                                //if patient book for himself
-                                                BlocProvider.of<BookingCubit>(
-                                                        context)
-                                                    .bookSession(
-                                                    request: BookingRequest(
-                                                      patientId:
-                                                          CacheHelper.getInt(
-                                                              key:
-                                                                  CacheConstants
-                                                                      .userId)!,
-                                                      cardId: widget
-                                                          .schedule.cardId,
-                                                      doctorId: widget.doctorId,
-                                                      address: addressVaue.text,
-                                                      diagnosiss:
-                                                          descriptionValue.text,
-                                                    ),
-                                                  )
-                                                    .then((_) {
-                                                    setState(() {
-                                                      // Clear all form fields
-                                                      descriptionController
-                                                          .clear();
-                                                      addressDescriptionController
-                                                          .clear();
-                                                      nameController.clear();
-                                                      phoneController.clear();
-
-                                                      // Reset selections
-                                                      isChecked = false;
-                                                      isMale = null;
-
-                                                      // Clear uploaded files and names
-                                                      xRayImage = null;
-                                                      patientReport = null;
-                                                      xRayImageName = null;
-                                                      patientReportName = null;
-                                                    });
-                                                  })
-                                                :
-
-//if patient book for another person
-                                                BlocProvider.of<BookingCubit>(
-                                                        context)
-                                                    .bookSession(
-                                                    request: BookingRequest(
-                                                      patientId:
-                                                          CacheHelper.getInt(
-                                                              key:
-                                                                  CacheConstants
-                                                                      .userId)!,
-                                                      cardId: widget
-                                                          .schedule.cardId,
-                                                      doctorId: widget.doctorId,
-                                                      address: addressVaue.text,
-                                                      diagnosiss:
-                                                          descriptionValue.text,
-                                                      anotherPatient: true,
-                                                      patientName:
-                                                          nameController.text,
-                                                      anotherPatientPhoneNumber:
-                                                          phoneController.text,
-                                                      gender: isMale! ? 1 : 2,
-                                                    ),
-                                                  )
-                                                    .then((_) {
-                                                    setState(() {
-                                                      // Clear all form fields
-                                                      descriptionController
-                                                          .clear();
-                                                      addressDescriptionController
-                                                          .clear();
-                                                      nameController.clear();
-                                                      phoneController.clear();
-
-                                                      // Reset selections
-                                                      isChecked = false;
-                                                      isMale = null;
-
-                                                      // Clear uploaded files and names
-                                                      xRayImage = null;
-                                                      patientReport = null;
-                                                      xRayImageName = null;
-                                                      patientReportName = null;
-                                                    });
-                                                  });
+                                            _handleBookSession(isChecked);
                                           }
                                         },
                                         color: AppColors.primaryColor,
@@ -355,24 +335,18 @@ class _BookNowScreenState extends State<BookNowScreen> {
           ischoosen: false,
           firstText: 'الأسم',
         ),
-        SizedBox(
-          height: 18.h,
-        ),
+        SizedBox(height: 18.h),
         CustomFormField(
             controller: nameController,
             validate: conditionOfValidationName,
             hintText: 'الأسم ثنائي',
             textInputType: TextInputType.text),
-        SizedBox(
-          height: 32.h,
-        ),
+        SizedBox(height: 32.h),
         const CustomNormalRichText(
           ischoosen: false,
           firstText: 'رقم الموبيل',
         ),
-        SizedBox(
-          height: 18.h,
-        ),
+        SizedBox(height: 18.h),
         CustomFormField(
             controller: phoneController,
             validate: conditionOfValidationPhone,
@@ -383,12 +357,7 @@ class _BookNowScreenState extends State<BookNowScreen> {
           isMale: isMale,
           onMaleTap: () {
             setState(() {
-              if (isMale == null) {
-                isMale = true;
-              } else {
-                isMale = null;
-              }
-
+              isMale = isMale == true ? null : true;
               if (kDebugMode) {
                 print(isMale);
               }
@@ -396,59 +365,44 @@ class _BookNowScreenState extends State<BookNowScreen> {
           },
           onFemaleTap: () {
             setState(() {
-              if (isMale == null) {
-                isMale = false;
-              } else {
-                isMale = null;
-              }
+              isMale = isMale == false ? null : false;
               if (kDebugMode) {
                 print(isMale);
               }
             });
           },
         ),
-        isMale == false
-            ? BlocBuilder<BookingCubit, BookingState>(
-                builder: (context, state) {
-                  var cubit = BlocProvider.of<BookingCubit>(context);
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 25),
-                      const CustomNormalRichText(
-                        ischoosen: false,
-                        firstText: 'صورة بطاقة الحالة ',
+        if (isMale == false)
+          BlocBuilder<BookingCubit, BookingState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 25),
+                  const CustomNormalRichText(
+                    ischoosen: false,
+                    firstText: 'صورة بطاقة الحالة ',
+                  ),
+                  const SizedBox(height: 18),
+                  CustomImportImageField(onTap: () {
+                    _handleImagePick('id_card');
+                  }),
+                  if (idCardImageName != null)
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                      child: Center(
+                        child: Text(
+                          idCardImageName!,
+                          style: AppTextStyles.font12Regular.copyWith(
+                              color: AppColors.primaryColor,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      CustomImportImageField(onTap: () {
-                        BlocProvider.of<BookingCubit>(context)
-                            .pickCameraImage()
-                            .then((value) {
-                          idCardImage = cubit.file;
-                          idCardImageName = cubit.fileName;
-                        });
-                      }),
-                      idCardImageName != null
-                          ? Padding(
-                              padding: EdgeInsets.only(left: 8.w, top: 8.h),
-                              child: Center(
-                                child: Text(
-                                  idCardImageName!,
-                                  style: AppTextStyles.font12Regular.copyWith(
-                                      color: AppColors.primaryColor,
-                                      decoration: TextDecoration.underline),
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
-                    ],
-                  );
-                },
-              )
-            : const SizedBox(),
+                    ),
+                ],
+              );
+            },
+          ),
       ],
     );
   }

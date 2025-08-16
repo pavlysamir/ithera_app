@@ -43,6 +43,8 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
   File? profileImagePath;
   File? karnehImagePath;
   String? karnehImageName;
+  File? cvPath;
+  String? cvName;
   int? cityId;
 
   List<String> selectedItemsList = [];
@@ -77,7 +79,7 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
       anotherPhoneController.text = data.anotherMobileNumber ?? '';
       emailController.text = data.email ?? '';
       cityId = data.cityId;
-      isMale = data.gender;
+      isMale = data.gender != 2 ? true : false;
       selectedItemsList =
           data.specializationFields.map((e) => e.nameAr).toList();
       selectedItemsListIds =
@@ -92,6 +94,22 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
     super.initState();
 
     context.read<SettingCubit>().getDoctorData();
+
+    context.read<AddFilesCubit>().getFile(fileId: 4, roleId: 1).then((value) {
+      if (value != null) {
+        setState(() {
+          karnehImageName = value;
+        });
+      }
+    });
+
+    context.read<AddFilesCubit>().getFile(fileId: 5, roleId: 1).then((value) {
+      if (value != null) {
+        setState(() {
+          cvName = value;
+        });
+      }
+    });
 
     // // Add listeners to text controllers
     // nameController.addListener(() {
@@ -128,16 +146,16 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
               emailController.text = data.email ?? '';
               anotherPhoneController.text = data.anotherMobileNumber ?? '';
               cityId = data.cityId;
-              isMale = data.gender;
+              isMale = data.gender != 2 ? true : false;
               selectedItemsList =
                   data.specializationFields.map((e) => e.nameAr).toList();
               selectedItemsListIds =
                   data.specializationFields.map((e) => e.id).toList();
             }
 
-            if (state is SuccessfulPickImage) {
-              profileImagePath = state.imageFile;
-            }
+            // if (state is SuccessfulPickImage) {
+            //   profileImagePath = state.imageFile;
+            // }
 
             if (state is ImageCleared) {
               profileImagePath = null;
@@ -202,7 +220,9 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                 },
                 function: () {
                   // Pick image
-                  context.read<SettingCubit>().pickCameraImage();
+                  context.read<SettingCubit>().pickCameraImage().then((value) {
+                    profileImagePath = context.read<SettingCubit>().file;
+                  });
                 },
               ),
               SizedBox(height: 12.h),
@@ -298,7 +318,10 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                   ischoosen: false, firstText: 'صورة كارنيه النقابة'),
               SizedBox(height: 18.h),
               CustomImportImageField(onTap: () {
-                // Pick karneh image
+                context.read<SettingCubit>().pickCameraImage().then((value) {
+                  karnehImagePath = context.read<SettingCubit>().file;
+                  karnehImageName = context.read<SettingCubit>().fileName;
+                });
               }),
               if (karnehImageName != null)
                 Padding(
@@ -313,6 +336,35 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                     ),
                   ),
                 ),
+              SizedBox(
+                height: 32.h,
+              ),
+              const CustomNormalRichText(
+                ischoosen: false,
+                firstText: 'السيرة الذاتية ( CV )',
+              ),
+              SizedBox(
+                height: 18.h,
+              ),
+              CustomImportImageField(onTap: () {
+                context.read<SettingCubit>().pickAndSavePDF().then((value) {
+                  cvPath = context.read<SettingCubit>().file;
+                  cvName = context.read<SettingCubit>().fileName;
+                });
+              }),
+              cvName != null
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                      child: Center(
+                        child: Text(
+                          cvName!,
+                          style: AppTextStyles.font12Regular.copyWith(
+                              color: AppColors.primaryColor,
+                              decoration: TextDecoration.underline),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
               SizedBox(height: 32.h),
               CustomToggleisMale(
                 isMale: isMale,
@@ -377,8 +429,8 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                                     "regionId": 0,
                                     "specializationFieldId":
                                         selectedItemsListIds.isNotEmpty
-                                            ? selectedItemsListIds.first
-                                            : 0,
+                                            ? selectedItemsListIds
+                                            : [0],
                                     "gender": isMale! ? 1 : 2,
                                     "description": "",
                                   };
@@ -393,6 +445,28 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                                       rileId: 1,
                                       files: [profileImagePath!],
                                       fileType: ['3'],
+                                    );
+
+                                    print(
+                                        'add profile image ${profileImagePath}::: ${karnehImagePath}');
+                                  }
+
+                                  if (karnehImagePath != null) {
+                                    context.read<AddFilesCubit>().addFile(
+                                      rileId: 1,
+                                      files: [karnehImagePath!],
+                                      fileType: ['4'],
+                                    );
+
+                                    print(
+                                        'add karneh image ${karnehImagePath}::: ${profileImagePath}');
+                                  }
+
+                                  if (cvPath != null) {
+                                    context.read<AddFilesCubit>().addFile(
+                                      rileId: 1,
+                                      files: [cvPath!],
+                                      fileType: ['5'],
                                     );
                                   }
                                 }

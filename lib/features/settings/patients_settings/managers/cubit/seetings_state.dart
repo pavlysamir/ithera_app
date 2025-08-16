@@ -18,3 +18,15 @@ class PatientDataLoaded extends SeetingsState {
   final PatientData patientDataModel;
   PatientDataLoaded(this.patientDataModel);
 }
+
+class DeleteUserLoading extends SeetingsState {}
+
+class DeleteUserError extends SeetingsState {
+  final String error;
+  DeleteUserError(this.error);
+}
+
+class DeleteUserLoaded extends SeetingsState {
+  final String message;
+  DeleteUserLoaded(this.message);
+}

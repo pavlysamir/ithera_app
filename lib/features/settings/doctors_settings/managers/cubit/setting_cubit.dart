@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import 'package:ithera_app/features/settings/doctors_settings/data/models/doctor
 import 'package:ithera_app/features/settings/doctors_settings/data/repo/settings_repo.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 part 'setting_state.dart';
 
 class SettingCubit extends Cubit<SettingState> {
@@ -94,6 +96,45 @@ class SettingCubit extends Cubit<SettingState> {
       }
     } else {
       emit(FailPickImage());
+    }
+  }
+
+
+  Future<void> pickAndSavePDF() async {
+    // 1. Pick the PDF file
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      final pickedFile = File(result.files.single.path!);
+
+      // 2. Check file size
+      final fileSizeInBytes = await pickedFile.length();
+      final fileSizeInMB = fileSizeInBytes / (1024 * 1024); // Convert to MB
+
+      if (fileSizeInMB > 2) {
+        print('❌ الملف أكبر من 2 ميجا (${fileSizeInMB.toStringAsFixed(2)} MB)');
+        // هنا تقدر تعرض SnackBar أو Emit Error لو بتستخدم Bloc
+        return;
+      }
+
+      // 3. Get app directory to save the file
+      final appDir = await getApplicationDocumentsDirectory();
+
+      // 4. Create new file path
+      fileName = path.basename(pickedFile.path);
+      final newFilePath = path.join(appDir.path, fileName);
+
+      // 5. Copy file to new location
+      file = await pickedFile.copy(newFilePath);
+
+      emit(SuccessfulPickCv());
+
+      print('📄 PDF saved at: ${file!.path}');
+    } else {
+      print('❌ No file selected');
     }
   }
 

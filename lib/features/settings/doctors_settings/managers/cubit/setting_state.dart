@@ -55,6 +55,8 @@ final class SuccessfulPickImage extends SettingState {
   const SuccessfulPickImage(this.imageFile);
 }
 
+final class SuccessfulPickCv extends SettingState {}
+
 final class ImageCleared extends SettingState {}
 
 final class FailPickImage extends SettingState {}

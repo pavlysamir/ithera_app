@@ -154,6 +154,7 @@ class DoctorManageSchedulesCubit extends Cubit<DoctorManageSchedulesState> {
       );
     } catch (e) {
       if (!isClosed) {
+        print('aaaaaaaaaahh  ${e.toString()}');
         emit(GetDoctorSchedulesError(errorMessage: e.toString()));
       }
     }

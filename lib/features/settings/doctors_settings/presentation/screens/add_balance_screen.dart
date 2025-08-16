@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,10 +12,12 @@ import 'package:ithera_app/core/widgets/custom_drop_down_menu.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
 import 'package:ithera_app/core/widgets/pop_up_dialog.dart';
+import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/widgets/custom_wallet_field_data.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class AddBalanceScreen extends StatelessWidget {
   const AddBalanceScreen({super.key});
@@ -34,32 +37,55 @@ class AddBalanceScreen extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
-          child: Column(
-            spacing: 24.h,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'أختار الطريقة المناسبة اليك',
-                style: AppTextStyles.font22Regular
-                    .copyWith(color: AppColors.black),
+      body: LoaderOverlay(
+        useDefaultLoading: false,
+        overlayColor: Colors.transparent,
+        overlayWidgetBuilder: (_) {
+          return BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 2.5,
+              sigmaY: 2.5,
+            ),
+            child: const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: AppColors.primaryColor,
+                  ),
+                ],
               ),
-              const CustomWalletFieldData(
-                walletNumber: '8-90121234-567-3456',
-                walletImg: AssetsData.orangeWallet,
-              ),
-              const CustomWalletFieldData(
-                walletNumber: '8-90121234-567-3456',
-                walletImg: AssetsData.vodafoneWallet,
-              ),
-              const CustomWalletFieldData(
-                walletNumber: '8-90121234-567-3456',
-                walletImg: AssetsData.instapayWallet,
-              ),
-              const CustomContainerDottedUploadImage(),
-            ],
+            ),
+          );
+        },
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
+            child: Column(
+              spacing: 24.h,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'أختار الطريقة المناسبة اليك',
+                  style: AppTextStyles.font22Regular
+                      .copyWith(color: AppColors.black),
+                ),
+                const CustomWalletFieldData(
+                  walletNumber: '8-90121234-567-3456',
+                  walletImg: AssetsData.orangeWallet,
+                ),
+                const CustomWalletFieldData(
+                  walletNumber: '8-90121234-567-3456',
+                  walletImg: AssetsData.vodafoneWallet,
+                ),
+                const CustomWalletFieldData(
+                  walletNumber: '8-90121234-567-3456',
+                  walletImg: AssetsData.instapayWallet,
+                ),
+                const CustomContainerDottedUploadImage(),
+              ],
+            ),
           ),
         ),
       ),
@@ -80,7 +106,7 @@ class CustomContainerDottedUploadImage extends StatefulWidget {
 class _CustomContainerDottedUploadImageState
     extends State<CustomContainerDottedUploadImage> {
   File? file;
-  int selectedWalletId = 0;
+  int selectedWalletId = -1;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   bool _isFormValid = false;
@@ -116,16 +142,25 @@ class _CustomContainerDottedUploadImageState
     return BlocConsumer<SettingCubit, SettingState>(
       listener: (context, state) {
         if (state is SubmetDataWalletLoaded) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => PopUpDialogWithoutButtons(
-                    title: 'تم إرسال طلبك بنجاح',
-                    img: AssetsData.successSent,
-                    subTitle:
-                        'جارٍ مراجعته الآن، وسيتم تزويد محفظتك بالرصيد قريبًا.',
-                    context: context,
-                  )).then((_) {
-            Navigator.pop(context); // Pop current screen after dialog is closed
+          context.read<AddFilesCubit>().addFile(
+            rileId: 1,
+            fileType: ['9'],
+            files: [file!],
+          ).then((_) {
+            context.loaderOverlay.hide();
+
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => PopUpDialogWithoutButtons(
+                      title: 'تم إرسال طلبك بنجاح',
+                      img: AssetsData.successSent,
+                      subTitle:
+                          'جارٍ مراجعته الآن، وسيتم تزويد محفظتك بالرصيد قريبًا.',
+                      context: context,
+                    )).then((_) {
+              Navigator.pop(
+                  context); // Pop current screen after dialog is closed
+            });
           });
         } else if (state is SubmetDataWalletError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -245,7 +280,7 @@ class _CustomContainerDottedUploadImageState
                   _isFormValid = nameController.text.trim().isNotEmpty &&
                       phoneController.text.trim().isNotEmpty &&
                       file != null &&
-                      selectedWalletId != 0;
+                      selectedWalletId != -1;
                 });
               },
             ),
@@ -278,6 +313,8 @@ class _CustomContainerDottedUploadImageState
         text: 'إرسال الطلب',
         textColor: Colors.white,
         function: () async {
+          context.loaderOverlay.show();
+
           context.read<SettingCubit>().submitDoctorWalletRequest(
                 amount: int.parse(nameController.text),
                 walletType: selectedWalletId,

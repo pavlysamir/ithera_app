@@ -28,7 +28,7 @@ class ApiInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
       // Check for token expiration in the www-authenticate header
       if (err.response?.headers.value('www-authenticate') != null &&
@@ -37,6 +37,14 @@ class ApiInterceptor extends Interceptor {
               .contains('invalid_token')) {
         // Token is expired, navigate to login screen
         // navigatorKey.currentState?.pushReplacementNamed();
+        CacheHelper.deleteAllSecureData();
+        await CacheHelper.delete(
+          key: CacheConstants.userId,
+        );
+
+        await CacheHelper.delete(
+          key: CacheConstants.userImage,
+        );
         NavigationService().navigateAndRemoveUntil(Routes.welcomeScreen);
       }
     }

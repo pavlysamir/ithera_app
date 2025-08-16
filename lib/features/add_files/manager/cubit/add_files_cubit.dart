@@ -33,15 +33,24 @@ class AddFilesCubit extends Cubit<AddFilesState> {
     );
   }
 
-  Future<void> getFile({required int fileId, required int roleId}) async {
+  Future<String?> getFile({required int fileId, required int roleId}) async {
     emit(AddFileLoading());
     final response = await _addFileRepo.getFile(fileId: fileId, role: roleId);
 
-    response.fold(
-      (errMessage) => emit(GetFileFaluir(errMessage)),
-      (message) {
-        emit(GetFileSuccess());
-      },
-    );
+    return response.fold((errMessage) {
+      emit(GetFileFaluir(errMessage));
+      return null; // Return null on error
+    }, (message) {
+      if (message.responseData.isEmpty) {
+        emit(GetFileFaluir('No file found.'));
+        return null;
+      }
+
+      final lastItem = message.responseData.last;
+      final fileName = lastItem.url.split('/').last;
+
+      emit(GetFileSuccess());
+      return fileName;
+    });
   }
 }

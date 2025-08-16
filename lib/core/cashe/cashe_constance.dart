@@ -21,6 +21,7 @@ class CacheConstants {
   static const String spicializationNames = 'spicializationNames';
   static const String doctorImage = 'doctorImage';
   static const String karnehImage = 'karnehImage';
+  static const String cvImage = 'cvImage';
 
   static const String userImage = 'userImage';
 }

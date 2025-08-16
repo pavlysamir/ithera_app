@@ -43,21 +43,45 @@ class DoctorSettingsScreen extends StatelessWidget {
           title: 'حذف الحساب',
           icon: Icons.delete_forever_outlined,
           onTap: () {
+            final settingsCubit = SettingsCubit.get(context);
             showDialog(
                 context: context,
-                builder: (BuildContext context) => PopUpDialog(
-                      function2: () {},
-                      function: () {
-                        Navigator.pop(context);
-                      },
-                      title: 'هل انت متأكد من حذف الحساب',
-                      img: AssetsData.deleteAccount,
-                      subTitle: '',
-                      colorButton1: AppColors.primaryColor,
-                      colorButton2: AppColors.white,
-                      textColortcolor1: Colors.white,
-                      textColortcolor2: AppColors.primaryColor,
-                      context: context,
+                builder: (BuildContext context) => BlocProvider.value(
+                      value: settingsCubit,
+                      child: BlocConsumer<SettingsCubit, SeetingsState>(
+                          listener: (context, state) {
+                        if (state is DeleteUserError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: AppColors.error100,
+                              content: Text(state.error),
+                            ),
+                          );
+                        }
+                        if (state is DeleteUserLoaded) {
+                          NavigationService()
+                              .navigateAndRemoveUntil(Routes.welcomeScreen);
+                        }
+                      }, builder: (context, state) {
+                        return PopUpDialog(
+                          function2: () {
+                            Navigator.pop(context);
+
+                            SettingsCubit.get(context).deleteUser();
+                          },
+                          function: () {
+                            Navigator.pop(context);
+                          },
+                          title: 'هل انت متأكد من حذف الحساب',
+                          img: AssetsData.deleteAccount,
+                          subTitle: '',
+                          colorButton1: AppColors.primaryColor,
+                          colorButton2: AppColors.white,
+                          textColortcolor1: Colors.white,
+                          textColortcolor2: AppColors.primaryColor,
+                          context: context,
+                        );
+                      }),
                     ));
           }),
       SettingItemModel(

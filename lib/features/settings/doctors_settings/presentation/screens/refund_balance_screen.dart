@@ -38,7 +38,7 @@ class _RefundBalanceScreenState extends State<RefundBalanceScreen> {
     setState(() {
       _isFormValid = nameController.text.trim().isNotEmpty &&
           phoneController.text.trim().isNotEmpty &&
-          selectedWalletId != 0;
+          selectedWalletId != -1;
     });
   }
 
@@ -123,7 +123,7 @@ class _RefundBalanceScreenState extends State<RefundBalanceScreen> {
                     _isFormValid = nameController.text.trim().isNotEmpty &&
                         phoneController.text.trim().isNotEmpty &&
                         reasonController.text.trim().isNotEmpty &&
-                        selectedWalletId != null;
+                        selectedWalletId != -1;
                   });
                 },
               ),
@@ -184,7 +184,7 @@ class _RefundBalanceScreenState extends State<RefundBalanceScreen> {
             function: () async {
               context.read<SettingCubit>().submitDoctorWalletRequest(
                     amount: int.parse(nameController.text),
-                    walletType: selectedWalletId ?? 0,
+                    walletType: selectedWalletId ?? -1,
                     mobileNumber: phoneController.text,
                     transferFromNumber: phoneController.text,
                     type: 1,

@@ -18,6 +18,15 @@ class SettingsCubit extends Cubit<SeetingsState> {
     await CacheHelper.delete(
       key: CacheConstants.userId,
     );
+
+    await CacheHelper.delete(
+      key: CacheConstants.userImage,
+    );
+
+    await CacheHelper.delete(
+      key: CacheConstants.userName,
+    );
+
     await CacheHelper.deleteSecureData(key: CacheConstants.token);
     ();
     emit(SignOutSuccess());
@@ -29,6 +38,15 @@ class SettingsCubit extends Cubit<SeetingsState> {
     result.fold(
       (error) => emit(PatientDataError(error)),
       (patientData) => emit(PatientDataLoaded(patientData)),
+    );
+  }
+
+  Future<void> deleteUser() async {
+    emit(DeleteUserLoading());
+    final result = await _settingsRepo.deleteUser();
+    result.fold(
+      (error) => emit(DeleteUserError(error)),
+      (message) => emit(DeleteUserLoaded(message)),
     );
   }
 }

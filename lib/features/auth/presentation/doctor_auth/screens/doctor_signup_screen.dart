@@ -47,6 +47,9 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
   File? profileImagePath;
   File? karnehImagePath;
   String? karnehImageName;
+
+  File? cvPath;
+  String? cvName;
   int? cityId;
 
   List<String> selectedItemsList = [];
@@ -305,6 +308,38 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                   SizedBox(
                     height: 32.h,
                   ),
+                  const CustomNormalRichText(
+                    ischoosen: false,
+                    firstText: 'السيرة الذاتية ( CV )',
+                  ),
+                  SizedBox(
+                    height: 18.h,
+                  ),
+                  CustomImportImageField(onTap: () {
+                    BlocProvider.of<DoctorAuthCubit>(context)
+                        .pickAndSavePDF()
+                        .then((value) {
+                      cvPath = BlocProvider.of<DoctorAuthCubit>(context).file;
+                      cvName =
+                          BlocProvider.of<DoctorAuthCubit>(context).fileName;
+                    });
+                  }),
+                  cvName != null
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 8.w, top: 8.h),
+                          child: Center(
+                            child: Text(
+                              cvName!,
+                              style: AppTextStyles.font12Regular.copyWith(
+                                  color: AppColors.primaryColor,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                  SizedBox(
+                    height: 32.h,
+                  ),
                   CustomToggleisMale(
                     isMale: isMale,
                     onMaleTap: () {
@@ -338,7 +373,8 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                           selectedValueRegion == null ||
                           isMale == null ||
                           profileImagePath == null ||
-                          karnehImagePath == null
+                          karnehImagePath == null ||
+                          cvPath == null
                       ? const CustomButtonLargeDimmed(
                           text: 'التالي',
                         )
@@ -357,6 +393,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignupScreen> {
                                     anotherPhoneController.text,
                                 doctorImage: profileImagePath!.path,
                                 karnehImage: karnehImagePath!.path,
+                                cvImage: cvPath!.path,
                                 regionId: cityId!,
                                 specializationIds: selectedItemsListIds,
                                 genderId: isMale! ? 1 : 2,
