@@ -97,8 +97,22 @@ class FirebaseApi {
     }
   }
 
+  static Future<String> getfcmTokenFromDb({String? userId}) async {
+    final docSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    if (docSnapshot.exists) {
+      final fcmToken = docSnapshot.data()?['fcmToken'];
+      print('FCM Token: $fcmToken');
+      return fcmToken;
+    } else {
+      print("User document not found");
+      return '';
+    }
+  }
+
   // SECURE VERSION: Load service account from assets
-  Future<String?> getAccessToken() async {
+  static Future<String?> getAccessToken() async {
     try {
       // Load service account JSON from assets instead of hardcoding
       final serviceAccountString =
@@ -213,7 +227,7 @@ class FirebaseApi {
     };
   }
 
-  Future<void> sendNotifications({
+  static Future<void> sendNotifications({
     required String fcmToken,
     required String title,
     required String body,

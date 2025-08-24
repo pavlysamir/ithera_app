@@ -20,3 +20,15 @@ final class GetNotificationError extends NotificationsState {
   final String errorMessage;
   const GetNotificationError({required this.errorMessage});
 }
+
+final class GetBookingDetailsLoading extends NotificationsState {}
+
+final class GetBookingDetailsLoaded extends NotificationsState {
+  final BookingDetailsData bookingDetailsResponse;
+  const GetBookingDetailsLoaded({required this.bookingDetailsResponse});
+}
+
+final class GetBookingDetailsError extends NotificationsState {
+  final String errorMessage;
+  const GetBookingDetailsError({required this.errorMessage});
+}

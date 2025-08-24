@@ -29,4 +29,10 @@ class AssetsData {
   static const time_range = 'assets/icons/time_range.svg';
   static const call = 'assets/icons/call.svg';
   static const calender = 'assets/icons/calendar_icon.svg';
+  static const cash = 'assets/icons/cash.svg';
+  static const cancleSessionIcon = 'assets/icons/cancle_session_icon.png';
+  static const confirmAccountIcon = 'assets/icons/confirm_account_icon.svg';
+  static const patientBookingRequestIcon =
+      'assets/icons/patient_booking_request_icon.svg';
+  static const stopAccountIcon = 'assets/icons/stop_account_icon.svg';
 }

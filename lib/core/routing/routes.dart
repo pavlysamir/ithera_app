@@ -48,4 +48,6 @@ class Routes {
 
   //notifications screens
   static const String notificationsScreen = '/notificationsScreen';
+  static const String bookingNotificationDetailsScreen =
+      '/bookingDetailsScreen';
 }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -447,8 +448,10 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                                       fileType: ['3'],
                                     );
 
-                                    print(
-                                        'add profile image ${profileImagePath}::: ${karnehImagePath}');
+                                    if (kDebugMode) {
+                                      print(
+                                          'add profile image ${profileImagePath}::: ${karnehImagePath}');
+                                    }
                                   }
 
                                   if (karnehImagePath != null) {
@@ -458,8 +461,10 @@ class _DoctorEditProfileState extends State<DoctorEditProfile> {
                                       fileType: ['4'],
                                     );
 
-                                    print(
-                                        'add karneh image ${karnehImagePath}::: ${profileImagePath}');
+                                    if (kDebugMode) {
+                                      print(
+                                          'add karneh image ${karnehImagePath}::: ${profileImagePath}');
+                                    }
                                   }
 
                                   if (cvPath != null) {

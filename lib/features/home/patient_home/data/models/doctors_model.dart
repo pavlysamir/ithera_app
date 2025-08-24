@@ -64,7 +64,7 @@ class DoctorModel extends Equatable {
       ),
       sessionPrice: (json['sessionPrice'] as num?)?.toDouble() ?? 0.0,
       averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0.0,
-      profilePicture: json['profilePicture'],
+      profilePicture: json['idImageURL'],
       regionSchedules: json['regionSchedules'] != null
           ? List<DoctorRegionSchedule>.from(
               json['regionSchedules']

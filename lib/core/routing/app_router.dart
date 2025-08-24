@@ -31,6 +31,7 @@ import 'package:ithera_app/features/home/patient_home/presentation/screens/filte
 import 'package:ithera_app/features/home/patient_home/presentation/screens/doctor_screen.dart';
 import 'package:ithera_app/features/notification/managers/cubit/notifications_cubit.dart';
 import 'package:ithera_app/features/notification/presentation/screens/notification_screen.dart';
+import 'package:ithera_app/features/notification/presentation/screens/pateint_request_screen.dart';
 import 'package:ithera_app/features/on_boarding/presentations/on_boarding_view.dart';
 import 'package:ithera_app/features/settings/doctors_settings/managers/cubit/setting_cubit.dart';
 import 'package:ithera_app/features/settings/doctors_settings/presentation/screens/add_balance_screen.dart';
@@ -238,8 +239,15 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
 
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<BookingCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<BookingCubit>(
+                create: (context) => getIt<BookingCubit>(),
+              ),
+              BlocProvider<AddFilesCubit>(
+                create: (context) => getIt<AddFilesCubit>(),
+              )
+            ],
             child: BookNowScreen(
               doctorId: args['doctorId'] as int,
               schedule: args['schedule'] as DoctorRegionSchedule,
@@ -247,6 +255,7 @@ class AppRouter {
           ),
           settings: settings,
         );
+
       // case Routes.doctorHomeScreen:
       //   return MaterialPageRoute(
       //     builder: (_) => const DoctorHomeScreen(),
@@ -325,6 +334,19 @@ class AppRouter {
                   role: CacheHelper.getInt(key: CacheConstants.role) ?? 0,
                   userId: CacheHelper.getInt(key: CacheConstants.userId) ?? 0),
             child: const NotificationScreen(),
+          ),
+          settings: settings,
+        );
+
+      case Routes.bookingNotificationDetailsScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<NotificationsCubit>(),
+            child: PateintRequestScreen(
+              bookingId: args['bookingId'] as int,
+            ),
           ),
           settings: settings,
         );

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ithera_app/core/api/api_consumer.dart';
 import 'package:ithera_app/core/api/end_ponits.dart';
 import 'package:ithera_app/core/errors/exceptions.dart';
+import 'package:ithera_app/features/notification/data/models/booking_details_model.dart';
 import 'package:ithera_app/features/notification/data/models/notifications_model.dart';
 
 class NotificationRepo {
@@ -16,6 +17,24 @@ class NotificationRepo {
           queryParameters: {ApiKey.role: role, ApiKey.userId: userId});
 
       NotificationsResponse model = NotificationsResponse.fromJson(response);
+
+      if (response['status'] == false) {
+        return Left(response['message']);
+      }
+
+      return Right(model);
+    } on ServerException catch (e) {
+      return Left(e.errModel?.errorMessage ?? 'حدث خطأ ما');
+    }
+  }
+
+  Future<Either<String, BookingDetailsResponse>> getBookingDetails(
+      {required int bookingId}) async {
+    try {
+      final response = await api.get(EndPoint.getBookingDetails,
+          queryParameters: {ApiKey.bookingId: bookingId});
+
+      BookingDetailsResponse model = BookingDetailsResponse.fromJson(response);
 
       if (response['status'] == false) {
         return Left(response['message']);

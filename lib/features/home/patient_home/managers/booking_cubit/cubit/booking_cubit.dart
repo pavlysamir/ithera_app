@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:image/image.dart' as img;
+import 'package:image_picker/image_picker.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
 import 'package:ithera_app/features/home/patient_home/data/models/book_session_request_model.dart';
 import 'package:ithera_app/features/home/patient_home/data/repos/patient_home_repo.dart';
-import 'package:path/path.dart' as path;
 import 'package:equatable/equatable.dart';
 
 part 'booking_state.dart';

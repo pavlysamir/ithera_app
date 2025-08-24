@@ -33,6 +33,8 @@ class CustomButtonSmall extends StatelessWidget {
           child: Center(
             child: Text(
               text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style:
                   AppTextStyles.font14Regular.copyWith(color: textColortcolor),
             ),

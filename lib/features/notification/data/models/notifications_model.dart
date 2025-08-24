@@ -41,17 +41,20 @@ class NotificationItem extends Equatable {
   final bool? forAdmin;
   final DateTime? createdOn;
   final int? walletRequestId;
+  final int? type;
+  final int? bookingId;
 
-  const NotificationItem({
-    this.id,
-    this.value,
-    this.doctorId,
-    this.patientId,
-    this.adminId,
-    this.forAdmin,
-    this.createdOn,
-    this.walletRequestId,
-  });
+  const NotificationItem(
+      {this.id,
+      this.value,
+      this.doctorId,
+      this.patientId,
+      this.adminId,
+      this.forAdmin,
+      this.createdOn,
+      this.walletRequestId,
+      this.type,
+      this.bookingId});
 
   factory NotificationItem.fromJson(Map<String, dynamic> json) {
     return NotificationItem(
@@ -63,6 +66,8 @@ class NotificationItem extends Equatable {
       forAdmin: json['forAdmin'] as bool?,
       createdOn: DateTime.parse(json['createdOn'] as String),
       walletRequestId: json['walletRequestId'] as int?,
+      type: json['type'] as int?,
+      bookingId: json['bookingId'] as int?,
     );
   }
 
@@ -76,5 +81,7 @@ class NotificationItem extends Equatable {
         forAdmin,
         createdOn,
         walletRequestId,
+        type,
+        bookingId
       ];
 }

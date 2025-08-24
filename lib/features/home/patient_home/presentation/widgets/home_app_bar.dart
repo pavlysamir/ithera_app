@@ -36,7 +36,9 @@ class HomeAppbar extends StatelessWidget {
               hight: 30.h,
               path: 'assets/icons/notification_icon.svg',
             ),
-            onPressed: () {},
+            onPressed: () {
+              NavigationService().navigateTo(Routes.notificationsScreen);
+            },
           ),
         ),
         SizedBox(

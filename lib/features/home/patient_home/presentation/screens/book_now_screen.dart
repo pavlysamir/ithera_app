@@ -7,12 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ithera_app/core/cashe/cache_helper.dart';
 import 'package:ithera_app/core/cashe/cashe_constance.dart';
 import 'package:ithera_app/core/helpers/validation_handling.dart';
+import 'package:ithera_app/core/notification_srvices/firebsae_cloud_messaging.dart';
 import 'package:ithera_app/core/theme/app_colors.dart';
 import 'package:ithera_app/core/theme/app_text_styles.dart';
 import 'package:ithera_app/core/widgets/custom_button_large.dart';
 import 'package:ithera_app/core/widgets/custom_form_field.dart';
 import 'package:ithera_app/core/widgets/custom_toggle_isMale.dart';
 import 'package:ithera_app/core/widgets/cutom_button_large_dimmide.dart';
+import 'package:ithera_app/features/add_files/manager/cubit/add_files_cubit.dart';
 import 'package:ithera_app/features/auth/presentation/doctor_auth/widgets/custom_import_image_field.dart';
 import 'package:ithera_app/features/auth/presentation/patient_auth/widgets/custom_normal_rich_text.dart';
 import 'package:ithera_app/features/home/patient_home/data/models/book_session_request_model.dart';
@@ -131,7 +133,19 @@ class _BookNowScreenState extends State<BookNowScreen> {
             isForAnotherPatient && isMale != null ? (isMale! ? 1 : 2) : null,
       );
 
-      await cubit.bookSession(request: request);
+      await cubit.bookSession(request: request).then((value) async {
+        FirebaseApi.getfcmTokenFromDb(userId: widget.doctorId.toString())
+            .then((fcmToken) {
+          FirebaseApi.sendNotifications(
+            body:
+                'تم حجز موعد جديد من ${CacheHelper.getString(key: CacheConstants.userName)}',
+            title: 'موعد جديد',
+            fcmToken: fcmToken,
+            userId: CacheHelper.getInt(key: CacheConstants.userId)!.toString(),
+            type: 'booking',
+          );
+        });
+      });
     } finally {
       if (mounted) {
         setState(() {
@@ -305,6 +319,36 @@ class _BookNowScreenState extends State<BookNowScreen> {
                                           if (bookFormKey.currentState!
                                               .validate()) {
                                             _handleBookSession(isChecked);
+
+                                            if (patientReport != null) {
+                                              context
+                                                  .read<AddFilesCubit>()
+                                                  .addFile(
+                                                rileId: 2,
+                                                files: [patientReport!],
+                                                fileType: ['7'],
+                                              );
+
+                                              if (kDebugMode) {
+                                                print(
+                                                    'add profile image $patientReport::: $xRayImage');
+                                              }
+                                            }
+
+                                            if (xRayImage != null) {
+                                              context
+                                                  .read<AddFilesCubit>()
+                                                  .addFile(
+                                                rileId: 2,
+                                                files: [xRayImage!],
+                                                fileType: ['8'],
+                                              );
+
+                                              if (kDebugMode) {
+                                                print(
+                                                    'add karneh image $xRayImage::: $patientReport');
+                                              }
+                                            }
                                           }
                                         },
                                         color: AppColors.primaryColor,

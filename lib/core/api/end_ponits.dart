@@ -45,6 +45,8 @@ class EndPoint {
 
   static String deleteUser = "api/Auth/DeleteUserById";
 
+  static String getBookingDetails = "api/Doctor/GetBookingDetails";
+
   static String getDoctorDataEndPoint(id) {
     return "api/Doctor/$id";
   }
@@ -69,6 +71,8 @@ class ApiKey {
   static String dateOfBirth = "dateOfBirth";
 
   static String userId = "userId";
+
+  static String bookingId = "bookingId";
 
   static String specializationFieldIds = "specializationFieldIds";
 
